@@ -51,6 +51,7 @@ ExportedObj/
 *.tmp
 *.user
 *.vscode
+*.idea
 *.userprefs
 *.pidb
 *.booproj
