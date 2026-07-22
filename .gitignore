@@ -50,6 +50,7 @@ ExportedObj/
 *.suo
 *.tmp
 *.user
+*.vscode
 *.userprefs
 *.pidb
 *.booproj
