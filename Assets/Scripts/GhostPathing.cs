@@ -24,18 +24,21 @@ public class GhostPathing : MonoBehaviour
     }
     void Update()
     {
-        if (transform.position == nextTile)
-        {
-            if(IsTileAtWorldPosition(transform.position + (Vector3)direction) || isIntersection() && !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position)){
+        if (transform.position == nextTile) {
+             if (GhostManager.instance.frightened){
+                    //random direction
+                    print(nextTile);
+                    direction = nextTile - transform.position;
+
+            } else
+            if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                 nextTile = GetNextTile();
                 print(nextTile);
                 direction = nextTile - transform.position;
             } else {
                 nextTile = transform.position + (Vector3)direction;
             }
-        }
-        else
-        {
+        } else {
             transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
         }
     }
