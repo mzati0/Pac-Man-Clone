@@ -10,7 +10,7 @@ public class PacMovement : MonoBehaviour
     [Header("Collision")]
     public Tilemap wallTilemap;
 
-    [Header("Tunnel Wrap (optional)")]
+    [Header("Tunnel Wrap")]
     public bool enableTunnelWrap = true;
 
     [Header("Debug")]
