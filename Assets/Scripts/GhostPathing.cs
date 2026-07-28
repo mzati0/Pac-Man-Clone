@@ -38,7 +38,7 @@ public class GhostPathing : MonoBehaviour
                     target = targetScatter.position;
                 }
                 nextTile = GetNextTile(target);
-                print(nextTile);
+                //print(nextTile);
                 direction = nextTile - transform.position;
             } else {
                 nextTile = transform.position + (Vector3)direction;
@@ -90,6 +90,9 @@ public class GhostPathing : MonoBehaviour
             }
         }
         return nextTiles[0].position;
+    }
+    public void flip() {
+        direction = -direction;
     }
 
 }
