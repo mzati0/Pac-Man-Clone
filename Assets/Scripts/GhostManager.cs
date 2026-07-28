@@ -7,10 +7,10 @@ public class GhostManager : MonoBehaviour
     public bool frightened = false;
     public bool scatter = false;
     public int dotCount = 30;
-    public double ghostSpeedBase = 5;
-    public double ghostSpeed = 0;
-    public double ghostFrightenedSpeed = 0;
-    public double ghostTunnelSpeed = 0;
+    public float ghostSpeedBase = 5;
+    public float ghostSpeed = 0;
+    public float ghostFrightenedSpeed = 0;
+    public float ghostTunnelSpeed = 0;
     public Transform deadGhostTarget;
     int[,] ghostSpeeds = { { 1, 75, 50, 40 }, { 2, 85, 55, 45 }, { 5, 95, 60, 50 }, { 21, 95, 0, 50 } };
     double[,] ScatterChaseList = { { 1, 7, 20, 7, 20, 5, 20, 5 }, { 2, 7, 20, 7, 20, 5, 1033, 1 / 60f }, { 5, 5, 20, 5, 20, 5, 1037, 1 / 60f } , { 21, 5, 20, 5, 20, 5, 1037, 1/60f } };

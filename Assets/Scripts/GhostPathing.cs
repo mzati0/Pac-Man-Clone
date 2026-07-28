@@ -7,12 +7,15 @@ public class GhostPathing : MonoBehaviour
     public Transform targetPac;
     public Transform targetScatter;
     public Tilemap tilemap;
+    public bool dead = false;
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
                                     new Vector2(16,19), new Vector2(15,19), new Vector2(13,19), new Vector2(12,19), new Vector2(11,19)};
     public Vector2 direction = Vector2.up;
     [SerializeField] private Vector3 nextTile;
     [SerializeField] private int speed = 5;
+    public bool elroy = false;
+    public float elroySpeed = 0;
     void Start()
     {
         
@@ -26,15 +29,17 @@ public class GhostPathing : MonoBehaviour
     void Update()
     {
         if (transform.position == nextTile) {
-             if (GhostManager.instance.frightened){
-                    //random direction
-                    print(nextTile);
-                    direction = nextTile - transform.position;
+            if (GhostManager.instance.frightened){
+                //random direction
+                print(nextTile);
 
             } else
             if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
-                Vector2 target = targetPac.position;
-                if(GhostManager.instance.scatter){
+                    Vector2 target = targetPac.position;
+                if(dead){
+                    target = GhostManager.instance.deadGhostTarget.position;
+                }else
+                if(GhostManager.instance.scatter && !elroy){
                     target = targetScatter.position;
                 }
                 nextTile = GetNextTile(target);
@@ -44,6 +49,10 @@ public class GhostPathing : MonoBehaviour
                 nextTile = transform.position + (Vector3)direction;
             }
         } else {
+            float speed = GhostManager.instance.ghostSpeed;
+            if (elroy) {
+                speed = elroySpeed;
+            }
             transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
         }
     }

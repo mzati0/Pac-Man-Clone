@@ -6425,7 +6425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2053ccae97c6f154ba96f0dbe6696870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  level: 2
+  level: 1
   frightened: 0
   scatter: 0
   dotCount: 30
