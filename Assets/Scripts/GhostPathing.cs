@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class GhostPathing : MonoBehaviour
 {
-    public Transform target;
+    public Transform targetPac;
+    public Transform targetScatter;
     public Tilemap tilemap;
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
@@ -32,7 +33,11 @@ public class GhostPathing : MonoBehaviour
 
             } else
             if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
-                nextTile = GetNextTile();
+                Vector2 target = targetPac.position;
+                if(GhostManager.instance.scatter){
+                    target = targetScatter.position;
+                }
+                nextTile = GetNextTile(target);
                 print(nextTile);
                 direction = nextTile - transform.position;
             } else {
@@ -54,7 +59,7 @@ public class GhostPathing : MonoBehaviour
         }
         return count > 1;
     }
-    private Vector3 GetNextTile()
+    private Vector3 GetNextTile(Vector3 target)
     {
         List<NextTile> nextTiles = new List<NextTile>();
 
@@ -63,7 +68,7 @@ public class GhostPathing : MonoBehaviour
             Vector3 tile = transform.position + (Vector3)direct;
             if (!IsTileAtWorldPosition(tile) && direct != -direction)
             {
-                double distance = Vector3.Distance(tile, target.position);
+                double distance = Vector3.Distance(tile, target);
                 nextTiles.Add(new NextTile { position = tile, distance = distance, priority = i });
             }
         }
