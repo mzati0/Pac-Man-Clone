@@ -6533,7 +6533,7 @@ Transform:
   m_GameObject: {fileID: 1997176772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21, y: 9, z: 0}
+  m_LocalPosition: {x: 14, y: 19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6556,9 +6556,12 @@ MonoBehaviour:
   targetPac: {fileID: 1300555260}
   targetScatter: {fileID: 2010503818}
   tilemap: {fileID: 1346356310}
+  dead: 0
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
   speed: 5
+  elroy: 0
+  elroySpeed: 0
 --- !u!212 &1997176776
 SpriteRenderer:
   serializedVersion: 3
