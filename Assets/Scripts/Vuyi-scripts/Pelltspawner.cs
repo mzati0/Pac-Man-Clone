@@ -38,6 +38,8 @@ public class PelletSpawner : MonoBehaviour
         wallTilemap.CompressBounds();
         BoundsInt bounds = wallTilemap.cellBounds;
         int spawned = 0;
+        int excluded = 0;
+        int mismatches = 0;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -45,9 +47,29 @@ public class PelletSpawner : MonoBehaviour
             {
                 Vector3Int cell = new Vector3Int(x, y, 0);
                 if (wallTilemap.HasTile(cell)) continue;
-                if (exclusionTilemap != null && exclusionTilemap.HasTile(cell)) continue;
 
                 Vector3 worldPos = wallTilemap.GetCellCenterWorld(cell);
+
+                if (exclusionTilemap != null)
+                {
+                    // Translate through world space instead of reusing the wall
+                    // tilemap's raw cell coordinate - the two tilemaps aren't
+                    // guaranteed to share the same grid/cell size/anchor.
+                    Vector3Int exclCell = exclusionTilemap.WorldToCell(worldPos);
+
+                    if (debugMode && exclCell != cell)
+                    {
+                        mismatches++;
+                        Debug.Log($"[PelletSpawner] Cell mismatch at {worldPos}: wall cell {cell} vs exclusion cell {exclCell}");
+                    }
+
+                    if (exclusionTilemap.HasTile(exclCell))
+                    {
+                        excluded++;
+                        continue;
+                    }
+                }
+
                 GameObject prefab = powerPelletCells.Contains(cell) ? powerPelletPrefab : normalPelletPrefab;
                 Instantiate(prefab, worldPos, Quaternion.identity, pelletParent);
                 spawned++;
@@ -55,6 +77,10 @@ public class PelletSpawner : MonoBehaviour
         }
 
         if (debugMode)
-            Debug.Log($"[PelletSpawner] spawned {spawned} pellets.");
+        {
+            Debug.Log($"[PelletSpawner] spawned {spawned} pellets, excluded {excluded} cells, {mismatches} cell-coordinate mismatches.");
+            if (mismatches > 0)
+                Debug.LogWarning("[PelletSpawner] wallTilemap and exclusionTilemap cell coordinates don't line up - check they share the same Grid, Cell Size, and Tile Anchor.");
+        }
     }
 }
