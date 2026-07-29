@@ -29,20 +29,17 @@ public class GhostPathing : MonoBehaviour
     void Update()
     {
         if (transform.position == nextTile) {
-            if (GhostManager.instance.frightened){
-                //random direction
-                print(nextTile);
-
-            } else
             if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
-                    Vector2 target = targetPac.position;
                 if(dead){
-                    target = GhostManager.instance.deadGhostTarget.position;
-                }else
+                    nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
+                } else if (GhostManager.instance.frightened){
+                    nextTile = GetRandomTile();
+                } else
                 if(GhostManager.instance.scatter && !elroy){
-                    target = targetScatter.position;
+                    nextTile = GetNextTile(targetScatter.position);
+                } else{
+                    nextTile = GetNextTile(targetPac.position);
                 }
-                nextTile = GetNextTile(target);
                 //print(nextTile);
                 direction = nextTile - transform.position;
             } else {
@@ -99,6 +96,30 @@ public class GhostPathing : MonoBehaviour
             }
         }
         return nextTiles[0].position;
+    }
+    private Vector3 GetRandomTile()
+    {
+        List<NextTile> nextTiles = new List<NextTile>();
+        Vector3 randDirection = (Vector3)Vector2.zero;
+        float roundedRandom = UnityEngine.Random.Range(0, 1000) / 10.0f; 
+        //print(roundedRandom);
+        if(roundedRandom >= 83.7 && -direction != Vector2.up && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.up)){
+            randDirection = (Vector3)Vector2.up;
+        } else if(roundedRandom >= 58.5 && -direction != Vector2.right && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.right)){
+            randDirection = (Vector3)Vector2.right;
+        } else if(roundedRandom >= 30 && -direction != Vector2.down && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.down)){
+             randDirection = (Vector3)Vector2.down;
+
+        }else if(-direction != Vector2.left && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.left)){
+            randDirection = (Vector3)Vector2.left;
+        }else if(-direction != Vector2.up && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.up)){
+            randDirection = (Vector3)Vector2.up;
+        } else if(-direction != Vector2.right && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.right)){
+            randDirection = (Vector3)Vector2.right;
+        } else if( -direction != Vector2.down && !IsTileAtWorldPosition(transform.position + (Vector3)Vector2.down)){
+             randDirection = (Vector3)Vector2.down;
+        }
+        return transform.position + randDirection;
     }
     public void flip() {
         direction = -direction;

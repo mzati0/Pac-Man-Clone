@@ -17,7 +17,7 @@ public class GhostManager : MonoBehaviour
     [System.NonSerialized] public double[,] ScatterChase = { { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 } };
     int timerPosition = 0;
     float time = 0;
-    float friteTime = 0;
+    float friteTime = 5;
     float friteTimer = 0;
 
     void Awake()
