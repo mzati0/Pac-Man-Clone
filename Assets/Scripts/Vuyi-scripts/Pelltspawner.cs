@@ -18,26 +18,37 @@ public class PelletSpawner : MonoBehaviour
     [Header("Parent")]
     public Transform pelletParent;
 
+    public int PelletCount { get; private set; }
+
     void Awake()
     {
         SpawnPellets();
     }
 
+    public void ClearPellets()
+    {
+        if (pelletParent != null)
+        {
+            for (int i = pelletParent.childCount - 1; i >= 0; i--)
+                Destroy(pelletParent.GetChild(i).gameObject);
+        }
+        else
+        {
+            foreach (Pellet p in FindObjectsOfType<Pellet>(true))
+                Destroy(p.gameObject);
+        }
+        PelletCount = 0;
+    }
+
     public void SpawnPellets()
     {
         if (wallTilemap == null || normalPelletPrefab == null || powerPelletPrefab == null)
-        {
-            Debug.LogError("[PelletSpawner] Missing a required reference.");
             return;
-        }
-
-        if (powerPelletCells.Count == 0)
-            Debug.LogWarning("[PelletSpawner] powerPelletCells is empty - no power pellets will spawn.");
 
         wallTilemap.CompressBounds();
         BoundsInt bounds = wallTilemap.cellBounds;
-
         HashSet<Vector3Int> matchedPowerCells = new HashSet<Vector3Int>();
+        int spawnedCount = 0;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -59,32 +70,10 @@ public class PelletSpawner : MonoBehaviour
 
                 GameObject prefab = isPowerPellet ? powerPelletPrefab : normalPelletPrefab;
                 Instantiate(prefab, worldPos, Quaternion.identity, pelletParent);
+                spawnedCount++;
             }
         }
 
-        foreach (Vector3Int powerCell in powerPelletCells)
-        {
-            if (matchedPowerCells.Contains(powerCell)) continue;
-
-            string reason;
-            if (powerCell.x < bounds.xMin || powerCell.x >= bounds.xMax || powerCell.y < bounds.yMin || powerCell.y >= bounds.yMax)
-            {
-                reason = $"outside wallTilemap.cellBounds {bounds}";
-            }
-            else if (wallTilemap.HasTile(powerCell))
-            {
-                reason = "sits on a wall tile";
-            }
-            else if (exclusionTilemap != null && exclusionTilemap.HasTile(exclusionTilemap.WorldToCell(wallTilemap.GetCellCenterWorld(powerCell))))
-            {
-                reason = "sits inside the exclusion tilemap";
-            }
-            else
-            {
-                reason = "unknown - didn't match despite passing all checks, worth double-checking the coordinate by hand";
-            }
-
-            Debug.LogWarning($"[PelletSpawner] powerPelletCells entry {powerCell} was never spawned - {reason}.");
-        }
+        PelletCount = spawnedCount;
     }
 }

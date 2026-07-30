@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,10 +9,17 @@ public class GameManager : MonoBehaviour
     [Header("Score")]
     public int score = 0;
 
+    [Header("Level")]
+    public int level = 1;
+    public float levelCompleteDelay = 2f;
+
     [Header("Frightened Mode")]
     public float frightenedDuration = 6f;
     private float frightenedTimer;
     public bool IsFrightened => frightenedTimer > 0f;
+
+    [Header("Maze")]
+    public PelletSpawner pelletSpawner;
 
     [Header("Fruit")]
     public FruitSpawner fruitSpawner;
@@ -23,6 +31,7 @@ public class GameManager : MonoBehaviour
     public static event Action<float> OnFrightenedModeStarted;
     public static event Action OnFrightenedModeEnded;
     public static event Action OnAllPelletsEaten;
+    public static event Action<int> OnLevelStarted;
 
     void Awake()
     {
@@ -36,13 +45,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        pelletsRemaining = FindObjectsOfType<Pellet>().Length;
+        pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
+        OnLevelStarted?.Invoke(level);
     }
 
     void Update()
     {
         if (frightenedTimer <= 0f) return;
-
         frightenedTimer -= Time.deltaTime;
         if (frightenedTimer <= 0f)
         {
@@ -69,15 +78,39 @@ public class GameManager : MonoBehaviour
         if (pelletsRemaining <= 0)
         {
             OnAllPelletsEaten?.Invoke();
+            StartCoroutine(AdvanceToNextLevelAfterDelay());
         }
     }
 
     public void PowerPelletEaten(int scoreValue)
     {
         PelletEaten(scoreValue);
-
         frightenedTimer = frightenedDuration;
-
         OnFrightenedModeStarted?.Invoke(frightenedDuration);
+    }
+
+    private IEnumerator AdvanceToNextLevelAfterDelay()
+    {
+        yield return new WaitForSeconds(levelCompleteDelay);
+        NextLevel();
+    }
+
+    private void NextLevel()
+    {
+        level++;
+        pelletsEatenThisLevel = 0;
+        frightenedTimer = 0f;
+
+        if (pelletSpawner != null)
+        {
+            pelletSpawner.ClearPellets();
+            pelletSpawner.SpawnPellets();
+            pelletsRemaining = pelletSpawner.PelletCount;
+        }
+
+        if (fruitSpawner != null)
+            fruitSpawner.ResetForNewLevel(level);
+
+        OnLevelStarted?.Invoke(level);
     }
 }
