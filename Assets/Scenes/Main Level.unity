@@ -1182,7 +1182,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4258,6 +4258,26 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: -1, y: 11, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 17
+      m_TileSpriteIndex: 18
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 0, y: 11, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 17
+      m_TileSpriteIndex: 18
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 1, y: 11, z: 0}
     second:
       serializedVersion: 2
@@ -5288,6 +5308,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 12, y: 18, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 17
+      m_TileSpriteIndex: 18
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 13, y: 18, z: 0}
     second:
       serializedVersion: 2
@@ -6232,7 +6262,7 @@ Tilemap:
     m_RefCount: 1
     m_Data: {fileID: 11400000, guid: f61b29b6d900fe0488152fa3bd6b38d4, type: 2}
   - serializedVersion: 2
-    m_RefCount: 48
+    m_RefCount: 51
     m_Data: {fileID: 11400000, guid: 53e34f546bcf2004c9327b56107b691b, type: 2}
   - serializedVersion: 2
     m_RefCount: 3
@@ -6320,7 +6350,7 @@ Tilemap:
     m_RefCount: 1
     m_Data: {fileID: 168494526, guid: d92a5b332f2f54d46b4c73cdb741712f, type: 3}
   - serializedVersion: 2
-    m_RefCount: 48
+    m_RefCount: 51
     m_Data: {fileID: 2014348525, guid: d92a5b332f2f54d46b4c73cdb741712f, type: 3}
   - serializedVersion: 2
     m_RefCount: 25
@@ -6351,7 +6381,7 @@ Tilemap:
     m_Data: {fileID: 347007333, guid: d92a5b332f2f54d46b4c73cdb741712f, type: 3}
   m_TileMatrixArray:
   - serializedVersion: 2
-    m_RefCount: 478
+    m_RefCount: 481
     m_Data:
       e00: 1
       e01: 0
@@ -6371,7 +6401,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - serializedVersion: 2
-    m_RefCount: 478
+    m_RefCount: 481
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -9487,6 +9517,7 @@ GameObject:
   - component: {fileID: 1997176774}
   - component: {fileID: 1997176773}
   - component: {fileID: 1997176775}
+  - component: {fileID: 1997176777}
   - component: {fileID: 1997176776}
   m_Layer: 0
   m_Name: Blinky
@@ -9516,7 +9547,7 @@ Transform:
   m_GameObject: {fileID: 1997176772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21, y: 24, z: 0}
+  m_LocalPosition: {x: 15.5, y: 16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9540,6 +9571,7 @@ MonoBehaviour:
   targetScatter: {fileID: 2010503818}
   tilemap: {fileID: 1346356310}
   dead: 0
+  house: 1
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
   speed: 5
@@ -9605,6 +9637,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &1997176777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997176772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea18bc743435914698783fefd0c157c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  startUp: 1
+  shufflePoint: {x: 15.5, y: 16}
+  shuffling: 1
 --- !u!1 &2010503817
 GameObject:
   m_ObjectHideFlags: 0

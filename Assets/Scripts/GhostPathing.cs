@@ -8,6 +8,7 @@ public class GhostPathing : MonoBehaviour
     public Transform targetScatter;
     public Tilemap tilemap;
     public bool dead = false;
+    public bool house = false;
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
                                     new Vector2(16,19), new Vector2(15,19), new Vector2(13,19), new Vector2(12,19), new Vector2(11,19)};
@@ -28,30 +29,33 @@ public class GhostPathing : MonoBehaviour
     }
     void Update()
     {
-        if (transform.position == nextTile) {
-            if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
-                if(dead){
-                    nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
-                } else if (GhostManager.instance.frightened){
-                    nextTile = GetRandomTile();
-                } else
-                if(GhostManager.instance.scatter && !elroy){
-                    nextTile = GetNextTile(targetScatter.position);
-                } else{
-                    nextTile = GetNextTile(targetPac.position);
+        if(!house){
+            if (transform.position == nextTile) {
+                if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
+                    if(dead){
+                        nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
+                    } else if (GhostManager.instance.frightened){
+                        nextTile = GetRandomTile();
+                    } else
+                    if(GhostManager.instance.scatter && !elroy){
+                        nextTile = GetNextTile(targetScatter.position);
+                    } else{
+                        nextTile = GetNextTile(targetPac.position);
+                    }
+                    //print(nextTile);
+                    direction = nextTile - transform.position;
+                } else {
+                    nextTile = transform.position + (Vector3)direction;
                 }
-                //print(nextTile);
-                direction = nextTile - transform.position;
             } else {
-                nextTile = transform.position + (Vector3)direction;
+                float speed = GhostManager.instance.ghostSpeed;
+                if (elroy) {
+                    speed = elroySpeed;
+                }
+                transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
             }
-        } else {
-            float speed = GhostManager.instance.ghostSpeed;
-            if (elroy) {
-                speed = elroySpeed;
-            }
-            transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
         }
+        
     }
     private bool isIntersection()
     {
