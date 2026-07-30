@@ -6,7 +6,6 @@ public class PelletSpawner : MonoBehaviour
 {
     [Header("Maze Reference")]
     public Tilemap wallTilemap;
-
     public Tilemap exclusionTilemap;
 
     [Header("Prefabs")]
@@ -18,9 +17,6 @@ public class PelletSpawner : MonoBehaviour
 
     [Header("Parent")]
     public Transform pelletParent;
-
-    [Header("Debug")]
-    public bool debugMode = true;
 
     void Awake()
     {
@@ -35,11 +31,13 @@ public class PelletSpawner : MonoBehaviour
             return;
         }
 
+        if (powerPelletCells.Count == 0)
+            Debug.LogWarning("[PelletSpawner] powerPelletCells is empty - no power pellets will spawn.");
+
         wallTilemap.CompressBounds();
         BoundsInt bounds = wallTilemap.cellBounds;
-        int spawned = 0;
-        int excluded = 0;
-        int mismatches = 0;
+
+        HashSet<Vector3Int> matchedPowerCells = new HashSet<Vector3Int>();
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -52,35 +50,41 @@ public class PelletSpawner : MonoBehaviour
 
                 if (exclusionTilemap != null)
                 {
-                    // Translate through world space instead of reusing the wall
-                    // tilemap's raw cell coordinate - the two tilemaps aren't
-                    // guaranteed to share the same grid/cell size/anchor.
                     Vector3Int exclCell = exclusionTilemap.WorldToCell(worldPos);
-
-                    if (debugMode && exclCell != cell)
-                    {
-                        mismatches++;
-                        Debug.Log($"[PelletSpawner] Cell mismatch at {worldPos}: wall cell {cell} vs exclusion cell {exclCell}");
-                    }
-
-                    if (exclusionTilemap.HasTile(exclCell))
-                    {
-                        excluded++;
-                        continue;
-                    }
+                    if (exclusionTilemap.HasTile(exclCell)) continue;
                 }
 
-                GameObject prefab = powerPelletCells.Contains(cell) ? powerPelletPrefab : normalPelletPrefab;
+                bool isPowerPellet = powerPelletCells.Contains(cell);
+                if (isPowerPellet) matchedPowerCells.Add(cell);
+
+                GameObject prefab = isPowerPellet ? powerPelletPrefab : normalPelletPrefab;
                 Instantiate(prefab, worldPos, Quaternion.identity, pelletParent);
-                spawned++;
             }
         }
 
-        if (debugMode)
+        foreach (Vector3Int powerCell in powerPelletCells)
         {
-            Debug.Log($"[PelletSpawner] spawned {spawned} pellets, excluded {excluded} cells, {mismatches} cell-coordinate mismatches.");
-            if (mismatches > 0)
-                Debug.LogWarning("[PelletSpawner] wallTilemap and exclusionTilemap cell coordinates don't line up - check they share the same Grid, Cell Size, and Tile Anchor.");
+            if (matchedPowerCells.Contains(powerCell)) continue;
+
+            string reason;
+            if (powerCell.x < bounds.xMin || powerCell.x >= bounds.xMax || powerCell.y < bounds.yMin || powerCell.y >= bounds.yMax)
+            {
+                reason = $"outside wallTilemap.cellBounds {bounds}";
+            }
+            else if (wallTilemap.HasTile(powerCell))
+            {
+                reason = "sits on a wall tile";
+            }
+            else if (exclusionTilemap != null && exclusionTilemap.HasTile(exclusionTilemap.WorldToCell(wallTilemap.GetCellCenterWorld(powerCell))))
+            {
+                reason = "sits inside the exclusion tilemap";
+            }
+            else
+            {
+                reason = "unknown - didn't match despite passing all checks, worth double-checking the coordinate by hand";
+            }
+
+            Debug.LogWarning($"[PelletSpawner] powerPelletCells entry {powerCell} was never spawned - {reason}.");
         }
     }
 }

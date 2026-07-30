@@ -5,16 +5,10 @@ public class Pellet : MonoBehaviour
     public enum PelletType { Normal, Power }
 
     [Header("Pellet Setup")]
-   
     public PelletType type = PelletType.Normal;
-
-  
     public int scoreValue = 10;
-
-   
     public string playerTag = "Player";
 
-    // Safety net: makes sure the collider is a trigger the moment this script is added
     void Reset()
     {
         Collider2D col = GetComponent<Collider2D>();

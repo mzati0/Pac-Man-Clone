@@ -151,7 +151,6 @@ MonoBehaviour:
   score: 0
   frightenedDuration: 6
   fruitSpawner: {fileID: 0}
-  debugMode: 1
   pelletsRemaining: 0
 --- !u!4 &4806364
 Transform:
@@ -3870,7 +3869,7 @@ MonoBehaviour:
   speed: 5
   wallTilemap: {fileID: 1346356310}
   enableTunnelWrap: 1
-  debugMode: 1
+  cornerWindow: 0.15
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
 --- !u!212 &1268086187
@@ -9534,9 +9533,12 @@ MonoBehaviour:
   exclusionTilemap: {fileID: 886451319}
   normalPelletPrefab: {fileID: 5553055099842451021, guid: e242ddc97b59ba443a4a32ad60486ad2, type: 3}
   powerPelletPrefab: {fileID: 7621252174541395064, guid: 57e652b6fc143934889ee105ebe03a6d, type: 3}
-  powerPelletCells: []
+  powerPelletCells:
+  - {x: -13, y: 20, z: 0}
+  - {x: 12, y: 20, z: 0}
+  - {x: 12, y: 0, z: 0}
+  - {x: -13, y: 0, z: 0}
   pelletParent: {fileID: 110118650}
-  debugMode: 1
 --- !u!4 &2096311287
 Transform:
   m_ObjectHideFlags: 0
