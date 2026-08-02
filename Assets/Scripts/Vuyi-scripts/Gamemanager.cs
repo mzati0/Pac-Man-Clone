@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [Header("Fruit")]
     public FruitSpawner fruitSpawner;
 
+    [Header("Pac-Man")]
+    public PacMovement pacManMovement;
+
     [HideInInspector] public int pelletsRemaining;
     private int pelletsEatenThisLevel;
 
@@ -45,6 +48,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (pacManMovement != null)
+            pacManMovement.ResetToStart();
+
         pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
         OnLevelStarted?.Invoke(level);
     }
@@ -100,6 +106,9 @@ public class GameManager : MonoBehaviour
         level++;
         pelletsEatenThisLevel = 0;
         frightenedTimer = 0f;
+
+        if (pacManMovement != null)
+            pacManMovement.ResetToStart();
 
         if (pelletSpawner != null)
         {

@@ -21,6 +21,13 @@ public class PacMovement : MonoBehaviour
     [SerializeField] private Vector3 nextTile;
     private Vector3 lastIntersection;
 
+    [Header("Spawn")]
+    public float spawnX = 14.003f;
+    public float spawnY = 7f;
+
+    private Vector3 startPosition;
+    private Vector2 startDirection;
+
     private InputSystem_Actions controls;
 
     void Awake()
@@ -34,11 +41,24 @@ public class PacMovement : MonoBehaviour
 
     void Start()
     {
-        nextTile = transform.position;
-        lastIntersection = transform.position;
+        startPosition = new Vector3(spawnX, spawnY, transform.position.z);
+        startDirection = direction;
+
+        transform.position = startPosition;
+        nextTile = startPosition;
+        lastIntersection = startPosition;
 
         if (wallTilemap != null)
             wallTilemap.CompressBounds();
+    }
+
+    public void ResetToStart()
+    {
+        transform.position = startPosition;
+        direction = startDirection;
+        queuedDirection = Vector2.zero;
+        nextTile = startPosition;
+        lastIntersection = startPosition;
     }
 
     public bool IsTileAtWorldPosition(Vector2 worldPos)

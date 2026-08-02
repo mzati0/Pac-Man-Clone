@@ -154,6 +154,7 @@ MonoBehaviour:
   frightenedDuration: 6
   pelletSpawner: {fileID: 2096311286}
   fruitSpawner: {fileID: 1479500122}
+  pacManMovement: {fileID: 1268086186}
   pelletsRemaining: 0
 --- !u!4 &4806364
 Transform:
@@ -3875,6 +3876,8 @@ MonoBehaviour:
   cornerWindow: 0.15
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
+  spawnX: 14.003
+  spawnY: 7
 --- !u!212 &1268086187
 SpriteRenderer:
   serializedVersion: 3
