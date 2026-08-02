@@ -4,6 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class PelletSpawner : MonoBehaviour
 {
+    private const int MaxNormalPellets = 240;
+
     [Header("Maze Reference")]
     public Tilemap wallTilemap;
     public Tilemap exclusionTilemap;
@@ -15,10 +17,20 @@ public class PelletSpawner : MonoBehaviour
     [Header("Power Pellet Positions")]
     public List<Vector3Int> powerPelletCells = new List<Vector3Int>();
 
+    [Header("Excluded Pellet Cells")]
+    public List<Vector3Int> excludedPelletCells = new List<Vector3Int>();
+
+    [Header("Pac-Man Start Exclusion")]
+    public Transform pacManStartPosition;
+    public float pacManStartExclusionRadius = 0.6f;
+
     [Header("Parent")]
     public Transform pelletParent;
 
     public int PelletCount { get; private set; }
+    public int NormalPelletCount { get; private set; }
+    public int PowerPelletCount { get; private set; }
+    public int TotalPelletPoints { get; private set; }
 
     void Awake()
     {
@@ -37,7 +49,11 @@ public class PelletSpawner : MonoBehaviour
             foreach (Pellet p in FindObjectsOfType<Pellet>(true))
                 Destroy(p.gameObject);
         }
+
         PelletCount = 0;
+        NormalPelletCount = 0;
+        PowerPelletCount = 0;
+        TotalPelletPoints = 0;
     }
 
     public void SpawnPellets()
@@ -45,10 +61,15 @@ public class PelletSpawner : MonoBehaviour
         if (wallTilemap == null || normalPelletPrefab == null || powerPelletPrefab == null)
             return;
 
-        wallTilemap.CompressBounds();
+        Pellet normalPelletData = normalPelletPrefab.GetComponent<Pellet>();
+        Pellet powerPelletData = powerPelletPrefab.GetComponent<Pellet>();
+        int normalScoreValue = normalPelletData != null ? normalPelletData.scoreValue : 0;
+        int powerScoreValue = powerPelletData != null ? powerPelletData.scoreValue : 0;
+
         BoundsInt bounds = wallTilemap.cellBounds;
-        HashSet<Vector3Int> matchedPowerCells = new HashSet<Vector3Int>();
-        int spawnedCount = 0;
+
+        int normalCount = 0;
+        int powerCount = 0;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
@@ -56,6 +77,8 @@ public class PelletSpawner : MonoBehaviour
             {
                 Vector3Int cell = new Vector3Int(x, y, 0);
                 if (wallTilemap.HasTile(cell)) continue;
+
+                if (excludedPelletCells.Contains(cell)) continue;
 
                 Vector3 worldPos = wallTilemap.GetCellCenterWorld(cell);
 
@@ -65,15 +88,30 @@ public class PelletSpawner : MonoBehaviour
                     if (exclusionTilemap.HasTile(exclCell)) continue;
                 }
 
+                if (pacManStartPosition != null &&
+                    Vector3.Distance(worldPos, pacManStartPosition.position) <= pacManStartExclusionRadius)
+                    continue;
+
                 bool isPowerPellet = powerPelletCells.Contains(cell);
-                if (isPowerPellet) matchedPowerCells.Add(cell);
+
+                // Arcade-accurate cap: never place more than 240 normal pellets.
+                // Power pellets are unaffected and always spawn at their assigned cells.
+                if (!isPowerPellet && normalCount >= MaxNormalPellets)
+                    continue;
 
                 GameObject prefab = isPowerPellet ? powerPelletPrefab : normalPelletPrefab;
                 Instantiate(prefab, worldPos, Quaternion.identity, pelletParent);
-                spawnedCount++;
+
+                if (isPowerPellet)
+                    powerCount++;
+                else
+                    normalCount++;
             }
         }
 
-        PelletCount = spawnedCount;
+        NormalPelletCount = normalCount;
+        PowerPelletCount = powerCount;
+        PelletCount = normalCount + powerCount;
+        TotalPelletPoints = normalCount * normalScoreValue + powerCount * powerScoreValue;
     }
 }

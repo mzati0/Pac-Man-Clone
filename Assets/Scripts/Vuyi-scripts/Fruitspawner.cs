@@ -6,6 +6,7 @@ public class FruitSpawner : MonoBehaviour
     public class FruitDefinition
     {
         public string label;
+        public int points;
         public GameObject fruitPrefab;
     }
 
@@ -77,6 +78,9 @@ public class FruitSpawner : MonoBehaviour
         activeFruit = Instantiate(def.fruitPrefab, spawnPoint.position, Quaternion.identity);
         Fruit fruit = activeFruit.GetComponent<Fruit>();
         if (fruit != null)
+        {
             fruit.lifetime = Random.Range(minLifetimeSeconds, maxLifetimeSeconds);
+            fruit.points = def.points;
+        }
     }
 }

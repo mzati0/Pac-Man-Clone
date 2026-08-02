@@ -9274,6 +9274,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 1479500123}
   fruitsByLevel:
   - label: Cherry
+    points: 0
     fruitPrefab: {fileID: 807884304746566511, guid: 97b4a71d57ccd4f42b83757879124dbc, type: 3}
   pelletThresholds: 46000000aa000000
   minLifetimeSeconds: 9
@@ -9447,7 +9448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1997176773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9592,6 +9593,9 @@ MonoBehaviour:
   - {x: 12, y: 20, z: 0}
   - {x: 12, y: 0, z: 0}
   - {x: -13, y: 0, z: 0}
+  excludedPelletCells: []
+  pacManStartPosition: {fileID: 1268086188}
+  pacManStartExclusionRadius: 0.6
   pelletParent: {fileID: 110118650}
 --- !u!4 &2096311287
 Transform:
