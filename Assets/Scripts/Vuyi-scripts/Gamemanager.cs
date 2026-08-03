@@ -13,6 +13,14 @@ public class GameManager : MonoBehaviour
     public int level = 1;
     public float levelCompleteDelay = 2f;
 
+    [Header("Lives")]
+    public int startingLives = 3;
+    public int extraLifeScoreThreshold = 10000;
+    public float deathDelay = 1.5f;
+    private int lives;
+    private bool extraLifeAwarded;
+    public int Lives => lives;
+
     [Header("Frightened Mode")]
     public float frightenedDuration = 6f;
     private float frightenedTimer;
@@ -35,6 +43,9 @@ public class GameManager : MonoBehaviour
     public static event Action OnFrightenedModeEnded;
     public static event Action OnAllPelletsEaten;
     public static event Action<int> OnLevelStarted;
+    public static event Action<int> OnLivesChanged;
+    public static event Action OnPacManDied;
+    public static event Action OnGameOver;
 
     void Awake()
     {
@@ -48,11 +59,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        lives = startingLives;
+
         if (pacManMovement != null)
             pacManMovement.ResetToStart();
 
         pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
         OnLevelStarted?.Invoke(level);
+        OnLivesChanged?.Invoke(lives);
     }
 
     void Update()
@@ -70,32 +84,37 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         OnScoreChanged?.Invoke(score);
+
+        if (!extraLifeAwarded && score >= extraLifeScoreThreshold)
+        {
+            extraLifeAwarded = true;
+            AddLife();
+        }
     }
 
-public void PelletEaten(int scoreValue)
-{
-    AddScore(scoreValue);
-    pelletsRemaining--;
-    pelletsEatenThisLevel++;
-    gameObject.GetComponent<GhostManager>().triggerDotInc();
-
-    if (fruitSpawner != null)
-        fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
-
-    if (pelletsRemaining <= 0)
+    public void AddLife()
     {
-        OnAllPelletsEaten?.Invoke();
-        Time.timeScale = 0f; // pause everything immediately
-        StartCoroutine(AdvanceToNextLevelAfterDelay());
+        lives++;
+        OnLivesChanged?.Invoke(lives);
     }
-}
 
-private IEnumerator AdvanceToNextLevelAfterDelay()
-{
-    yield return new WaitForSecondsRealtime(levelCompleteDelay);
-    Time.timeScale = 1f; 
-    NextLevel();
-}
+    public void PelletEaten(int scoreValue)
+    {
+        AddScore(scoreValue);
+        pelletsRemaining--;
+        pelletsEatenThisLevel++;
+        gameObject.GetComponent<GhostManager>().triggerDotInc();
+
+        if (fruitSpawner != null)
+            fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
+
+        if (pelletsRemaining <= 0)
+        {
+            OnAllPelletsEaten?.Invoke();
+            Time.timeScale = 0f;
+            StartCoroutine(AdvanceToNextLevelAfterDelay());
+        }
+    }
 
     public void PowerPelletEaten(int scoreValue)
     {
@@ -104,6 +123,40 @@ private IEnumerator AdvanceToNextLevelAfterDelay()
         OnFrightenedModeStarted?.Invoke(frightenedDuration);
     }
 
+    public void PacManDied()
+    {
+        lives--;
+        OnLivesChanged?.Invoke(lives);
+        OnPacManDied?.Invoke();
+
+        if (lives <= 0)
+        {
+            OnGameOver?.Invoke();
+            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game
+            return;
+        }
+
+        StartCoroutine(RespawnAfterDelay());
+    }
+
+    private IEnumerator RespawnAfterDelay()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(deathDelay);
+        Time.timeScale = 1f;
+
+        if (pacManMovement != null)
+            pacManMovement.ResetToStart();
+
+        // TODO: reset ghosts to their spawn points here too (likely via GhostManager)
+    }
+
+    private IEnumerator AdvanceToNextLevelAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(levelCompleteDelay);
+        Time.timeScale = 1f;
+        NextLevel();
+    }
 
     private void NextLevel()
     {

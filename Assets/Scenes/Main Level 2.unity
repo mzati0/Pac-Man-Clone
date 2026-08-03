@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 562370926}
   m_Layer: 0
   m_Name: Inky
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1108,7 +1108,7 @@ GameObject:
   - component: {fileID: 1131203769}
   m_Layer: 0
   m_Name: Pinky
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1537,7 +1537,7 @@ GameObject:
   - component: {fileID: 1252772864}
   m_Layer: 0
   m_Name: Blinky
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6955,6 +6955,7 @@ MonoBehaviour:
   wallTilemap: {fileID: 1346356310}
   enableTunnelWrap: 1
   cornerWindow: 0.15
+  ghostCollisionDistance: 0.5
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
   spawnX: 14.003
@@ -7208,7 +7209,7 @@ GameObject:
   - component: {fileID: 1466810766}
   m_Layer: 0
   m_Name: Clyde
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10310,6 +10311,9 @@ MonoBehaviour:
   score: 0
   level: 1
   levelCompleteDelay: 2
+  startingLives: 3
+  extraLifeScoreThreshold: 10000
+  deathDelay: 1.5
   frightenedDuration: 6
   pelletSpawner: {fileID: 116625159}
   fruitSpawner: {fileID: 371449115}
