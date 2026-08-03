@@ -1574,7 +1574,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ghost_Clyde_Right_
+      name: Ghost_Clyde_Left_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2140,7 +2140,7 @@ TextureImporter:
       Ghost_Clyde_Down_0: 926300669
       Ghost_Clyde_Down_1: 1087154869
       Ghost_Clyde_Left_0: 2109072178
-      Ghost_Clyde_Right_: -848841456
+      Ghost_Clyde_Left_1: -848841456
       Ghost_Clyde_Right_0: 334690441
       Ghost_Clyde_Right_1: 997735168
       Ghost_Clyde_Up_0: 773759997
