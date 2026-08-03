@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FruitLevelCounterUI : MonoBehaviour
 {
-    [Tooltip("Slots 1-7 in order (left to right). Each already has its own fruit sprite assigned: Cherry, Strawberry, Orange, Apple, Melon, Galaxian, Bell.")]
+   
     public Transform[] slots;
 
     void OnEnable() => GameManager.OnLevelStarted += HandleLevelStarted;
