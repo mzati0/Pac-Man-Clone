@@ -451,7 +451,7 @@ MonoBehaviour:
   fruitsByLevel:
   - label: Cherry
     points: 100
-    fruitPrefab: {fileID: 1595001633}
+    fruitPrefab: {fileID: 2024532908306498215, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
   pelletThresholds: 46000000aa000000
   minLifetimeSeconds: 9
   maxLifetimeSeconds: 10
@@ -10088,11 +10088,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1595001633 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5809528495586856757, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
-  m_PrefabInstance: {fileID: 3169175117660739473}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1670823410
 GameObject:
   m_ObjectHideFlags: 0
@@ -10322,6 +10317,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+--- !u!1001 &6066516395941689927
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2024532908306498215, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_Name
+      value: Cherry
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329058848465806099, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -10341,3 +10393,4 @@ SceneRoots:
   - {fileID: 975846286}
   - {fileID: 3169175117660739473}
   - {fileID: 371449116}
+  - {fileID: 6066516395941689927}
