@@ -13,11 +13,6 @@ public class GameManager : MonoBehaviour
     public int level = 1;
     public float levelCompleteDelay = 2f;
 
-    [Header("Frightened Mode")]
-    public float frightenedDuration = 6f;
-    private float frightenedTimer;
-    public bool IsFrightened => frightenedTimer > 0f;
-
     [Header("Maze")]
     public PelletSpawner pelletSpawner;
 
@@ -31,8 +26,6 @@ public class GameManager : MonoBehaviour
     private int pelletsEatenThisLevel;
 
     public static event Action<int> OnScoreChanged;
-    public static event Action<float> OnFrightenedModeStarted;
-    public static event Action OnFrightenedModeEnded;
     public static event Action OnAllPelletsEaten;
     public static event Action<int> OnLevelStarted;
 
@@ -55,16 +48,6 @@ public class GameManager : MonoBehaviour
         OnLevelStarted?.Invoke(level);
     }
 
-    void Update()
-    {
-        if (frightenedTimer <= 0f) return;
-        frightenedTimer -= Time.deltaTime;
-        if (frightenedTimer <= 0f)
-        {
-            frightenedTimer = 0f;
-            OnFrightenedModeEnded?.Invoke();
-        }
-    }
 
     public void AddScore(int amount)
     {
@@ -92,8 +75,7 @@ public class GameManager : MonoBehaviour
     public void PowerPelletEaten(int scoreValue)
     {
         PelletEaten(scoreValue);
-        frightenedTimer = frightenedDuration;
-        OnFrightenedModeStarted?.Invoke(frightenedDuration);
+        gameObject.GetComponent<GhostManager>().triggerFrightened();
     }
 
     private IEnumerator AdvanceToNextLevelAfterDelay()
@@ -106,7 +88,6 @@ public class GameManager : MonoBehaviour
     {
         level++;
         pelletsEatenThisLevel = 0;
-        frightenedTimer = 0f;
 
         if (pacManMovement != null)
             pacManMovement.ResetToStart();

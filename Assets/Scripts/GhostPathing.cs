@@ -20,9 +20,10 @@ public class GhostPathing : MonoBehaviour
     [SerializeField] private int speed = 5;
     public bool elroy = false;
     public float elroySpeed = 0;
+    private Animator anim;
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
         nextTile = transform.position;
     }
     public bool IsTileAtWorldPosition(Vector2 worldPos)
@@ -32,6 +33,10 @@ public class GhostPathing : MonoBehaviour
     }
     void Update()
     {
+        anim.SetFloat("X", (int)direction.x);
+        anim.SetFloat("Y", (int)direction.y);
+        anim.SetBool("frightened", GhostManager.instance.frightened);
+        anim.SetBool("Dead", dead);
         if(!house){
             if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
                 house = true;
