@@ -12,6 +12,9 @@ public class GhostPathing : MonoBehaviour
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
                                     new Vector2(16,19), new Vector2(15,19), new Vector2(13,19), new Vector2(12,19), new Vector2(11,19)};
+    Vector2[] TunnelTiles = {new Vector2(22,16), new Vector2(23,16), new Vector2(24,16), new Vector2(25,16), new Vector2(26,16), new Vector2(27,16),
+                            new Vector2(0,16), new Vector2(1,16), new Vector2(2,16), new Vector2(3,16), new Vector2(4,16), new Vector2(5,16)};
+    Vector2[] TunnelWarpTiles = {new Vector2(27f,16), new Vector2(0,16)};
     public Vector2 direction = Vector2.up;
     [SerializeField] private Vector3 nextTile;
     [SerializeField] private int speed = 5;
@@ -34,6 +37,13 @@ public class GhostPathing : MonoBehaviour
                 house = true;
                 return;
             }
+            if((Vector2)transform.position == TunnelWarpTiles[0]){
+                transform.position = TunnelWarpTiles[1];
+                direction = Vector2.right;
+            } else if((Vector2)transform.position == TunnelWarpTiles[1]){
+                transform.position = TunnelWarpTiles[0];
+                direction = Vector2.left;
+            }
             if (transform.position == nextTile) {
                 if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                     if(dead){
@@ -53,7 +63,9 @@ public class GhostPathing : MonoBehaviour
                 }
             } else {
                 float speed = GhostManager.instance.ghostSpeed;
-                if (elroy) {
+                if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
+                    speed = GhostManager.instance.ghostTunnelSpeed;
+                } else if (elroy) {
                     speed = elroySpeed;
                 }
                 transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
