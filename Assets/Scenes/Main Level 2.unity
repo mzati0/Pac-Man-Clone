@@ -152,7 +152,11 @@ MonoBehaviour:
   exclusionTilemap: {fileID: 1501819733}
   normalPelletPrefab: {fileID: 5553055099842451021, guid: e242ddc97b59ba443a4a32ad60486ad2, type: 3}
   powerPelletPrefab: {fileID: 7621252174541395064, guid: 57e652b6fc143934889ee105ebe03a6d, type: 3}
-  powerPelletCells: []
+  powerPelletCells:
+  - {x: -13, y: 20, z: 0}
+  - {x: 12, y: 20, z: 0}
+  - {x: 12, y: 0, z: 0}
+  - {x: -13, y: 0, z: 0}
   excludedPelletCells: []
   pacManStartPosition: {fileID: 1409878928}
   pacManStartExclusionRadius: 0.6
