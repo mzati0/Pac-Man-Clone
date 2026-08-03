@@ -17,8 +17,12 @@ public class GhostManager : MonoBehaviour
     [System.NonSerialized] public double[,] ScatterChase = { { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 } };
     int timerPosition = 0;
     float time = 0;
-    float friteTime = 0;
+    float friteTime = 5;
     float friteTimer = 0;
+    public bool useGlobleDotCounter = false;
+    public int globalDotCount = 0;
+    GhostHouseController activeDotCount = null;
+    public GameObject[] dotCountGhosts;
 
     void Awake()
     {
@@ -65,21 +69,45 @@ public class GhostManager : MonoBehaviour
             ghost.flip();
         }
     }
-    public void triggerFrightened() {
+    public void triggerFrightened()
+    {
         frightened = true;
         AllFlip();
     }
+    public void triggerDotInc(){
+        if(activeDotCount != null){
+            activeDotCount.personalDotCounter++;
+            print("triggerDotInc");
+        }
+    }
     
     void Update() {
+        if(!useGlobleDotCounter){
+            int i = 0;
+            while (i < dotCountGhosts.Length) {
+                GhostHouseController ghostHouse = dotCountGhosts[i].GetComponent<GhostHouseController>();
+                if (ghostHouse.shuffling)
+                {
+                    activeDotCount = ghostHouse;
+                    break;
+                }
+                i++;
+            }
+            if(1 == dotCountGhosts.Length){
+                activeDotCount = null;
+            }
+        } else {
+            
+        }
         if(!frightened){
             if (timerPosition < ScatterChase.GetLength(0)-1) {
                 if(ScatterChase[timerPosition, 0] > time){
                     time += Time.deltaTime * 1;
-                    print("Time: " + time);
+                    //print("Time: " + time);
                 }else {
                     timerPosition++;
                     time = 0;
-                    print("Scatter: " + ScatterChase[timerPosition, 1]);
+                    //print("Scatter: " + ScatterChase[timerPosition, 1]);
                     SetScatter(ScatterChase[timerPosition, 1]);
                 }
             }else {
