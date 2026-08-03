@@ -16,6 +16,11 @@ public class PacMovement : MonoBehaviour
     [Header("Cornering")]
     public float cornerWindow = 0.15f;
 
+    [Header("Ghost Collision")]
+    public float ghostCollisionDistance = 0.5f;
+    private GameObject[] ghosts;
+    private bool isDead;
+
     public Vector2 direction = Vector2.zero;
     private Vector2 queuedDirection = Vector2.zero;
     [SerializeField] private Vector3 nextTile;
@@ -35,8 +40,18 @@ public class PacMovement : MonoBehaviour
         controls = new InputSystem_Actions();
     }
 
-    void OnEnable() => controls.Player.Enable();
-    void OnDisable() => controls.Player.Disable();
+    void OnEnable()
+    {
+        controls.Player.Enable();
+        GameManager.OnPacManDied += HandleDied;
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Disable();
+        GameManager.OnPacManDied -= HandleDied;
+    }
+
     void OnDestroy() => controls.Dispose();
 
     void Start()
@@ -50,6 +65,8 @@ public class PacMovement : MonoBehaviour
 
         if (wallTilemap != null)
             wallTilemap.CompressBounds();
+
+        ghosts = GameObject.FindGameObjectsWithTag("Ghost");
     }
 
     public void ResetToStart()
@@ -59,6 +76,12 @@ public class PacMovement : MonoBehaviour
         queuedDirection = Vector2.zero;
         nextTile = startPosition;
         lastIntersection = startPosition;
+        isDead = false;
+    }
+
+    private void HandleDied()
+    {
+        isDead = true;
     }
 
     public bool IsTileAtWorldPosition(Vector2 worldPos)
@@ -70,7 +93,11 @@ public class PacMovement : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         ReadQueuedDirection();
+        CheckGhostCollision();
+        if (isDead) return; // freeze the instant a collision is registered this frame
 
         if (transform.position == nextTile)
         {
@@ -102,6 +129,29 @@ public class PacMovement : MonoBehaviour
         {
             TryCorner();
             transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
+        }
+    }
+
+    void CheckGhostCollision()
+    {
+        if (ghosts == null || GameManager.Instance == null) return;
+
+        foreach (var ghost in ghosts)
+        {
+            if (ghost == null) continue;
+
+            if (Vector3.Distance(transform.position, ghost.transform.position) <= ghostCollisionDistance)
+            {
+                if (GameManager.Instance.IsFrightened)
+                {
+                    // TODO: eat-ghost logic 
+                    continue;
+                }
+
+                isDead = true;
+                GameManager.Instance.PacManDied();
+                return;
+            }
         }
     }
 

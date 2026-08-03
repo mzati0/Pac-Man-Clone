@@ -13,6 +13,14 @@ public class GameManager : MonoBehaviour
     public int level = 1;
     public float levelCompleteDelay = 2f;
 
+    [Header("Lives")]
+    public int startingLives = 3;
+    public int extraLifeScoreThreshold = 10000;
+    public float deathDelay = 1.5f;
+    private int lives;
+    private bool extraLifeAwarded;
+    public int Lives => lives;
+
     [Header("Frightened Mode")]
     public float frightenedDuration = 6f;
     private float frightenedTimer;
@@ -35,6 +43,9 @@ public class GameManager : MonoBehaviour
     public static event Action OnFrightenedModeEnded;
     public static event Action OnAllPelletsEaten;
     public static event Action<int> OnLevelStarted;
+    public static event Action<int> OnLivesChanged;
+    public static event Action OnPacManDied;
+    public static event Action OnGameOver;
 
     void Awake()
     {
@@ -48,11 +59,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        lives = startingLives;
+
         if (pacManMovement != null)
             pacManMovement.ResetToStart();
 
         pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
         OnLevelStarted?.Invoke(level);
+        OnLivesChanged?.Invoke(lives);
     }
 
     void Update()
@@ -70,6 +84,18 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         OnScoreChanged?.Invoke(score);
+
+        if (!extraLifeAwarded && score >= extraLifeScoreThreshold)
+        {
+            extraLifeAwarded = true;
+            AddLife();
+        }
+    }
+
+    public void AddLife()
+    {
+        lives++;
+        OnLivesChanged?.Invoke(lives);
     }
 
     public void PelletEaten(int scoreValue)
@@ -85,6 +111,7 @@ public class GameManager : MonoBehaviour
         if (pelletsRemaining <= 0)
         {
             OnAllPelletsEaten?.Invoke();
+            Time.timeScale = 0f;
             StartCoroutine(AdvanceToNextLevelAfterDelay());
         }
     }
@@ -96,9 +123,38 @@ public class GameManager : MonoBehaviour
         OnFrightenedModeStarted?.Invoke(frightenedDuration);
     }
 
+    public void PacManDied()
+    {
+        OnPacManDied?.Invoke();
+        StartCoroutine(RespawnAfterDelay());
+    }
+
+    private IEnumerator RespawnAfterDelay()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(deathDelay);
+        Time.timeScale = 1f;
+
+        lives--;
+        OnLivesChanged?.Invoke(lives);
+
+        if (lives <= 0)
+        {
+            OnGameOver?.Invoke();
+            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game
+            yield break;
+        }
+
+        if (pacManMovement != null)
+            pacManMovement.ResetToStart();
+
+        // TODO: reset ghosts to their spawn points here too (likely via GhostManager)
+    }
+
     private IEnumerator AdvanceToNextLevelAfterDelay()
     {
-        yield return new WaitForSeconds(levelCompleteDelay);
+        yield return new WaitForSecondsRealtime(levelCompleteDelay);
+        Time.timeScale = 1f;
         NextLevel();
     }
 

@@ -95,7 +95,6 @@ public class PelletSpawner : MonoBehaviour
                 bool isPowerPellet = powerPelletCells.Contains(cell);
 
                 // Arcade-accurate cap: never place more than 240 normal pellets.
-                // Power pellets are unaffected and always spawn at their assigned cells.
                 if (!isPowerPellet && normalCount >= MaxNormalPellets)
                     continue;
 
