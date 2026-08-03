@@ -72,22 +72,30 @@ public class GameManager : MonoBehaviour
         OnScoreChanged?.Invoke(score);
     }
 
-    public void PelletEaten(int scoreValue)
+public void PelletEaten(int scoreValue)
+{
+    AddScore(scoreValue);
+    pelletsRemaining--;
+    pelletsEatenThisLevel++;
+    gameObject.GetComponent<GhostManager>().triggerDotInc();
+
+    if (fruitSpawner != null)
+        fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
+
+    if (pelletsRemaining <= 0)
     {
-        AddScore(scoreValue);
-        pelletsRemaining--;
-        pelletsEatenThisLevel++;
-        gameObject.GetComponent<GhostManager>().triggerDotInc();
-
-        if (fruitSpawner != null)
-            fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
-
-        if (pelletsRemaining <= 0)
-        {
-            OnAllPelletsEaten?.Invoke();
-            StartCoroutine(AdvanceToNextLevelAfterDelay());
-        }
+        OnAllPelletsEaten?.Invoke();
+        Time.timeScale = 0f; // pause everything immediately
+        StartCoroutine(AdvanceToNextLevelAfterDelay());
     }
+}
+
+private IEnumerator AdvanceToNextLevelAfterDelay()
+{
+    yield return new WaitForSecondsRealtime(levelCompleteDelay);
+    Time.timeScale = 1f; 
+    NextLevel();
+}
 
     public void PowerPelletEaten(int scoreValue)
     {
@@ -96,11 +104,6 @@ public class GameManager : MonoBehaviour
         OnFrightenedModeStarted?.Invoke(frightenedDuration);
     }
 
-    private IEnumerator AdvanceToNextLevelAfterDelay()
-    {
-        yield return new WaitForSeconds(levelCompleteDelay);
-        NextLevel();
-    }
 
     private void NextLevel()
     {
