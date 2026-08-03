@@ -30,6 +30,10 @@ public class GhostPathing : MonoBehaviour
     void Update()
     {
         if(!house){
+            if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
+                house = true;
+                return;
+            }
             if (transform.position == nextTile) {
                 if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                     if(dead){
@@ -125,8 +129,14 @@ public class GhostPathing : MonoBehaviour
         }
         return transform.position + randDirection;
     }
-    public void flip() {
-        direction = -direction;
+    public void flip()
+    {
+        if (!dead) {
+            direction = -direction;
+        }
+    }
+    public void SetNextTile(Vector3 nextTile) {
+        this.nextTile = nextTile;
     }
 
 }
