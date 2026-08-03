@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
         AddScore(scoreValue);
         pelletsRemaining--;
         pelletsEatenThisLevel++;
+        gameObject.GetComponent<GhostManager>().triggerDotInc();
 
         if (fruitSpawner != null)
             fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);

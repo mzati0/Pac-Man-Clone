@@ -73,9 +73,9 @@ public class GhostHouseController : MonoBehaviour
     }
 
     private Vector2 getShuffleTile(){
-        int pointYMod = 1;
+        float pointYMod = 0.5f;
         if(!movingUp){
-            pointYMod = -1;
+            pointYMod = -0.5f;
         }
         return shufflePoint + new Vector2(0,pointYMod);
     }
