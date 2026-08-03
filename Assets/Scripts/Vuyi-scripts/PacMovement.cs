@@ -13,12 +13,20 @@ public class PacMovement : MonoBehaviour
     [Header("Tunnel Wrap")]
     public bool enableTunnelWrap = true;
 
-    [Header("Debug")]
-    public bool debugMode = true;
+    [Header("Cornering")]
+    public float cornerWindow = 0.15f;
 
     public Vector2 direction = Vector2.zero;
     private Vector2 queuedDirection = Vector2.zero;
     [SerializeField] private Vector3 nextTile;
+    private Vector3 lastIntersection;
+
+    [Header("Spawn")]
+    public float spawnX = 14.003f;
+    public float spawnY = 7f;
+
+    private Vector3 startPosition;
+    private Vector2 startDirection;
 
     private InputSystem_Actions controls;
 
@@ -33,10 +41,24 @@ public class PacMovement : MonoBehaviour
 
     void Start()
     {
-        nextTile = transform.position;
+        startPosition = new Vector3(spawnX, spawnY, transform.position.z);
+        startDirection = direction;
+
+        transform.position = startPosition;
+        nextTile = startPosition;
+        lastIntersection = startPosition;
 
         if (wallTilemap != null)
             wallTilemap.CompressBounds();
+    }
+
+    public void ResetToStart()
+    {
+        transform.position = startPosition;
+        direction = startDirection;
+        queuedDirection = Vector2.zero;
+        nextTile = startPosition;
+        lastIntersection = startPosition;
     }
 
     public bool IsTileAtWorldPosition(Vector2 worldPos)
@@ -52,7 +74,7 @@ public class PacMovement : MonoBehaviour
 
         if (transform.position == nextTile)
         {
-            Vector2 previous = direction;
+            lastIntersection = transform.position;
 
             if (queuedDirection != Vector2.zero && !IsTileAtWorldPosition(transform.position + (Vector3)queuedDirection))
             {
@@ -62,9 +84,6 @@ public class PacMovement : MonoBehaviour
             {
                 direction = Vector2.zero;
             }
-
-            if (debugMode && direction != previous)
-                Debug.Log($"[Pacman] turned -> {direction} at {transform.position}");
 
             if (direction != Vector2.zero)
             {
@@ -81,8 +100,35 @@ public class PacMovement : MonoBehaviour
         }
         else
         {
+            TryCorner();
             transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
         }
+    }
+
+    void TryCorner()
+    {
+        if (direction == Vector2.zero) return;
+        if (queuedDirection == Vector2.zero || queuedDirection == direction) return;
+        if (Vector2.Dot(queuedDirection, direction) != 0f) return;
+
+        float distToNext = Vector3.Distance(transform.position, nextTile);
+        if (distToNext <= cornerWindow && !IsTileAtWorldPosition(nextTile + (Vector3)queuedDirection))
+        {
+            Corner(nextTile, queuedDirection);
+            return;
+        }
+
+        float distFromLast = Vector3.Distance(transform.position, lastIntersection);
+        if (distFromLast <= cornerWindow && !IsTileAtWorldPosition(lastIntersection + (Vector3)queuedDirection))
+        {
+            Corner(lastIntersection, queuedDirection);
+        }
+    }
+
+    void Corner(Vector3 intersection, Vector2 newDirection)
+    {
+        direction = newDirection;
+        nextTile = intersection + (Vector3)newDirection;
     }
 
     void ReadQueuedDirection()
@@ -107,9 +153,6 @@ public class PacMovement : MonoBehaviour
         else if (xDominant)
             newQueued = input.x > 0 ? Vector2.right : Vector2.left;
 
-        if (debugMode && newQueued != queuedDirection)
-            Debug.Log($"[Pacman] queued direction -> {newQueued}");
-
         queuedDirection = newQueued;
     }
 
@@ -132,7 +175,7 @@ public class PacMovement : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (!debugMode || wallTilemap == null) return;
+        if (wallTilemap == null) return;
 
         Vector2[] dirs = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
         foreach (var d in dirs)
@@ -150,5 +193,8 @@ public class PacMovement : MonoBehaviour
         Gizmos.color = Color.yellow;
         if (queuedDirection != Vector2.zero)
             Gizmos.DrawLine(transform.position + Vector3.up * 0.05f, transform.position + Vector3.up * 0.05f + (Vector3)queuedDirection * 0.3f);
+
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        Gizmos.DrawWireSphere(nextTile, cornerWindow);
     }
 }
