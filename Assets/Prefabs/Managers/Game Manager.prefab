@@ -57,4 +57,7 @@ MonoBehaviour:
   pelletSpawner: {fileID: 0}
   fruitSpawner: {fileID: 0}
   pacManMovement: {fileID: 0}
+  creditAction: {fileID: 6406562077918458304, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  onePlayerAction: {fileID: 0}
+  twoPlayerAction: {fileID: 0}
   pelletsRemaining: 0
