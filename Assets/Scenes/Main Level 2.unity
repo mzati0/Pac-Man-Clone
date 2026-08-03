@@ -154,7 +154,7 @@ MonoBehaviour:
   powerPelletPrefab: {fileID: 7621252174541395064, guid: 57e652b6fc143934889ee105ebe03a6d, type: 3}
   powerPelletCells: []
   excludedPelletCells: []
-  pacManStartPosition: {fileID: 0}
+  pacManStartPosition: {fileID: 1409878928}
   pacManStartExclusionRadius: 0.6
   pelletParent: {fileID: 1117380512}
 --- !u!4 &116625160
@@ -414,6 +414,58 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.95, y: 0.95}
   m_EdgeRadius: 0
+--- !u!1 &371449114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371449116}
+  - component: {fileID: 371449115}
+  m_Layer: 0
+  m_Name: FruitSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &371449115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371449114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cf20c8726712f348a5f0617adcb924a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitSpawner
+  spawnPoint: {fileID: 371449116}
+  fruitsByLevel:
+  - label: Cherry
+    points: 100
+    fruitPrefab: {fileID: 1595001633}
+  pelletThresholds: 46000000aa000000
+  minLifetimeSeconds: 9
+  maxLifetimeSeconds: 10
+--- !u!4 &371449116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371449114}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.01, y: 12.98, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &562370923
 GameObject:
   m_ObjectHideFlags: 0
@@ -10032,6 +10084,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1595001633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5809528495586856757, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1670823410
 GameObject:
   m_ObjectHideFlags: 0
@@ -10200,9 +10257,9 @@ MonoBehaviour:
   level: 1
   levelCompleteDelay: 2
   frightenedDuration: 6
-  pelletSpawner: {fileID: 0}
-  fruitSpawner: {fileID: 0}
-  pacManMovement: {fileID: 0}
+  pelletSpawner: {fileID: 116625159}
+  fruitSpawner: {fileID: 371449115}
+  pacManMovement: {fileID: 1409878926}
   pelletsRemaining: 0
 --- !u!1001 &3169175117660739473
 PrefabInstance:
@@ -10279,3 +10336,4 @@ SceneRoots:
   - {fileID: 1251518599}
   - {fileID: 975846286}
   - {fileID: 3169175117660739473}
+  - {fileID: 371449116}
