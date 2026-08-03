@@ -1,36 +1,38 @@
 using UnityEngine;
 using UnityEngine.Video;
 
-public class MainMenu : MonoBehaviour
+public class AttractScreen : MonoBehaviour
 {
-    private bool _firstOpen = true; //keep it in this class or make an even higher game manager that remembers this value across scenes?
+    private bool _firstOpen = true; // TODO: Move to GameManager if this should persist across scenes.
+    [Header("Startup")]
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private GameObject mainMenu;
-
     void Start()
     {
         videoPlayer.loopPointReached += OnVideoFinished;
-        
-        if(_firstOpen)
+
+        if (_firstOpen)
         {
             mainMenu.SetActive(false);
-
         }
         else
         {
             Setup();
         }
     }
-
+    void OnVideoFinished(VideoPlayer vp)
+    {
+        _firstOpen = false;
+        Setup();
+    }
     void Setup()
     {
         FindAnyObjectByType<Canvas>().gameObject.SetActive(false);
         mainMenu.SetActive(true);
     }
 
-    void OnVideoFinished(VideoPlayer vp)
+    public void EndAttractScreen()
     {
-        _firstOpen = false;
         Setup();
     }
 }

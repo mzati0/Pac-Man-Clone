@@ -826,6 +826,8 @@ GameObject:
   m_Component:
   - component: {fileID: 164259571}
   - component: {fileID: 164259572}
+  - component: {fileID: 164259573}
+  - component: {fileID: 164259574}
   m_Layer: 0
   m_Name: Pinky
   m_TagString: Untagged
@@ -908,6 +910,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &164259573
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164259570}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a9c123a49a3d774ca8f72a824beb751, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &164259574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164259570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a579b790438281945be62eba7bd78629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Misc.GhostAnimatorBridge
+  x: -1
+  y: 0
+  frightened: 0
+  dead: 0
 --- !u!1 &165218327
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,7 +2424,8 @@ GameObject:
   m_Component:
   - component: {fileID: 424588098}
   - component: {fileID: 424588100}
-  - component: {fileID: 424588099}
+  - component: {fileID: 424588101}
+  - component: {fileID: 424588102}
   m_Layer: 0
   m_Name: Pac-Man
   m_TagString: Untagged
@@ -2407,23 +2448,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 465657136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &424588099
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 424588097}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: e864c44d0beb4804ba6405cf58fff4e2, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: e864c44d0beb4804ba6405cf58fff4e2, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!212 &424588100
 SpriteRenderer:
   serializedVersion: 3
@@ -2484,6 +2508,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &424588101
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424588097}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f3172bed0a6d2e444b7edd5607f65da0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &424588102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424588097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8b419e90af5884b9c77ef07387fb29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Misc.PacManAnimatorBridge
+  x: 0
+  y: 0
+  death: 0
 --- !u!1 &432078906
 GameObject:
   m_ObjectHideFlags: 0
@@ -3863,6 +3924,8 @@ GameObject:
   m_Component:
   - component: {fileID: 617483864}
   - component: {fileID: 617483865}
+  - component: {fileID: 617483866}
+  - component: {fileID: 617483867}
   m_Layer: 0
   m_Name: Clyde
   m_TagString: Untagged
@@ -3945,6 +4008,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &617483866
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617483863}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57c3820fdf76039458e2a462eb85ef71, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &617483867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617483863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a579b790438281945be62eba7bd78629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Misc.GhostAnimatorBridge
+  x: -1
+  y: 0
+  frightened: 0
+  dead: 0
 --- !u!1 &618241442
 GameObject:
   m_ObjectHideFlags: 0
@@ -6276,6 +6377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 998549225}
   - component: {fileID: 998549226}
+  - component: {fileID: 998549227}
   m_Layer: 0
   m_Name: Attract Screen
   m_TagString: Untagged
@@ -6326,6 +6428,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &998549227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998549224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c807838872a07b54baa4684daff332a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1022718816
 GameObject:
   m_ObjectHideFlags: 0
@@ -6888,6 +7002,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1086522978}
   - component: {fileID: 1086522979}
+  - component: {fileID: 1086522980}
+  - component: {fileID: 1086522981}
   m_Layer: 0
   m_Name: inky
   m_TagString: Untagged
@@ -6970,6 +7086,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &1086522980
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086522977}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ee29535932be0274badf0995211d0de2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1086522981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086522977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a579b790438281945be62eba7bd78629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Misc.GhostAnimatorBridge
+  x: -1
+  y: 0
+  frightened: 0
+  dead: 0
 --- !u!1 &1097223687
 GameObject:
   m_ObjectHideFlags: 0
@@ -8509,6 +8663,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1302769685}
   - component: {fileID: 1302769686}
+  - component: {fileID: 1302769687}
+  - component: {fileID: 1302769688}
   m_Layer: 0
   m_Name: Blinky
   m_TagString: Untagged
@@ -8591,6 +8747,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &1302769687
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302769684}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 219db1b63718e6646bd007b30f8a73c0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1302769688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302769684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a579b790438281945be62eba7bd78629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Misc.GhostAnimatorBridge
+  x: -1
+  y: 0
+  frightened: 0
+  dead: 0
 --- !u!1 &1319109546
 GameObject:
   m_ObjectHideFlags: 0
