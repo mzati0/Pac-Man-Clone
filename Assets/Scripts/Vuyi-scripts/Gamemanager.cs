@@ -125,17 +125,7 @@ public class GameManager : MonoBehaviour
 
     public void PacManDied()
     {
-        lives--;
-        OnLivesChanged?.Invoke(lives);
         OnPacManDied?.Invoke();
-
-        if (lives <= 0)
-        {
-            OnGameOver?.Invoke();
-            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game
-            return;
-        }
-
         StartCoroutine(RespawnAfterDelay());
     }
 
@@ -144,6 +134,16 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
         Time.timeScale = 1f;
+
+        lives--;
+        OnLivesChanged?.Invoke(lives);
+
+        if (lives <= 0)
+        {
+            OnGameOver?.Invoke();
+            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game
+            yield break;
+        }
 
         if (pacManMovement != null)
             pacManMovement.ResetToStart();
