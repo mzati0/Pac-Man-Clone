@@ -37,6 +37,9 @@ public class GhostPathing : MonoBehaviour
         anim.SetFloat("Y", (int)direction.y);
         anim.SetBool("frightened", GhostManager.instance.frightened);
         anim.SetBool("Dead", dead);
+        if(!dead && GhostManager.instance.frightened && Vector2.Distance( (Vector2)transform.position, (Vector2)GameObject.FindGameObjectWithTag("Player").transform.position) < 1f){
+           dead = true;
+        }
         if(!house){
             if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
                 house = true;
@@ -70,9 +73,11 @@ public class GhostPathing : MonoBehaviour
                 float speed = GhostManager.instance.ghostSpeed;
                 if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
                     speed = GhostManager.instance.ghostTunnelSpeed;
+                } else if (GhostManager.instance.frightened) {
+                    speed = (int)GhostManager.instance.ghostFrightenedSpeed;
                 } else if (elroy) {
                     speed = elroySpeed;
-                }
+                } 
                 transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
             }
         }
@@ -154,6 +159,12 @@ public class GhostPathing : MonoBehaviour
     }
     public void SetNextTile(Vector3 nextTile) {
         this.nextTile = nextTile;
+    }
+    public void resetPosition(){
+        GhostHouseController house = GetComponent<GhostHouseController>();
+        transform.position = house.shufflePoint;
+        house.Configure();
+        dead = false;
     }
 
 }

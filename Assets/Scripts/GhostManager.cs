@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GhostManager : MonoBehaviour
@@ -15,10 +16,14 @@ public class GhostManager : MonoBehaviour
     int[,] ghostSpeeds = { { 1, 75, 50, 40 }, { 2, 85, 55, 45 }, { 5, 95, 60, 50 }, { 21, 95, 0, 50 } };
     double[,] ScatterChaseList = { { 1, 7, 20, 7, 20, 5, 20, 5 }, { 2, 7, 20, 7, 20, 5, 1033, 1 / 60f }, { 5, 5, 20, 5, 20, 5, 1037, 1 / 60f } , { 21, 5, 20, 5, 20, 5, 1037, 1/60f } };
     [System.NonSerialized] public double[,] ScatterChase = { { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 } };
+    int[] frightenedTimes = { 6, 5, 4, 3, 2, 5, 2, 2, 1, 5, 2, 1, 1, 3, 1, 1, 0, 1, 0, 0, 0 };
+    int[] flashCounts = { 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 3, 3, 5, 3, 3, 0, 3, 0, 0, 0 };
+    int[,] frightenedSpeeds = { { 1, 50 }, { 2, 55 }, { 5, 60 }, { 21, 100 } };
     int timerPosition = 0;
     float time = 0;
-    float friteTime = 5;
+    [SerializeField]float friteTime = 0;
     float friteTimer = 0;
+    int friteFlashes = 0;
     public bool useGlobleDotCounter = false;
     public int globalDotCount = 0;
     GhostHouseController activeDotCount = null;
@@ -26,6 +31,22 @@ public class GhostManager : MonoBehaviour
 
     void Awake()
     {
+        if(level < 20) {
+            for(int i = 0; i < frightenedSpeeds.GetLength(0); i++) {
+                if(frightenedSpeeds[i,0] > level) {
+                    ghostFrightenedSpeed = (ghostSpeedBase / 100) * frightenedSpeeds[i - 1, 1];
+                } else {
+                    break;
+                }
+            }
+            friteTime = frightenedTimes[level - 1];
+            friteFlashes = flashCounts[level - 1];
+        } else {
+            friteTime = 0;
+            friteFlashes = 0;
+            ghostFrightenedSpeed = 0;
+        }
+        
         if (instance == null) {
             instance = this;
             levelUpdate();

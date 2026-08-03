@@ -24,27 +24,7 @@ public class GhostHouseController : MonoBehaviour
     void Start()
     {
         ghostPathing = gameObject.GetComponent<GhostPathing>();
-        exitPath[0]= shufflePoint;
-        if(!blinky){
-            setDirection(startUp);
-            gollTile = shufflePoint;
-
-            if(GhostManager.instance.level < 3){
-                int[,] dotLimits = new int[2, 2];
-                if(inky){
-                    dotLimits = inkyDotLimits;
-                }else if(clyde){
-                    dotLimits = clydeDotLimits;
-                }
-                dotLimit = dotLimits[GhostManager.instance.level-1, 1];
-            }
-        }else{
-            shuffling = false;
-            gollTile = GetFirstMove();
-            ghostPathing.SetNextTile(gollTile);
-            exitCounter = exitPath.Length;
-            
-        }
+        Configure();
 
     }
 
@@ -129,6 +109,30 @@ public class GhostHouseController : MonoBehaviour
         } else {
             ghostPathing.dead = false;
         } 
+    }
+    public void Configure(){
+        exitPath[0]= shufflePoint;
+        if(!blinky){
+            setDirection(startUp);
+            gollTile = shufflePoint;
+
+            if(GhostManager.instance.level < 3){
+                int[,] dotLimits = new int[2, 2];
+                if(inky){
+                    dotLimits = inkyDotLimits;
+                }else if(clyde){
+                    dotLimits = clydeDotLimits;
+                }
+                dotLimit = dotLimits[GhostManager.instance.level-1, 1];
+            }
+        }else{
+            shuffling = false;
+            gollTile = GetFirstMove();
+            ghostPathing.SetNextTile(gollTile);
+            exitCounter = exitPath.Length;
+            
+        }
+
     }
     void Update() {
     if(ghostPathing.house){

@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         AddScore(scoreValue);
         pelletsRemaining--;
         pelletsEatenThisLevel++;
-        gameObject.GetComponent<GhostManager>().triggerDotInc();
+        FindAnyObjectByType<GhostManager>().triggerDotInc();
 
         if (fruitSpawner != null)
             fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
@@ -160,6 +160,7 @@ public class GameManager : MonoBehaviour
     public void PowerPelletEaten(int scoreValue)
     {
         PelletEaten(scoreValue);
+        FindAnyObjectByType<GhostManager>().triggerFrightened();
         frightenedTimer = frightenedDuration;
         OnFrightenedModeStarted?.Invoke(frightenedDuration);
     }

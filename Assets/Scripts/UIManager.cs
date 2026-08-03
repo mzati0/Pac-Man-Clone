@@ -83,7 +83,7 @@ public class DigitDisplay
 
     public void SetDigit(int index, Sprite sprite)
     {
-        digits[index].sprite = sprite;
+        //digits[index].sprite = sprite;
     }
 
     public int Length => digits.Length;

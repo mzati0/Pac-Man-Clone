@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -34,10 +35,12 @@ public class PacMovement : MonoBehaviour
     private Vector2 startDirection;
 
     private InputSystem_Actions controls;
+    private Animator anim;
 
     void Awake()
     {
         controls = new InputSystem_Actions();
+        anim = GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -77,6 +80,7 @@ public class PacMovement : MonoBehaviour
         nextTile = startPosition;
         lastIntersection = startPosition;
         isDead = false;
+        GameObject.FindObjectsByType<GhostPathing>().ToList().ForEach(g => g.resetPosition());
     }
 
     private void HandleDied()
@@ -93,6 +97,8 @@ public class PacMovement : MonoBehaviour
 
     void Update()
     {
+        anim.SetFloat("X", (int)direction.x);
+        anim.SetFloat("Y", (int)direction.y);
         if (isDead) return;
 
         ReadQueuedDirection();
