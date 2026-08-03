@@ -12,11 +12,13 @@ public class ClydeController : MonoBehaviour
     }
     void Update()
     {
-       if(Vector2.Distance(pacTarget.position, transform.position) < 8f){
-            ghostPathing.targetPac = scatterTarget;
-
-        } else {
-            ghostPathing.targetPac = pacTarget;
+        if(!ghostPathing.house && !ghostPathing.dead && !GhostManager.instance.frightened && !GhostManager.instance.scatter){
+            print(Vector2.Distance(pacTarget.position, transform.position));
+            if(Vector2.Distance(pacTarget.position, transform.position) < 8f){
+                ghostPathing.targetPac = scatterTarget;
+            } else {
+                ghostPathing.targetPac = pacTarget;
+            }
         }
     }
 }
