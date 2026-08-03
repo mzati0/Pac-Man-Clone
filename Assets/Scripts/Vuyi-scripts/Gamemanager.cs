@@ -1,13 +1,24 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState
+    {
+        OnePlayer,
+        TwoPlayer,
+        Attract
+    }
     public static GameManager Instance { get; private set; }
+    [Header("Credits")]
+    public int credits = 0;
 
     [Header("Score")]
     public int score = 0;
+    public int p2Score = 0;
+    public int highScore = 0;
 
     [Header("Level")]
     public int level = 1;
@@ -35,10 +46,18 @@ public class GameManager : MonoBehaviour
     [Header("Pac-Man")]
     public PacMovement pacManMovement;
 
+    [Header("Inputs")]
+    [SerializeField] private InputActionReference creditAction;
+    [SerializeField] private InputActionReference onePlayerAction;
+    [SerializeField] private InputActionReference twoPlayerAction;
+    
     [HideInInspector] public int pelletsRemaining;
     private int pelletsEatenThisLevel;
+    
+    public GameState CurrentGameState { get; private set; } = GameState.Attract;
 
-    public static event Action<int> OnScoreChanged;
+    public static event Action OnCreditChanged;
+    public static event Action OnScoreChanged;
     public static event Action<float> OnFrightenedModeStarted;
     public static event Action OnFrightenedModeEnded;
     public static event Action OnAllPelletsEaten;
@@ -46,7 +65,21 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnLivesChanged;
     public static event Action OnPacManDied;
     public static event Action OnGameOver;
+    
+    void OnEnable()
+    {
+        creditAction.action.performed += AddCredit;
+        
+        creditAction.action.Enable();
+    }
 
+    void OnDisable()
+    {
+        creditAction.action.performed -= AddCredit;
+        
+        creditAction.action.Disable();
+    }
+    
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,6 +88,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -79,11 +113,18 @@ public class GameManager : MonoBehaviour
             OnFrightenedModeEnded?.Invoke();
         }
     }
+    
+    public void AddCredit(InputAction.CallbackContext context)
+    {
+        if(credits < 99) credits++;
+        OnCreditChanged?.Invoke();
+        //play
+    }
 
     public void AddScore(int amount)
     {
         score += amount;
-        OnScoreChanged?.Invoke(score);
+        OnScoreChanged?.Invoke();
 
         if (!extraLifeAwarded && score >= extraLifeScoreThreshold)
         {

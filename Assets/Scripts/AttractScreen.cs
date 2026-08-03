@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Video;
 
 public class AttractScreen : MonoBehaviour
@@ -33,6 +35,27 @@ public class AttractScreen : MonoBehaviour
 
     public void EndAttractScreen()
     {
-        Setup();
+        // TODO: Make game play a demo run
+    }
+
+    private void Update()
+    {
+        if(Keyboard.current == null) return;
+        if (Keyboard.current.anyKey.wasPressedThisFrame){
+            
+        }
+        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            Debug.Log("1 player");
+            // Set game manager to one player mode
+            //Start the game
+        }
+
+        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            Debug.Log("2 player");
+            // Set game manager to two player mode
+            //Start the game
+        }
     }
 }
