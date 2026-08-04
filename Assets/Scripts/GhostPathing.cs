@@ -8,13 +8,14 @@ public class GhostPathing : MonoBehaviour
     public Transform targetScatter;
     public Tilemap tilemap;
     public bool dead = false;
+    public bool frightened = false;
     public bool house = false;
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
                                     new Vector2(16,19), new Vector2(15,19), new Vector2(13,19), new Vector2(12,19), new Vector2(11,19)};
     Vector2[] TunnelTiles = {new Vector2(22,16), new Vector2(23,16), new Vector2(24,16), new Vector2(25,16), new Vector2(26,16), new Vector2(27,16),
                             new Vector2(0,16), new Vector2(1,16), new Vector2(2,16), new Vector2(3,16), new Vector2(4,16), new Vector2(5,16)};
-    Vector2[] TunnelWarpTiles = {new Vector2(27f,16), new Vector2(0,16)};
+    Vector2[] TunnelWarpTiles = {new Vector2(28f,16), new Vector2(-1,16)};
     public Vector2 direction = Vector2.up;
     public Vector3 nextTile;
     [SerializeField] private int speed = 5;
@@ -35,11 +36,8 @@ public class GhostPathing : MonoBehaviour
     {
         anim.SetFloat("X", (int)direction.x);
         anim.SetFloat("Y", (int)direction.y);
-        anim.SetBool("frightened", GhostManager.instance.frightened);
+        anim.SetBool("frightened", frightened);
         anim.SetBool("Dead", dead);
-        if(!dead && GhostManager.instance.frightened && Vector2.Distance( (Vector2)transform.position, (Vector2)GameObject.FindGameObjectWithTag("Player").transform.position) < 1f){
-           dead = true;
-        }
         if(!house){
             if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
                 house = true;
@@ -48,15 +46,17 @@ public class GhostPathing : MonoBehaviour
             if((Vector2)transform.position == TunnelWarpTiles[0]){
                 transform.position = TunnelWarpTiles[1];
                 direction = Vector2.right;
+                nextTile = transform.position + (Vector3)direction;
             } else if((Vector2)transform.position == TunnelWarpTiles[1]){
                 transform.position = TunnelWarpTiles[0];
                 direction = Vector2.left;
+                nextTile = transform.position + (Vector3)direction;
             }
             if (transform.position == nextTile) {
                 if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                     if(dead){
                         nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
-                    } else if (GhostManager.instance.frightened){
+                    } else if (frightened){
                         nextTile = GetRandomTile();
                     } else
                     if(GhostManager.instance.scatter && !elroy){
@@ -71,9 +71,11 @@ public class GhostPathing : MonoBehaviour
                 }
             } else {
                 float speed = GhostManager.instance.ghostSpeed;
-                if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
+                if(dead){
+                    speed = GhostManager.instance.ghostSpeedBase;
+                } else if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
                     speed = GhostManager.instance.ghostTunnelSpeed;
-                } else if (GhostManager.instance.frightened) {
+                } else if (frightened) {
                     speed = (int)GhostManager.instance.ghostFrightenedSpeed;
                 } else if (elroy && !GhostManager.instance.elroyDisabled) {
                     speed = elroySpeed;
@@ -82,6 +84,10 @@ public class GhostPathing : MonoBehaviour
             }
         }
         
+    }
+    public void TriggerDead(){
+        dead = true;
+        direction = Vector2.zero;
     }
     private bool isIntersection()
     {
@@ -94,6 +100,14 @@ public class GhostPathing : MonoBehaviour
             }
         }
         return count > 1;
+    }
+    public void Flash()
+    {
+        anim.SetBool("Flash", !anim.GetBool("Flash"));
+    }
+    public void SetFlash(bool flash)
+    {
+        anim.SetBool("Flash", flash);
     }
     private Vector3 GetNextTile(Vector3 target)
     {

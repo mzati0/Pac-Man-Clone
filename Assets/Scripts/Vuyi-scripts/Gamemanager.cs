@@ -33,11 +33,6 @@ public class GameManager : MonoBehaviour
     private bool extraLifeAwarded;
     public int Lives => lives;
 
-    [Header("Frightened Mode")]
-    public float frightenedDuration = 6f;
-    private float frightenedTimer;
-    public bool IsFrightened => frightenedTimer > 0f;
-
     [Header("Maze")]
     public PelletSpawner pelletSpawner;
 
@@ -129,17 +124,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        if (frightenedTimer <= 0f) return;
-        frightenedTimer -= Time.deltaTime;
-        if (frightenedTimer <= 0f)
-        {
-            frightenedTimer = 0f;
-            OnFrightenedModeEnded?.Invoke();
-        }
-    }
-
     private void AddCredit(InputAction.CallbackContext context)
     {
         if(firstOpen) return;
@@ -193,8 +177,6 @@ public class GameManager : MonoBehaviour
     {
         PelletEaten(scoreValue);
         FindAnyObjectByType<GhostManager>().triggerFrightened();
-        frightenedTimer = frightenedDuration;
-        OnFrightenedModeStarted?.Invoke(frightenedDuration);
     }
 
     public void PacManDied()
@@ -205,10 +187,22 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnAfterDelay()
     {
+
+        pacManMovement.StopAnm();
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        pacManMovement.triggerPacDeathAnm();
+        yield return new WaitForSecondsRealtime(1f); // Wait for death animation to finish
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSecondsRealtime(0.2f);
         Time.timeScale = 1f;
-
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = true;
         lives--;
         FindAnyObjectByType<GhostManager>().PacManDeath();
         FindAnyObjectByType<GhostManager>().useGlobleDotCounter = true;
@@ -240,7 +234,6 @@ public class GameManager : MonoBehaviour
         level++;
         GhostManager.instance.NewLevel(level);
         pelletsEatenThisLevel = 0;
-        frightenedTimer = 0f;
 
         if (pacManMovement != null)
             pacManMovement.ResetToStart();

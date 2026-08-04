@@ -1,11 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public class GhostManager : MonoBehaviour
 {
     public static GhostManager instance;
     public int level = 1;
-    public bool frightened = false;
+    public bool globalFrightened = false;
     public bool scatter = false;
     public int dotCount = 30;
     public float ghostSpeedBase = 5;
@@ -83,7 +84,7 @@ public class GhostManager : MonoBehaviour
         scatter = false;
         timerPosition = 0;
         time = 0;
-        frightened = false;
+        globalFrightened = false;
         activeDotCount = null;
 
     }
@@ -104,14 +105,21 @@ public class GhostManager : MonoBehaviour
     }
     public void triggerFrightened()
     {
-        frightened = true;
+        globalFrightened = true;
+        setFrightened(true);
+        StartCoroutine(FrightenedModeCoroutine());
         AllFlip();
+    }
+    public void setFrightened(bool state){
+        foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.frightened = state;
+        }
     }
     public void triggerDotInc(){
         if(!useGlobleDotCounter){
             if(activeDotCount != null){
                 activeDotCount.personalDotCounter++;
-                print("triggerDotInc");
+                //print("triggerDotInc");
             }
         } else {
             globalDotCount++;
@@ -122,6 +130,8 @@ public class GhostManager : MonoBehaviour
         globalDotCount = 0;
         GhostPathing [] ghosts = FindObjectsByType<GhostPathing>();
         elroyDisabled = true;
+        timerPosition = 0;
+        time = 0;
         foreach (GhostPathing ghost in ghosts){
             ghost.reset();
         }
@@ -183,7 +193,7 @@ public class GhostManager : MonoBehaviour
                 }
             }
         }
-        if(!frightened){
+        if(!globalFrightened){
             if (timerPosition < ScatterChase.GetLength(0)-1) {
                 if(ScatterChase[timerPosition, 0] > time){
                     time += Time.deltaTime * 1;
@@ -197,13 +207,41 @@ public class GhostManager : MonoBehaviour
             }else {
                 scatter = false;
             }
-        }else{
+        }/*else{
             if(friteTimer < friteTime){
                 friteTimer += Time.deltaTime * 1;
+                if(friteTimer >= friteTime - (friteFlashes * 0.4f)){
+                    if((friteTimer % 0.4f) < 0.25f){
+                        foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>()) {
+                            ghost.Flash();
+                            print (ghost.gameObject.name + "Flash");
+                        }
+                    }
+                }
             }else{
                 frightened = false;
                 friteTimer = 0;
+                GhostPathing[] ghosts = FindObjectsByType<GhostPathing>();
+                foreach (GhostPathing ghost in ghosts) {
+                    ghost.SetFlash(false);
+                }
             }
+        }*/
+    }
+    private  IEnumerator FrightenedModeCoroutine(){
+        yield return new WaitForSeconds(friteTime - (friteFlashes * 0.3f) + 0.1f);
+        for (int i = 0; i < friteFlashes * 2; i++)
+        {
+            foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>())
+            {
+                ghost.Flash();
+                print(ghost.gameObject.name + "Flash");
+            }
+            yield return new WaitForSeconds(0.15f);
         }
+
+        globalFrightened = false;
+        setFrightened(false);
+        AllFlip();
     }
 }
