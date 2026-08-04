@@ -72,7 +72,7 @@ public class GhostPathing : MonoBehaviour
             } else {
                 float speed = GhostManager.instance.ghostSpeed;
                 if(dead){
-                    speed = GhostManager.instance.ghostSpeedBase;
+                    speed = GameManager.Instance.BaseSpeed;
                 } else if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
                     speed = GhostManager.instance.ghostTunnelSpeed;
                 } else if (frightened) {

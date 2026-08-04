@@ -21,7 +21,7 @@ public class BlinkyController : MonoBehaviour
                     speedmod += 5;
                 }
                 
-                gameObject.GetComponent<GhostPathing>().elroySpeed = GhostManager.instance.ghostSpeedBase * speedmod / 100;
+                gameObject.GetComponent<GhostPathing>().elroySpeed = GameManager.Instance.BaseSpeed * speedmod / 100;
             }else{
                 gameObject.GetComponent<GhostPathing>().elroy = false;
             }
