@@ -1689,7 +1689,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1711,7 +1711,7 @@ TextureImporter:
         serializedVersion: 2
         x: 16
         y: 64
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1733,7 +1733,7 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 64
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1775,9 +1775,9 @@ TextureImporter:
       name: Points_100
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 48
-        width: 16
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1799,7 +1799,7 @@ TextureImporter:
         serializedVersion: 2
         x: 16
         y: 48
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1821,7 +1821,7 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 48
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1843,7 +1843,7 @@ TextureImporter:
         serializedVersion: 2
         x: 48
         y: 48
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1865,7 +1865,7 @@ TextureImporter:
         serializedVersion: 2
         x: 64
         y: 48
-        width: 16
+        width: 18
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1882,56 +1882,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Points_1000_1
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7e38db20282e34444a9216dad477580e
-      internalID: -648619136
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Points_2000_0
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 72510de10c452a74ba40053fff96a0bb
-      internalID: -1266018885
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Points_2000_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 62
         y: 32
-        width: 16
+        width: 20
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1948,56 +1904,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Points_2000_2
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f39c8dddd6431a343bce357a6abf0e72
-      internalID: -1087661481
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Points_3000_0
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a3d7583c28a99d448a187e9098de6bdd
-      internalID: -1527667535
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Points_3000_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 62
         y: 16
-        width: 16
+        width: 20
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -2014,56 +1926,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Points_3000_2
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 74f6fc2947920ac4dafd425b916414f1
-      internalID: 85212463
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Points_5000_0
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dd42b620226f622408e81af937e74a74
-      internalID: 612941216
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Points_5000_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 62
         y: 0
-        width: 16
+        width: 20
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -2075,28 +1943,6 @@ TextureImporter:
       bones: []
       spriteID: d1071b1c948f6d745b2e033f4846f1d3
       internalID: 817028485
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Points_5000_2
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3c0db27947b3e3b4d9f056b8540b3145
-      internalID: 1477556135
       vertices: []
       indices: 
       edges: []
