@@ -49,7 +49,6 @@ MonoBehaviour:
   p2Score: 0
   highScore: 0
   level: 1
-  levelCompleteDelay: 2
   startingLives: 3
   extraLifeScoreThreshold: 10000
   deathDelay: 1.5
@@ -62,5 +61,6 @@ MonoBehaviour:
   creditAction: {fileID: 6406562077918458304, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   onePlayerAction: {fileID: 924856226926423610, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   twoPlayerAction: {fileID: 3910036166762695593, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  anyKeyAction: {fileID: 1147278642560432775, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   firstOpen: 1
   pelletsRemaining: 0
