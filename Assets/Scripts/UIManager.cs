@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnCreditChanged += OnCreditChanged;
         GameManager.OnScoreChanged += UpdateScore;
-        UpdateUICredits();
     }
     
     private void OnDisable()
@@ -34,7 +33,14 @@ public class UIManager : MonoBehaviour
     {
         _creditCoroutine ??= StartCoroutine(UpdateDisplayedCredits());
     }
-    
+
+    private void Start()
+    {
+        _displayedCredits = GameManager.Instance.credits;
+        UpdateUICredits();
+        UpdateScore();
+    }
+
     private IEnumerator UpdateDisplayedCredits()
     {
         while (_displayedCredits < GameManager.Instance.credits)
@@ -69,12 +75,12 @@ public class UIManager : MonoBehaviour
             //2 player isn't implemented so we are just going to use the same score 
             if (highScore.Length != 0)
             {
-                highScore.SetDigit(0, digitSprites[GameManager.Instance.score % 10]);
-                highScore.SetDigit(1, digitSprites[(GameManager.Instance.score / 10) % 10]);
-                highScore.SetDigit(2, GameManager.Instance.score >= 100 ? digitSprites[(GameManager.Instance.score / 100) % 10] : null);
-                highScore.SetDigit(3, GameManager.Instance.score >= 1000 ? digitSprites[(GameManager.Instance.score / 1000) % 10] : null);
-                highScore.SetDigit(4, GameManager.Instance.score >= 10000 ? digitSprites[(GameManager.Instance.score / 10000) % 10] : null);
-                highScore.SetDigit(5, GameManager.Instance.score >= 100000 ? digitSprites[(GameManager.Instance.score / 100000) % 10] : null);
+                highScore.SetDigit(0, digitSprites[GameManager.Instance.highScore % 10]);
+                highScore.SetDigit(1, digitSprites[(GameManager.Instance.highScore / 10) % 10]);
+                highScore.SetDigit(2, GameManager.Instance.score >= 100 ? digitSprites[(GameManager.Instance.highScore / 100) % 10] : null);
+                highScore.SetDigit(3, GameManager.Instance.score >= 1000 ? digitSprites[(GameManager.Instance.highScore / 1000) % 10] : null);
+                highScore.SetDigit(4, GameManager.Instance.score >= 10000 ? digitSprites[(GameManager.Instance.highScore / 10000) % 10] : null);
+                highScore.SetDigit(5, GameManager.Instance.score >= 100000 ? digitSprites[(GameManager.Instance.highScore / 100000) % 10] : null);
             }
         }
 }
