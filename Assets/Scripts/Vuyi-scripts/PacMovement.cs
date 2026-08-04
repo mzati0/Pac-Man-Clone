@@ -42,6 +42,7 @@ public class PacMovement : MonoBehaviour
 
     private InputSystem_Actions controls;
     private Animator anim;
+    private bool isCorner = false;
 
     void Awake()
     {
@@ -152,6 +153,7 @@ public class PacMovement : MonoBehaviour
             }
         if (transform.position == nextTile)
         {
+            isCorner = false;
             lastIntersection = transform.position;
 
             if (queuedDirection != Vector2.zero && !IsTileAtWorldPosition(transform.position + (Vector3)queuedDirection))
@@ -169,11 +171,11 @@ public class PacMovement : MonoBehaviour
             {
                 Vector3 candidate = transform.position + (Vector3)direction;
 
-                if (enableTunnelWrap && direction.x != 0 && IsPastHorizontalEdge(candidate))
+                /*if (enableTunnelWrap && direction.x != 0 && IsPastHorizontalEdge(candidate))
                 {
                     //transform.position = WrapToOppositeSide(transform.position);
                     candidate = transform.position + (Vector3)direction;
-                }
+                }*/
 
                 nextTile = candidate;
             }
@@ -206,6 +208,10 @@ public class PacMovement : MonoBehaviour
                     currentSpeed = normSpeed;
                 }
             }
+            if(isCorner){
+                currentSpeed *= 1.5f;
+                
+            }
             transform.position = Vector3.MoveTowards(transform.position, nextTile, currentSpeed * Time.deltaTime);
         }
     }
@@ -229,7 +235,7 @@ public class PacMovement : MonoBehaviour
                 else if (ghostP.frightened)
                 {
                     ghostP.TriggerDead();
-                    GameManager.Instance.GhostEaten();
+                    //GameManager.Instance.GhostEaten();
                     continue;
                 }
 
@@ -249,6 +255,7 @@ public class PacMovement : MonoBehaviour
         float distToNext = Vector3.Distance(transform.position, nextTile);
         if (distToNext <= cornerWindow && !IsTileAtWorldPosition(nextTile + (Vector3)queuedDirection))
         {
+            isCorner = true;
             Corner(nextTile, queuedDirection);
             return;
         }
@@ -256,6 +263,7 @@ public class PacMovement : MonoBehaviour
         float distFromLast = Vector3.Distance(transform.position, lastIntersection);
         if (distFromLast <= cornerWindow && !IsTileAtWorldPosition(lastIntersection + (Vector3)queuedDirection))
         {
+            isCorner = true;
             Corner(lastIntersection, queuedDirection);
         }
     }
