@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fd28d8414045e4e9f07e0ac3bb82e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FruitLevelCounterUI
+  fruitSprites: []
   slots:
   - {fileID: 3169175117660739480}
   - {fileID: 3169175117660739479}
@@ -361,7 +362,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 18
+  orthographic size: 22.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -592,6 +593,27 @@ MonoBehaviour:
   - label: Cherry
     points: 100
     fruitPrefab: {fileID: 2024532908306498215, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+  - label: Strawberry
+    points: 300
+    fruitPrefab: {fileID: 2024532908306498215, guid: 448560a07c052824d91da2a188deb541, type: 3}
+  - label: Orange
+    points: 500
+    fruitPrefab: {fileID: 2024532908306498215, guid: 6240c8ddea233184c87ddc8b5b5ea491, type: 3}
+  - label: Apple
+    points: 700
+    fruitPrefab: {fileID: 2024532908306498215, guid: 4d043bcec980d53489ea96a921beb362, type: 3}
+  - label: Grapes
+    points: 1000
+    fruitPrefab: {fileID: 2024532908306498215, guid: af2b31bd980f6db4e8f804d7bf1d086f, type: 3}
+  - label: Galaxian
+    points: 2000
+    fruitPrefab: {fileID: 2024532908306498215, guid: f3cb7b7c3a044314a891ef1e97ba1f4e, type: 3}
+  - label: Bell
+    points: 3000
+    fruitPrefab: {fileID: 2024532908306498215, guid: fef37a9a942d8a24d8578a71ada6dfb5, type: 3}
+  - label: Key
+    points: 5000
+    fruitPrefab: {fileID: 2024532908306498215, guid: 8836e567c0598e84d8af221d7f98b721, type: 3}
   pelletThresholds: 46000000aa000000
   minLifetimeSeconds: 9
   maxLifetimeSeconds: 10
@@ -8452,7 +8474,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906d82714b5768142872917eb2942269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PacMovement
-  speed: 5
+  currentSpeed: 0
+  normSpeed: 0
+  normDotSpeed: 0
+  FrightSpeed: 0
+  FrightDotSpeed: 0
   wallTilemap: {fileID: 1346356310}
   enableTunnelWrap: 1
   cornerWindow: 0.15
@@ -11988,7 +12014,6 @@ MonoBehaviour:
   globalFrightened: 0
   scatter: 0
   dotCount: 30
-  ghostSpeedBase: 5
   ghostSpeed: 0
   ghostFrightenedSpeed: 0
   ghostTunnelSpeed: 0
