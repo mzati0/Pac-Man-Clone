@@ -122,6 +122,8 @@ public class GhostManager : MonoBehaviour
         globalDotCount = 0;
         GhostPathing [] ghosts = FindObjectsByType<GhostPathing>();
         elroyDisabled = true;
+        timerPosition = 0;
+        time = 0;
         foreach (GhostPathing ghost in ghosts){
             ghost.reset();
         }
@@ -200,9 +202,21 @@ public class GhostManager : MonoBehaviour
         }else{
             if(friteTimer < friteTime){
                 friteTimer += Time.deltaTime * 1;
+                if(friteTimer >= friteTime - (friteFlashes * 0.5f)){
+                    if((friteTimer % 0.5f) < 0.1f){
+                        GhostPathing[] ghosts = FindObjectsByType<GhostPathing>();
+                        foreach (GhostPathing ghost in ghosts) {
+                            ghost.Flash();
+                        }
+                    }
+                }
             }else{
                 frightened = false;
                 friteTimer = 0;
+                GhostPathing[] ghosts = FindObjectsByType<GhostPathing>();
+                foreach (GhostPathing ghost in ghosts) {
+                    ghost.SetFlash(false);
+                }
             }
         }
     }

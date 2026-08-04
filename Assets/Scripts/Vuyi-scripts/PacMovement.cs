@@ -63,7 +63,8 @@ public class PacMovement : MonoBehaviour
         startDirection = direction;
 
         transform.position = startPosition;
-        nextTile = startPosition;
+        nextTile = startPosition + new Vector3(-0.5f, 0, 0f); ;
+        direction = Vector2.left;
         lastIntersection = startPosition;
 
         if (wallTilemap != null)
@@ -77,12 +78,23 @@ public class PacMovement : MonoBehaviour
         transform.position = startPosition;
         direction = startDirection;
         queuedDirection = Vector2.zero;
-        nextTile = startPosition;
+        nextTile = startPosition + new Vector3(-0.5f, 0, 0f);
+        direction = Vector2.left;
         lastIntersection = startPosition;
         isDead = false;
+        anim.Rebind();
         
     }
-
+    public void PacStart(){
+        
+    }
+    public void triggerPacDeathAnm(){
+        anim.SetFloat("Speed", 1f);
+        anim.SetTrigger("Death");
+    }
+    public void StopAnm(){
+        anim.SetFloat("Speed", 0f);
+    }
     private void HandleDied()
     {
         isDead = true;
@@ -97,8 +109,11 @@ public class PacMovement : MonoBehaviour
 
     void Update()
     {
-        anim.SetFloat("X", (int)direction.x);
-        anim.SetFloat("Y", (int)direction.y);
+        if(direction != Vector2.zero){
+            anim.SetFloat("X", (int)direction.x);
+            anim.SetFloat("Y", (int)direction.y);
+        }
+        
         if (isDead) return;
 
         ReadQueuedDirection();
@@ -112,9 +127,11 @@ public class PacMovement : MonoBehaviour
             if (queuedDirection != Vector2.zero && !IsTileAtWorldPosition(transform.position + (Vector3)queuedDirection))
             {
                 direction = queuedDirection;
+                anim.SetFloat("Speed", 1f);
             }
             else if (direction != Vector2.zero && IsTileAtWorldPosition(transform.position + (Vector3)direction))
             {
+                anim.SetFloat("Speed", 0f);
                 direction = Vector2.zero;
             }
 

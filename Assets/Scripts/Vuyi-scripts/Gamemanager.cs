@@ -173,10 +173,22 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnAfterDelay()
     {
+
+        pacManMovement.StopAnm();
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        pacManMovement.triggerPacDeathAnm();
+        yield return new WaitForSecondsRealtime(1f); // Wait for death animation to finish
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSecondsRealtime(0.2f);
         Time.timeScale = 1f;
-
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = true;
         lives--;
         FindAnyObjectByType<GhostManager>().PacManDeath();
         FindAnyObjectByType<GhostManager>().useGlobleDotCounter = true;

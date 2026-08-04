@@ -14,7 +14,7 @@ public class GhostPathing : MonoBehaviour
                                     new Vector2(16,19), new Vector2(15,19), new Vector2(13,19), new Vector2(12,19), new Vector2(11,19)};
     Vector2[] TunnelTiles = {new Vector2(22,16), new Vector2(23,16), new Vector2(24,16), new Vector2(25,16), new Vector2(26,16), new Vector2(27,16),
                             new Vector2(0,16), new Vector2(1,16), new Vector2(2,16), new Vector2(3,16), new Vector2(4,16), new Vector2(5,16)};
-    Vector2[] TunnelWarpTiles = {new Vector2(27f,16), new Vector2(0,16)};
+    Vector2[] TunnelWarpTiles = {new Vector2(28f,16), new Vector2(-1,16)};
     public Vector2 direction = Vector2.up;
     public Vector3 nextTile;
     [SerializeField] private int speed = 5;
@@ -48,9 +48,11 @@ public class GhostPathing : MonoBehaviour
             if((Vector2)transform.position == TunnelWarpTiles[0]){
                 transform.position = TunnelWarpTiles[1];
                 direction = Vector2.right;
+                nextTile = transform.position + (Vector3)direction;
             } else if((Vector2)transform.position == TunnelWarpTiles[1]){
                 transform.position = TunnelWarpTiles[0];
                 direction = Vector2.left;
+                nextTile = transform.position + (Vector3)direction;
             }
             if (transform.position == nextTile) {
                 if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
@@ -94,6 +96,14 @@ public class GhostPathing : MonoBehaviour
             }
         }
         return count > 1;
+    }
+    public void Flash()
+    {
+        anim.SetBool("Flash", !anim.GetBool("Flash"));
+    }
+    public void SetFlash(bool flash)
+    {
+        anim.SetBool("Flash", flash);
     }
     private Vector3 GetNextTile(Vector3 target)
     {
