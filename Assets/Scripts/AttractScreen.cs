@@ -1,61 +1,79 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.Video;
 
 public class AttractScreen : MonoBehaviour
 {
-    private bool _firstOpen = true; // TODO: Move to GameManager if this should persist across scenes.
     [Header("Startup")]
-    [SerializeField] private VideoPlayer videoPlayer;
-    [SerializeField] private GameObject mainMenu;
-    void Start()
+    [SerializeField] private VideoPlayer videoPlayer; 
+    [FormerlySerializedAs("mainMenu")] [SerializeField] private GameObject ui;
+    [SerializeField] private GameObject attractScreenUI;
+    [SerializeField] private GameObject readyScreenUI;
+
+    // [Header("Input Actions")]
+    // [SerializeField] private InputActionReference onePlayerAction;
+    // [SerializeField] private InputActionReference twoPlayerAction;
+
+    private void OnEnable()
     {
         videoPlayer.loopPointReached += OnVideoFinished;
+        GameManager.OnCreditChanged += Setup;
+        // onePlayerAction.action.performed += StartGame;
+    }
+    
+    private void OnDisable(){
+        videoPlayer.loopPointReached -= OnVideoFinished;
+        GameManager.OnCreditChanged -= Setup;
+        // onePlayerAction.action.performed -= StartGame;
 
-        if (_firstOpen)
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance.firstOpen)
         {
-            mainMenu.SetActive(false);
+            ui.SetActive(false);
         }
         else
         {
             Setup();
         }
     }
-    void OnVideoFinished(VideoPlayer vp)
+
+    private void OnVideoFinished(VideoPlayer vp)
     {
-        _firstOpen = false;
+        GameManager.Instance.firstOpen = false;
         Setup();
     }
-    void Setup()
-    {
-        FindAnyObjectByType<Canvas>().gameObject.SetActive(false);
-        mainMenu.SetActive(true);
-    }
 
+    private void Setup()
+    {
+        var canvas = FindAnyObjectByType<Canvas>();
+        if (canvas != null) canvas.gameObject.SetActive(false);
+        
+        ui.SetActive(true);
+        if(GameManager.Instance.credits > 0)
+        {
+            readyScreenUI.SetActive(true);
+            attractScreenUI.SetActive(false);
+        }
+        else
+        {
+            readyScreenUI.SetActive(false);
+            attractScreenUI.SetActive(true);
+        }
+    }
+    
+    // private void StartGame(InputAction.CallbackContext context)
+    // {
+    //     if (GameManager.Instance.credits > 0)
+    //     {
+    //         print("suffer");
+    //     }
+    // }
     public void EndAttractScreen()
     {
         // TODO: Make game play a demo run
-    }
-
-    private void Update()
-    {
-        if(Keyboard.current == null) return;
-        if (Keyboard.current.anyKey.wasPressedThisFrame){
-            
-        }
-        if (Keyboard.current.digit1Key.wasPressedThisFrame)
-        {
-            Debug.Log("1 player");
-            // Set game manager to one player mode
-            //Start the game
-        }
-
-        if (Keyboard.current.digit2Key.wasPressedThisFrame)
-        {
-            Debug.Log("2 player");
-            // Set game manager to two player mode
-            //Start the game
-        }
+        // UPDATE: Nope xd
     }
 }

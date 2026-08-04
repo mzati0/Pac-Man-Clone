@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnCreditChanged -= OnCreditChanged;
-        GameManager.OnScoreChanged += UpdateScore;
+        GameManager.OnScoreChanged -= UpdateScore;
     }
 
     private void OnCreditChanged()
