@@ -73,9 +73,6 @@ public class GameManager : MonoBehaviour
         creditAction.action.performed += AddCredit;
         onePlayerAction.action.performed += LoadIntoGame;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
-        creditAction.action.Enable();
-        onePlayerAction.action.Enable();
     }
 
     void OnDisable()
@@ -101,6 +98,9 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        creditAction.action.Enable();
+        onePlayerAction.action.Enable();
+        
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             CurrentGameState = GameState.Attract;
@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
         else
         {
             CurrentGameState = GameState.OnePlayer;
+            score = 0;
             pelletSpawner = FindObjectOfType<PelletSpawner>();
             fruitSpawner = FindObjectOfType<FruitSpawner>();
             pacManMovement = FindObjectOfType<PacMovement>();
@@ -147,12 +148,13 @@ public class GameManager : MonoBehaviour
     private void LoadIntoGame(InputAction.CallbackContext context)
     {
         if (!FindAnyObjectByType<AttractScreen>()) return;
-        if(credits > 0) SceneManager.LoadScene(1);
+        if (credits > 0) credits--; SceneManager.LoadScene(1);
     }
 
     public void AddScore(int amount)
     {
         score += amount;
+        if (score > highScore) highScore = score;
         OnScoreChanged?.Invoke();
 
         if (!extraLifeAwarded && score >= extraLifeScoreThreshold)
@@ -226,7 +228,8 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             OnGameOver?.Invoke();
-            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
+            SceneManager.LoadScene(0);
+            //Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
             yield break;
         }
 

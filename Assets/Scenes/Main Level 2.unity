@@ -12024,6 +12024,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 116625159}
     - target: {fileID: 7845016437907235576, guid: a80ffad4c09d2744d88f8f30c0933d35, type: 3}
+      propertyPath: startingLives
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845016437907235576, guid: a80ffad4c09d2744d88f8f30c0933d35, type: 3}
       propertyPath: pacManMovement
       value: 
       objectReference: {fileID: 1409878926}
