@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnCreditChanged += OnCreditChanged;
         GameManager.OnScoreChanged += UpdateScore;
+        UpdateUICredits();
     }
     
     private void OnDisable()
@@ -42,7 +43,6 @@ public class UIManager : MonoBehaviour
         while (_displayedCredits < GameManager.Instance.credits)
         {
             SoundManager.Instance.PlayOneShot(creditSound);
-            yield return new WaitForSeconds(0.2f);
             _displayedCredits++;
             UpdateUICredits();
             yield return new WaitForSeconds(0.3f);
@@ -53,7 +53,8 @@ public class UIManager : MonoBehaviour
     private void UpdateUICredits()
     {
         credits.SetDigit(0, digitSprites[_displayedCredits % 10]); // Ones place
-        credits.SetDigit(1, digitSprites[(_displayedCredits / 10) % 10]); // Tens place
+        credits.SetDigit(1, (_displayedCredits / 10) % 10 > 0 ? digitSprites[(_displayedCredits / 10) % 10] : null); // Clear tens place if it's zero
+        // Tens place
     }
     //int digit1 = (number / 100000) % 10;
     //int digit2 = (number / 10000) % 10;
@@ -70,8 +71,6 @@ public class UIManager : MonoBehaviour
         p2Score.SetDigit(0, digitSprites[GameManager.Instance.p2Score % 10]);
         
         highScore.SetDigit(0, digitSprites[GameManager.Instance.highScore % 10]);
-        
-
         
     }
 }
