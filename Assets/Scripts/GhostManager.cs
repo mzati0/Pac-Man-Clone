@@ -9,7 +9,6 @@ public class GhostManager : MonoBehaviour
     public bool globalFrightened = false;
     public bool scatter = false;
     public int dotCount = 30;
-    public float ghostSpeedBase = 5;
     public float ghostSpeed = 0;
     public float ghostFrightenedSpeed = 0;
     public float ghostTunnelSpeed = 0;
@@ -46,9 +45,9 @@ public class GhostManager : MonoBehaviour
     public void levelUpdate(){
         int count = 0; 
         while (ghostSpeeds[count,0] <= level){
-            ghostSpeed = (ghostSpeedBase /100) * ghostSpeeds[count,1];
-            ghostFrightenedSpeed = (ghostSpeedBase /100) * ghostSpeeds[count,2];
-            ghostTunnelSpeed = (ghostSpeedBase / 100) * ghostSpeeds[count, 3];
+            ghostSpeed = (GameManager.Instance.BaseSpeed /100) * ghostSpeeds[count,1];
+            ghostFrightenedSpeed = (GameManager.Instance.BaseSpeed /100) * ghostSpeeds[count,2];
+            ghostTunnelSpeed = (GameManager.Instance.BaseSpeed / 100) * ghostSpeeds[count, 3];
             for (int i = 1; i <= 7; i++) {
                 ScatterChase[i - 1, 0] = ScatterChaseList[count, i];
                 //print(ScatterChase[i - 1,0] +","+ScatterChase[i - 1,1]);
@@ -235,7 +234,7 @@ public class GhostManager : MonoBehaviour
             foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>())
             {
                 ghost.Flash();
-                print(ghost.gameObject.name + "Flash");
+                //print(ghost.gameObject.name + "Flash");
             }
             yield return new WaitForSeconds(0.15f);
         }
