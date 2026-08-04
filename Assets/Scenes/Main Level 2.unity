@@ -10502,10 +10502,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7845016437907235576, guid: a80ffad4c09d2744d88f8f30c0933d35, type: 3}
-      propertyPath: creditAction
-      value: 
-      objectReference: {fileID: 6406562077918458304, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    - target: {fileID: 7845016437907235576, guid: a80ffad4c09d2744d88f8f30c0933d35, type: 3}
       propertyPath: fruitSpawner
       value: 
       objectReference: {fileID: 371449115}
@@ -10618,6 +10614,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8266499742151298242, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+      propertyPath: creditSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 11cada6d8b8d8614a87cb2b546c477be, type: 3}
     - target: {fileID: 8266499742151298242, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
       propertyPath: credits.digits.Array.size
       value: 0

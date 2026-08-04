@@ -181,6 +181,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""P1 Start"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6b70c88-4662-496e-8bc8-24a144c4fd8c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""P2 Start"",
+                    ""type"": ""Button"",
+                    ""id"": ""e94bf1ad-c048-4b16-8f19-5870578b0d78"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -586,8 +604,30 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/5"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Credit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e7ee9d1-49c1-4a2f-a2d1-41ed1f7df7f1"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""P1 Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30342f2f-5415-437a-bd62-0086c1a0877b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""P2 Start"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1185,6 +1225,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Credit = m_Player.FindAction("Credit", throwIfNotFound: true);
+        m_Player_P1Start = m_Player.FindAction("P1 Start", throwIfNotFound: true);
+        m_Player_P2Start = m_Player.FindAction("P2 Start", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1288,6 +1330,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Credit;
+    private readonly InputAction m_Player_P1Start;
+    private readonly InputAction m_Player_P2Start;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1339,6 +1383,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Credit".
         /// </summary>
         public InputAction @Credit => m_Wrapper.m_Player_Credit;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/P1Start".
+        /// </summary>
+        public InputAction @P1Start => m_Wrapper.m_Player_P1Start;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/P2Start".
+        /// </summary>
+        public InputAction @P2Start => m_Wrapper.m_Player_P2Start;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1395,6 +1447,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Credit.started += instance.OnCredit;
             @Credit.performed += instance.OnCredit;
             @Credit.canceled += instance.OnCredit;
+            @P1Start.started += instance.OnP1Start;
+            @P1Start.performed += instance.OnP1Start;
+            @P1Start.canceled += instance.OnP1Start;
+            @P2Start.started += instance.OnP2Start;
+            @P2Start.performed += instance.OnP2Start;
+            @P2Start.canceled += instance.OnP2Start;
         }
 
         /// <summary>
@@ -1436,6 +1494,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Credit.started -= instance.OnCredit;
             @Credit.performed -= instance.OnCredit;
             @Credit.canceled -= instance.OnCredit;
+            @P1Start.started -= instance.OnP1Start;
+            @P1Start.performed -= instance.OnP1Start;
+            @P1Start.canceled -= instance.OnP1Start;
+            @P2Start.started -= instance.OnP2Start;
+            @P2Start.performed -= instance.OnP2Start;
+            @P2Start.canceled -= instance.OnP2Start;
         }
 
         /// <summary>
@@ -1806,6 +1870,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCredit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "P1 Start" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnP1Start(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "P2 Start" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnP2Start(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
