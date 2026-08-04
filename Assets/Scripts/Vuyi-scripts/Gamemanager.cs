@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     public int p2Score = 0;
     public int highScore = 0;
 
+    [Header("Ghost Scoring")]
+    public int[] ghostScoreValues = { 200, 400, 800, 1600 }; 
+    private int ghostsEatenThisFrightened;
+
     [Header("Level")]
     public int level = 1;
 
@@ -183,7 +187,15 @@ public class GameManager : MonoBehaviour
     public void PowerPelletEaten(int scoreValue)
     {
         PelletEaten(scoreValue);
+        ghostsEatenThisFrightened = 0; 
         FindAnyObjectByType<GhostManager>().triggerFrightened();
+    }
+
+    public void GhostEaten()
+    {
+        int index = Mathf.Min(ghostsEatenThisFrightened, ghostScoreValues.Length - 1);
+        AddScore(ghostScoreValues[index]);
+        ghostsEatenThisFrightened++;
     }
 
     public void PacManDied()
