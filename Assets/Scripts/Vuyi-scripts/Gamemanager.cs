@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
         {
             CurrentGameState = GameState.OnePlayer;
             score = 0;
+            level = 1;
             pelletSpawner = FindObjectOfType<PelletSpawner>();
             fruitSpawner = FindObjectOfType<FruitSpawner>();
             pacManMovement = FindObjectOfType<PacMovement>();
