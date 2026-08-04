@@ -741,6 +741,7 @@ MonoBehaviour:
   targetScatter: {fileID: 1670823411}
   tilemap: {fileID: 1346356310}
   dead: 0
+  frightened: 0
   house: 1
   direction: {x: 0, y: 1}
   nextTile: {x: 0, y: 0, z: 0}
@@ -1312,6 +1313,7 @@ MonoBehaviour:
   targetScatter: {fileID: 1214947414}
   tilemap: {fileID: 1346356310}
   dead: 0
+  frightened: 0
   house: 1
   direction: {x: 0, y: 1}
   nextTile: {x: 0, y: 0, z: 0}
@@ -1764,6 +1766,7 @@ MonoBehaviour:
   targetScatter: {fileID: 797401693}
   tilemap: {fileID: 1346356310}
   dead: 0
+  frightened: 0
   house: 1
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
@@ -8831,6 +8834,7 @@ MonoBehaviour:
   targetScatter: {fileID: 1220108252}
   tilemap: {fileID: 1346356310}
   dead: 0
+  frightened: 0
   house: 1
   direction: {x: 0, y: 1}
   nextTile: {x: 0, y: 0, z: 0}
@@ -11923,7 +11927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   level: 1
-  frightened: 0
+  globalFrightened: 0
   scatter: 0
   dotCount: 30
   ghostSpeedBase: 5

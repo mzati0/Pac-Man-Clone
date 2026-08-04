@@ -77,7 +77,7 @@ public class PacMovement : MonoBehaviour
     {
         transform.position = startPosition;
         direction = startDirection;
-        queuedDirection = Vector2.zero;
+        queuedDirection = Vector2.left;
         nextTile = startPosition + new Vector3(-0.5f, 0, 0f);
         direction = Vector2.left;
         lastIntersection = startPosition;
@@ -94,6 +94,9 @@ public class PacMovement : MonoBehaviour
     }
     public void StopAnm(){
         anim.SetFloat("Speed", 0f);
+    }
+    public void PlayAnm(){
+        anim.SetFloat("Speed", 1f);
     }
     private void HandleDied()
     {

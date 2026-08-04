@@ -53,10 +53,12 @@ MonoBehaviour:
   startingLives: 3
   extraLifeScoreThreshold: 10000
   deathDelay: 1.5
-  frightenedDuration: 6
   pelletSpawner: {fileID: 0}
   fruitSpawner: {fileID: 0}
   pacManMovement: {fileID: 0}
+  playerOneTextPrefab: {fileID: 2696254778389518752, guid: 1693a6478b84e7648953d3e9e6ab2dfe, type: 3}
+  readyTextPrefab: {fileID: 7176112109005863587, guid: c442ea7d348a9d949817f5e2234a003f, type: 3}
+  gameOverTextPrefab: {fileID: 9165572470375418872, guid: 6ed27718360ea0343ba23eff5cb754a4, type: 3}
   creditAction: {fileID: 6406562077918458304, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   onePlayerAction: {fileID: 924856226926423610, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   twoPlayerAction: {fileID: 3910036166762695593, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
