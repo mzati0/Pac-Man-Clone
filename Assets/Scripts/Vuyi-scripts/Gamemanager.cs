@@ -275,6 +275,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameBeginStage1()
     {
+        SoundManager.Instance.PlayStartMusic();
         lives++;
         OnLivesChanged?.Invoke(lives);
         HideGhosts();
@@ -282,7 +283,7 @@ public class GameManager : MonoBehaviour
         var playerOneText = Instantiate(playerOneTextPrefab, new Vector3(9, 20, 0), Quaternion.identity);
         var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 0), Quaternion.identity);
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(2.5f);
         Destroy(playerOneText);
         Destroy(readyText);
         ShowGhosts();
@@ -298,10 +299,11 @@ public class GameManager : MonoBehaviour
         pacManMovement.StopAnm();
         Time.timeScale = 0f;
         var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 1), Quaternion.identity);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(2.5f);
         pacManMovement.PlayAnm();
         Destroy(readyText);
         Time.timeScale = 1;
+        SoundManager.Instance.PlayGhostMove();
     }
 
 

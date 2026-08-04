@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -179,6 +179,20 @@ MonoBehaviour:
   loopSlot1: {fileID: 2850279612688273619}
   loopSlot2: {fileID: 1290430251852236867}
   oneShotSource: {fileID: 4610528736940611624}
+  startMusic: {fileID: 8300000, guid: e80a7c8b64af2264aa094a18fe173a26, type: 3}
+  eatingTheDots: {fileID: 8300000, guid: 1259fb3db3ab7ce4590fd4ec7c595e96, type: 3}
+  turnCorner: {fileID: 8300000, guid: bf4f90c6bf8444f4da604499e54dc321, type: 3}
+  extraLife: {fileID: 8300000, guid: e9de6bf4141e7d244b5778392dc4f330, type: 3}
+  ghostMove1: {fileID: 8300000, guid: de97576d3726af943bbbe6d9fae06c41, type: 3}
+  ghostMove2: {fileID: 8300000, guid: 17625cc84348d11488e82b301dc2318e, type: 3}
+  ghostMove3: {fileID: 8300000, guid: b05ce0c9cb8ee3241bda4d44695f1e4e, type: 3}
+  ghostMove4: {fileID: 8300000, guid: 0d3ee37c63f60ac4fbcb5b00d1efa50e, type: 3}
+  ghostMove5: {fileID: 8300000, guid: b1d4d9ff6565f7e4bba885e533968bf4, type: 3}
+  fruit: {fileID: 8300000, guid: cc2df3984721aa646a0a172bea34aadf, type: 3}
+  ghostRun: {fileID: 8300000, guid: 3d897ecc6a7a73041b823733e751f374, type: 3}
+  ghostEaten: {fileID: 8300000, guid: e2ee24e869ef032429c7f24b24750588, type: 3}
+  ghostReturn: {fileID: 8300000, guid: 3ae98a4776a16124a859fd7381114dc8, type: 3}
+  pacmanDeath: {fileID: 8300000, guid: 7466a554e5deb074c982f6e2cb596b13, type: 3}
 --- !u!1 &8425310312620904403
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,10 +237,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -352,10 +366,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
