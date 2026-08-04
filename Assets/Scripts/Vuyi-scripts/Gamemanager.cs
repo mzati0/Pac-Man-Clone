@@ -71,17 +71,18 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         creditAction.action.performed += AddCredit;
-        onePlayerAction.action.performed += StartGame;
+        onePlayerAction.action.performed += LoadIntoGame;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         
         creditAction.action.Enable();
         onePlayerAction.action.Enable();
-        print("im big sexy");
     }
 
     void OnDisable()
     {
         creditAction.action.performed -= AddCredit;
-        onePlayerAction.action.performed -= StartGame;
+        onePlayerAction.action.performed -= LoadIntoGame;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         
         creditAction.action.Disable();
         onePlayerAction.action.Disable();
@@ -98,16 +99,32 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            CurrentGameState = GameState.Attract;
+        }
+        else
+        {
+            CurrentGameState = GameState.OnePlayer;
+            pelletSpawner = FindObjectOfType<PelletSpawner>();
+            fruitSpawner = FindObjectOfType<FruitSpawner>();
+            pacManMovement = FindObjectOfType<PacMovement>();
+            
+            lives = startingLives;
+
+            if (pacManMovement != null)
+                pacManMovement.ResetToStart();
+
+            pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
+            OnLevelStarted?.Invoke(level);
+            OnLivesChanged?.Invoke(lives);        
+        }
+    }
     void Start()
     {
-        lives = startingLives;
 
-        if (pacManMovement != null)
-            pacManMovement.ResetToStart();
-
-        pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
-        OnLevelStarted?.Invoke(level);
-        OnLivesChanged?.Invoke(lives);
     }
 
     void Update()
@@ -127,12 +144,10 @@ public class GameManager : MonoBehaviour
         if(credits < 99) credits++;
         OnCreditChanged?.Invoke();
     }
-    private void StartGame(InputAction.CallbackContext context)
+    private void LoadIntoGame(InputAction.CallbackContext context)
     {
-        print("I get here");
         if (!FindAnyObjectByType<AttractScreen>()) return;
         if(credits > 0) SceneManager.LoadScene(1);
-        print("if you see this you should cry");
     }
 
     public void AddScore(int amount)
