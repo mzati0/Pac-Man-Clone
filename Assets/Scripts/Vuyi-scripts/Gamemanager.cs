@@ -205,6 +205,7 @@ public class GameManager : MonoBehaviour
     private void NextLevel()
     {
         level++;
+        GhostManager.instance.NewLevel(level);
         pelletsEatenThisLevel = 0;
         frightenedTimer = 0f;
 

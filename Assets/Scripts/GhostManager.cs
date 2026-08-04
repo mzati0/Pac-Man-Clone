@@ -29,6 +29,8 @@ public class GhostManager : MonoBehaviour
     public int globalDotCount = 0;
     GhostHouseController activeDotCount = null;
     public GameObject[] dotCountGhosts;
+    private float idolTimeLimit;
+    private float idolTimer = 0;
 
     void Awake()
     {
@@ -71,6 +73,12 @@ public class GhostManager : MonoBehaviour
             friteFlashes = 0;
             //ghostFrightenedSpeed = 0;
         }
+
+        if (level < 5){
+            idolTimeLimit = 4;
+        } else{
+            idolTimeLimit = 3;
+        }
         useGlobleDotCounter = false;
         scatter = false;
         timerPosition = 0;
@@ -107,6 +115,7 @@ public class GhostManager : MonoBehaviour
             }
         } else {
             globalDotCount++;
+            idolTimer = 0;
         }
     }
     public void PacManDeath(){
@@ -117,11 +126,14 @@ public class GhostManager : MonoBehaviour
             ghost.reset();
         }
     }
-    public void NewLevel(){
+
+    public void NewLevel(int levelIn){
+        level = levelIn;
         useGlobleDotCounter = false;
         GhostPathing [] ghosts = FindObjectsByType<GhostPathing>();
         foreach (GhostPathing ghost in ghosts){
             ghost.reset();
+            ghost.gameObject.GetComponent<GhostHouseController>().personalDotCounter = 0;
         }
         levelUpdate();
     }
@@ -149,10 +161,26 @@ public class GhostManager : MonoBehaviour
                     dotCountGhosts[1].GetComponent<GhostHouseController>().shuffling = false;
                     break;
                 case 32:
-                    dotCountGhosts[2].GetComponent<GhostHouseController>().shuffling = false;
-                    elroyDisabled = false;
-                    useGlobleDotCounter = false;
+                    if(dotCountGhosts[2].GetComponent<GhostHouseController>().shuffling){
+                        dotCountGhosts[2].GetComponent<GhostHouseController>().shuffling = false;
+                        elroyDisabled = false;
+                        useGlobleDotCounter = false;
+                    }
                     break;
+            }
+            idolTimer += Time.deltaTime * 1;
+            if(idolTimer >= idolTimeLimit){
+                int j = 0;
+                while (j < dotCountGhosts.Length) {
+                    GhostHouseController ghostHouse = dotCountGhosts[j].GetComponent<GhostHouseController>();
+                    if (ghostHouse.shuffling && dotCountGhosts[j].GetComponent<GhostPathing>().house)
+                    {
+                        ghostHouse.shuffling = false;
+                        idolTimer = 0;
+                        break;
+                    }
+                    j++;
+                }
             }
         }
         if(!frightened){
