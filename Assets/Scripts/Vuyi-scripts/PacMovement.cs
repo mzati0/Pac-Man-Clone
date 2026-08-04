@@ -235,7 +235,7 @@ public class PacMovement : MonoBehaviour
                 else if (ghostP.frightened)
                 {
                     ghostP.TriggerDead();
-                    //GameManager.Instance.GhostEaten();
+                    GameManager.Instance.GhostEaten();
                     continue;
                 }
 
