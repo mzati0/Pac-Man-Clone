@@ -136,7 +136,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fd28d8414045e4e9f07e0ac3bb82e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FruitLevelCounterUI
-  slots: []
+  slots:
+  - {fileID: 3169175117660739480}
+  - {fileID: 3169175117660739479}
+  - {fileID: 3169175117660739478}
+  - {fileID: 3169175117660739477}
+  - {fileID: 3169175117660739476}
+  - {fileID: 3169175117660739475}
+  - {fileID: 3169175117660739474}
 --- !u!1 &116625158
 GameObject:
   m_ObjectHideFlags: 0
@@ -10639,6 +10646,41 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 76225709}
   m_SourcePrefab: {fileID: 100100000, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+--- !u!4 &3169175117660739474 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4359354780852886214, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739475 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2146257198608710846, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739476 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 147275327377987336, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739477 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4431063737686301584, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739478 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 285985850373939944, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739479 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7731903324106137347, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3169175117660739480 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6272548473109410387, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+  m_PrefabInstance: {fileID: 3169175117660739473}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
