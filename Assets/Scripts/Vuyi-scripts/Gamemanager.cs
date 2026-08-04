@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputActionReference onePlayerAction;
     [SerializeField] private InputActionReference twoPlayerAction;
     
+    [HideInInspector] public bool firstOpen = true;
     [HideInInspector] public int pelletsRemaining;
     private int pelletsEatenThisLevel;
     
@@ -69,15 +71,20 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         creditAction.action.performed += AddCredit;
+        onePlayerAction.action.performed += StartGame;
         
         creditAction.action.Enable();
+        onePlayerAction.action.Enable();
+        print("im big sexy");
     }
 
     void OnDisable()
     {
         creditAction.action.performed -= AddCredit;
+        onePlayerAction.action.performed -= StartGame;
         
         creditAction.action.Disable();
+        onePlayerAction.action.Disable();
     }
     
     void Awake()
@@ -113,12 +120,19 @@ public class GameManager : MonoBehaviour
             OnFrightenedModeEnded?.Invoke();
         }
     }
-    
-    public void AddCredit(InputAction.CallbackContext context)
+
+    private void AddCredit(InputAction.CallbackContext context)
     {
+        if(firstOpen) return;
         if(credits < 99) credits++;
         OnCreditChanged?.Invoke();
-        //play
+    }
+    private void StartGame(InputAction.CallbackContext context)
+    {
+        print("I get here");
+        if (!FindAnyObjectByType<AttractScreen>()) return;
+        if(credits > 0) SceneManager.LoadScene(1);
+        print("if you see this you should cry");
     }
 
     public void AddScore(int amount)
@@ -185,7 +199,7 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             OnGameOver?.Invoke();
-            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game
+            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
             yield break;
         }
 
