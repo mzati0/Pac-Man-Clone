@@ -10531,7 +10531,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1300394283801446217, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3278909709460238262, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3370182846564443187, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -10603,6 +10611,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8266499742151298242, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+      propertyPath: credits.digits.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8266499742151298242, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
+      propertyPath: 'credits.digits.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8323569158278909666, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10612,7 +10628,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1868569719461961220, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5366970250815557694, guid: b3a050eba89cad0459e0de0c9a4fcca1, type: 3}
