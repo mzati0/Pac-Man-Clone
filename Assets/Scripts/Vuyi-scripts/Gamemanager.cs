@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
         TwoPlayer,
         Attract
     }
+    
     public static GameManager Instance { get; private set; }
+    [Header("Speed")]
+    public float BaseSpeed = 5f;
     [Header("Credits")]
     public int credits = 0;
 
@@ -112,9 +115,9 @@ public class GameManager : MonoBehaviour
             CurrentGameState = GameState.OnePlayer;
             score = 0;
             level = 1;
-            pelletSpawner = FindObjectOfType<PelletSpawner>();
-            fruitSpawner = FindObjectOfType<FruitSpawner>();
-            pacManMovement = FindObjectOfType<PacMovement>();
+            pelletSpawner = FindAnyObjectByType<PelletSpawner>();
+            fruitSpawner = FindAnyObjectByType<FruitSpawner>();
+            pacManMovement = FindAnyObjectByType<PacMovement>();
             
             lives = startingLives;
 
