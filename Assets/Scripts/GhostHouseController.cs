@@ -112,6 +112,7 @@ public class GhostHouseController : MonoBehaviour
             }
         } else {
             ghostPathing.dead = false;
+            GetComponent<GhostPathing>().frightened = false;
         } 
     }
     public void Configure(){

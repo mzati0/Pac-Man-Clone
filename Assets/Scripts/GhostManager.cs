@@ -6,7 +6,7 @@ public class GhostManager : MonoBehaviour
 {
     public static GhostManager instance;
     public int level = 1;
-    public bool frightened = false;
+    public bool globalFrightened = false;
     public bool scatter = false;
     public int dotCount = 30;
     public float ghostSpeedBase = 5;
@@ -84,7 +84,7 @@ public class GhostManager : MonoBehaviour
         scatter = false;
         timerPosition = 0;
         time = 0;
-        frightened = false;
+        globalFrightened = false;
         activeDotCount = null;
 
     }
@@ -105,9 +105,15 @@ public class GhostManager : MonoBehaviour
     }
     public void triggerFrightened()
     {
-        frightened = true;
+        globalFrightened = true;
+        setFrightened(true);
         StartCoroutine(FrightenedModeCoroutine());
         AllFlip();
+    }
+    public void setFrightened(bool state){
+        foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.frightened = state;
+        }
     }
     public void triggerDotInc(){
         if(!useGlobleDotCounter){
@@ -187,7 +193,7 @@ public class GhostManager : MonoBehaviour
                 }
             }
         }
-        if(!frightened){
+        if(!globalFrightened){
             if (timerPosition < ScatterChase.GetLength(0)-1) {
                 if(ScatterChase[timerPosition, 0] > time){
                     time += Time.deltaTime * 1;
@@ -233,8 +239,9 @@ public class GhostManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.15f);
         }
-        
-        frightened = false;
+
+        globalFrightened = false;
+        setFrightened(false);
         AllFlip();
     }
 }

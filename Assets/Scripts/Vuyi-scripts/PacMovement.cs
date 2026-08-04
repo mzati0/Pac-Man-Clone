@@ -165,10 +165,14 @@ public class PacMovement : MonoBehaviour
 
             if (Vector3.Distance(transform.position, ghost.transform.position) <= ghostCollisionDistance)
             {
-                if (GameManager.Instance.IsFrightened)
+                GhostPathing ghostP = ghost.GetComponent<GhostPathing>();
+                if (ghostP.frightened)
                 {
-                    // TODO: eat-ghost logic 
+                    ghostP.TriggerDead();
                     continue;
+                } else 
+                    if (ghostP.dead) {
+                        continue;
                 }
 
                 isDead = true;

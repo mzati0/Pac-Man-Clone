@@ -8,6 +8,7 @@ public class GhostPathing : MonoBehaviour
     public Transform targetScatter;
     public Tilemap tilemap;
     public bool dead = false;
+    public bool frightened = false;
     public bool house = false;
     Vector2[] directions = { Vector2.up, Vector2.left, Vector2.down, Vector2.right };
     Vector2[] doNotUpdateDirection = {new Vector2(16,7), new Vector2(15,7), new Vector2(13,7), new Vector2(12,7), new Vector2(11,7),
@@ -35,12 +36,8 @@ public class GhostPathing : MonoBehaviour
     {
         anim.SetFloat("X", (int)direction.x);
         anim.SetFloat("Y", (int)direction.y);
-        anim.SetBool("frightened", GhostManager.instance.frightened);
+        anim.SetBool("frightened", frightened);
         anim.SetBool("Dead", dead);
-        if(!dead && GhostManager.instance.frightened && Vector2.Distance( (Vector2)transform.position, (Vector2)GameObject.Find("Pac-Man").transform.position) < 1f){
-            dead = true;
-           direction = Vector2.zero;
-        }
         if(!house){
             if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
                 house = true;
@@ -59,7 +56,7 @@ public class GhostPathing : MonoBehaviour
                 if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                     if(dead){
                         nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
-                    } else if (GhostManager.instance.frightened){
+                    } else if (frightened){
                         nextTile = GetRandomTile();
                     } else
                     if(GhostManager.instance.scatter && !elroy){
@@ -78,7 +75,7 @@ public class GhostPathing : MonoBehaviour
                     speed = GhostManager.instance.ghostSpeedBase;
                 } else if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
                     speed = GhostManager.instance.ghostTunnelSpeed;
-                } else if (GhostManager.instance.frightened) {
+                } else if (frightened) {
                     speed = (int)GhostManager.instance.ghostFrightenedSpeed;
                 } else if (elroy && !GhostManager.instance.elroyDisabled) {
                     speed = elroySpeed;
@@ -87,6 +84,10 @@ public class GhostPathing : MonoBehaviour
             }
         }
         
+    }
+    public void TriggerDead(){
+        dead = true;
+        direction = Vector2.zero;
     }
     private bool isIntersection()
     {
