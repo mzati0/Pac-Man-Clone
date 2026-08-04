@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -23,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Level")]
     public int level = 1;
-    public float levelCompleteDelay = 2f;
 
     [Header("Lives")]
     public int startingLives = 3;
@@ -126,10 +126,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(GameBeginStage1());
         }
     }
-    void Start()
-    {
-
-    }
 
     private void AddCredit(InputAction.CallbackContext context)
     {
@@ -175,7 +171,6 @@ public class GameManager : MonoBehaviour
         if (pelletsRemaining <= 0)
         {
             OnAllPelletsEaten?.Invoke();
-            Time.timeScale = 0f;
             StartCoroutine(AdvanceToNextLevelAfterDelay());
         }
     }
@@ -274,8 +269,15 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator AdvanceToNextLevelAfterDelay()
     {
-        yield return new WaitForSecondsRealtime(levelCompleteDelay);
+        Time.timeScale = 0f;
+        pacManMovement.StopAnm();
+        yield return new WaitForSecondsRealtime(1.5f);
+        HideGhosts();
+        TilemapFlash.Instance.Flash();
+        yield return new WaitForSecondsRealtime(2f);
         Time.timeScale = 1f;
+        pacManMovement.PlayAnm();
+        ShowGhosts();
         NextLevel();
     }
 
