@@ -14,6 +14,7 @@ public class FruitSpawner : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Fruit Progression")]
+    
     public FruitDefinition[] fruitsByLevel;
 
     [Header("Spawn Triggers")]
@@ -69,7 +70,9 @@ public class FruitSpawner : MonoBehaviour
         if (activeFruit != null)
             Destroy(activeFruit);
 
-        int index = Mathf.Clamp(currentLevel - 1, 0, fruitsByLevel.Length - 1);
+        
+        int index = FruitLevelCounterUI.GetFruitIndexForLevel(currentLevel);
+        index = Mathf.Clamp(index, 0, fruitsByLevel.Length - 1); 
         FruitDefinition def = fruitsByLevel[index];
 
         if (def.fruitPrefab == null)
