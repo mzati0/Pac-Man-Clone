@@ -133,12 +133,14 @@ public class GameManager : MonoBehaviour
     {
         if(firstOpen) return;
         if(credits < 99) credits++;
+        if (firstOpen) return;
         OnCreditChanged?.Invoke();
     }
     private void LoadIntoGame(InputAction.CallbackContext context)
     {
         if (!FindAnyObjectByType<AttractScreen>()) return;
         if (credits > 0) credits--; SceneManager.LoadScene(1);
+        if (credits > 0)
     }
 
     public void AddScore(int amount)
@@ -211,6 +213,7 @@ public class GameManager : MonoBehaviour
             CreditsText.Instance.ShowCredits();
             yield return new WaitForSecondsRealtime(1.5f);
             OnGameOver?.Invoke();
+            Time.timeScale = 1f;
             SceneManager.LoadScene(0);
             yield break;
         }
