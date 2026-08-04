@@ -41,6 +41,12 @@ public class GameManager : MonoBehaviour
 
     [Header("Pac-Man")]
     public PacMovement pacManMovement;
+    
+    [Header("Text")]
+    [SerializeField] private GameObject playerOneTextPrefab;
+    [SerializeField] private GameObject readyTextPrefab;
+    [SerializeField] private GameObject gameOverTextPrefab;
+    
 
     [Header("Inputs")]
     [SerializeField] private InputActionReference creditAction;
@@ -104,6 +110,7 @@ public class GameManager : MonoBehaviour
         {
             CurrentGameState = GameState.OnePlayer;
             score = 0;
+            level = 1;
             pelletSpawner = FindObjectOfType<PelletSpawner>();
             fruitSpawner = FindObjectOfType<FruitSpawner>();
             pacManMovement = FindObjectOfType<PacMovement>();
@@ -115,7 +122,8 @@ public class GameManager : MonoBehaviour
 
             pelletsRemaining = pelletSpawner != null ? pelletSpawner.PelletCount : FindObjectsOfType<Pellet>().Length;
             OnLevelStarted?.Invoke(level);
-            OnLivesChanged?.Invoke(lives);        
+            OnLivesChanged?.Invoke(lives);
+            StartCoroutine(GameBeginStage1());
         }
     }
     void Start()
@@ -190,18 +198,11 @@ public class GameManager : MonoBehaviour
         pacManMovement.StopAnm();
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
-        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
-            ghost.GetComponent<SpriteRenderer>().enabled = false;
-        }
+        HideGhosts();
         pacManMovement.triggerPacDeathAnm();
         yield return new WaitForSecondsRealtime(1f); // Wait for death animation to finish
         pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
-        yield return new WaitForSecondsRealtime(0.2f);
-        Time.timeScale = 1f;
-        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
-            ghost.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        pacManMovement.GetComponent<SpriteRenderer>().enabled = true;
+        yield return new WaitForSecondsRealtime(1f);
         lives--;
         FindAnyObjectByType<GhostManager>().PacManDeath();
         FindAnyObjectByType<GhostManager>().useGlobleDotCounter = true;
@@ -209,17 +210,67 @@ public class GameManager : MonoBehaviour
 
         if (lives <= 0)
         {
+            Instantiate(gameOverTextPrefab, new Vector3(9, 14, 0), Quaternion.identity);
+            yield return new WaitForSecondsRealtime(3f); // Wait for death animation to finish
             OnGameOver?.Invoke();
             SceneManager.LoadScene(0);
-            //Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
             yield break;
         }
+        
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = true;
+        ShowGhosts();
+        Time.timeScale = 1f;
 
-        if (pacManMovement != null)
-            pacManMovement.ResetToStart();
-
+        if (pacManMovement != null) pacManMovement.ResetToStart();
+        StartCoroutine(GameBeginStage2());
         // TODO: reset ghosts to their spawn points here too (likely via GhostManager)
     }
+
+    private void ShowGhosts()
+    {
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
+    private void HideGhosts()
+    {
+        foreach (var ghost in FindObjectsByType<GhostPathing>()) {
+            ghost.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    private IEnumerator GameBeginStage1()
+    {
+        lives++;
+        OnLivesChanged?.Invoke(lives);
+        HideGhosts();
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
+        var playerOneText = Instantiate(playerOneTextPrefab, new Vector3(9, 20, 0), Quaternion.identity);
+        var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 0), Quaternion.identity);
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(2);
+        Destroy(playerOneText);
+        Destroy(readyText);
+        ShowGhosts();
+        pacManMovement.GetComponent<SpriteRenderer>().enabled = true;
+        Time.timeScale = 1f;
+        StartCoroutine(GameBeginStage2());
+        lives--;
+        OnLivesChanged?.Invoke(lives);
+    }
+
+    private IEnumerator GameBeginStage2()
+    {
+        pacManMovement.StopAnm();
+        Time.timeScale = 0f;
+        var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 1), Quaternion.identity);
+        yield return new WaitForSecondsRealtime(2);
+        pacManMovement.PlayAnm();
+        Destroy(readyText);
+        Time.timeScale = 1;
+    }
+
 
     private IEnumerator AdvanceToNextLevelAfterDelay()
     {
