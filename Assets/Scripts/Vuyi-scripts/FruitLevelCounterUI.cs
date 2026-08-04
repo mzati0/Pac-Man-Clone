@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 public class FruitLevelCounterUI : MonoBehaviour
 {
-    
     public Sprite[] fruitSprites;
 
-    
     public Transform[] slots;
+
+    public bool slotsOrderedLeftToRight = true;
 
     private SpriteRenderer[] slotRenderers;
     private readonly List<int> fruitHistory = new List<int>();
@@ -16,7 +16,10 @@ public class FruitLevelCounterUI : MonoBehaviour
     {
         slotRenderers = new SpriteRenderer[slots.Length];
         for (int i = 0; i < slots.Length; i++)
+        {
             slotRenderers[i] = slots[i].GetComponent<SpriteRenderer>();
+            slots[i].gameObject.SetActive(false); 
+        }
     }
 
     void OnEnable() => GameManager.OnLevelStarted += HandleLevelStarted;
@@ -25,31 +28,35 @@ public class FruitLevelCounterUI : MonoBehaviour
     private void HandleLevelStarted(int level)
     {
         if (level <= 1)
-            fruitHistory.Clear(); 
+            ResetRow();
 
-        fruitHistory.Add(GetFruitIndexForLevel(level));
-        if (fruitHistory.Count > slots.Length)
-            fruitHistory.RemoveAt(0); 
+        if (fruitHistory.Count >= slots.Length)
+            return;
 
-        RefreshSlots();
+        int fruitIndex = GetFruitIndexForLevel(level);
+        if (fruitIndex < 0 || fruitIndex >= fruitSprites.Length)
+            return;
+
+        fruitHistory.Add(fruitIndex);
+        ActivateSlotFor(fruitHistory.Count - 1, fruitIndex); 
     }
 
-    private void RefreshSlots()
+    private void ResetRow()
     {
-        int emptySlots = slots.Length - fruitHistory.Count;
-
+        fruitHistory.Clear();
         for (int i = 0; i < slots.Length; i++)
-        {
-            int historyIndex = i - emptySlots;
-            bool active = historyIndex >= 0;
-
-            slots[i].gameObject.SetActive(active);
-            if (active)
-                slotRenderers[i].sprite = fruitSprites[fruitHistory[historyIndex]];
-        }
+            slots[i].gameObject.SetActive(false);
     }
 
-    
+
+    private void ActivateSlotFor(int entryIndex, int fruitIndex)
+    {
+        int slotIndex = slotsOrderedLeftToRight ? (slots.Length - 1 - entryIndex) : entryIndex;
+
+        slots[slotIndex].gameObject.SetActive(true);
+        slotRenderers[slotIndex].sprite = fruitSprites[fruitIndex];
+    }
+
     public static int GetFruitIndexForLevel(int level)
     {
         if (level <= 1) return 0; // Cherry
