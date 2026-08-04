@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public class GhostManager : MonoBehaviour
 {
@@ -105,13 +106,14 @@ public class GhostManager : MonoBehaviour
     public void triggerFrightened()
     {
         frightened = true;
+        StartCoroutine(FrightenedModeCoroutine());
         AllFlip();
     }
     public void triggerDotInc(){
         if(!useGlobleDotCounter){
             if(activeDotCount != null){
                 activeDotCount.personalDotCounter++;
-                print("triggerDotInc");
+                //print("triggerDotInc");
             }
         } else {
             globalDotCount++;
@@ -199,14 +201,14 @@ public class GhostManager : MonoBehaviour
             }else {
                 scatter = false;
             }
-        }else{
+        }/*else{
             if(friteTimer < friteTime){
                 friteTimer += Time.deltaTime * 1;
-                if(friteTimer >= friteTime - (friteFlashes * 0.5f)){
-                    if((friteTimer % 0.5f) < 0.1f){
-                        GhostPathing[] ghosts = FindObjectsByType<GhostPathing>();
-                        foreach (GhostPathing ghost in ghosts) {
+                if(friteTimer >= friteTime - (friteFlashes * 0.4f)){
+                    if((friteTimer % 0.4f) < 0.25f){
+                        foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>()) {
                             ghost.Flash();
+                            print (ghost.gameObject.name + "Flash");
                         }
                     }
                 }
@@ -218,6 +220,21 @@ public class GhostManager : MonoBehaviour
                     ghost.SetFlash(false);
                 }
             }
+        }*/
+    }
+    private  IEnumerator FrightenedModeCoroutine(){
+        yield return new WaitForSeconds(friteTime - (friteFlashes * 0.3f) + 0.1f);
+        for (int i = 0; i < friteFlashes * 2; i++)
+        {
+            foreach (GhostPathing ghost in FindObjectsByType<GhostPathing>())
+            {
+                ghost.Flash();
+                print(ghost.gameObject.name + "Flash");
+            }
+            yield return new WaitForSeconds(0.15f);
         }
+        
+        frightened = false;
+        AllFlip();
     }
 }

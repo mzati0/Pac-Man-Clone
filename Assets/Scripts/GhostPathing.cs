@@ -37,8 +37,9 @@ public class GhostPathing : MonoBehaviour
         anim.SetFloat("Y", (int)direction.y);
         anim.SetBool("frightened", GhostManager.instance.frightened);
         anim.SetBool("Dead", dead);
-        if(!dead && GhostManager.instance.frightened && Vector2.Distance( (Vector2)transform.position, (Vector2)GameObject.FindGameObjectWithTag("Player").transform.position) < 1f){
-           dead = true;
+        if(!dead && GhostManager.instance.frightened && Vector2.Distance( (Vector2)transform.position, (Vector2)GameObject.Find("Pac-Man").transform.position) < 1f){
+            dead = true;
+           direction = Vector2.zero;
         }
         if(!house){
             if(dead && transform.position == GhostManager.instance.deadGhostTarget.position){
@@ -73,7 +74,9 @@ public class GhostPathing : MonoBehaviour
                 }
             } else {
                 float speed = GhostManager.instance.ghostSpeed;
-                if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
+                if(dead){
+                    speed = GhostManager.instance.ghostSpeedBase;
+                } else if (System.Array.Exists(TunnelTiles, element => element == (Vector2)transform.position)) {
                     speed = GhostManager.instance.ghostTunnelSpeed;
                 } else if (GhostManager.instance.frightened) {
                     speed = (int)GhostManager.instance.ghostFrightenedSpeed;
