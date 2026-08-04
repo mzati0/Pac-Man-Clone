@@ -84,9 +84,11 @@ public class GhostHouseController : MonoBehaviour
                     break;
             }
             exitCounter++;
+            leftHome = false;
         }else if (!leftHome){
             gollTile = GetFirstMove();
             ghostPathing.SetNextTile(gollTile);
+            print("left");
             leftHome = true;
         } else{
             ghostPathing.house = false;
