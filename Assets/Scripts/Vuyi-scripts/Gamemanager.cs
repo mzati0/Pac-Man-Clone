@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            CreditsText.Instance.HideCredits();
             CurrentGameState = GameState.OnePlayer;
             score = 0;
             level = 1;
@@ -124,6 +125,7 @@ public class GameManager : MonoBehaviour
             OnLevelStarted?.Invoke(level);
             OnLivesChanged?.Invoke(lives);
             StartCoroutine(GameBeginStage1());
+            OneUpFlash.Instance.StartFlash();
         }
     }
 
@@ -206,7 +208,8 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             Instantiate(gameOverTextPrefab, new Vector3(9, 14, 0), Quaternion.identity);
-            yield return new WaitForSecondsRealtime(3f); // Wait for death animation to finish
+            CreditsText.Instance.ShowCredits();
+            yield return new WaitForSecondsRealtime(1.5f);
             OnGameOver?.Invoke();
             SceneManager.LoadScene(0);
             yield break;
