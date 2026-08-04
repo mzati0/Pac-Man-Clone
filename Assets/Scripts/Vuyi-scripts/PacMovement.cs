@@ -5,16 +5,19 @@ using UnityEngine.Tilemaps;
 
 public class PacMovement : MonoBehaviour
 {
-    [Header("Movement")]
-    public float speed = 5f;
+    [Header("Speed")]
+    int[,] pacSpeeds = { { 1, 80, 71, 90, 79 }, { 2, 90, 79, 95, 83 }, { 5, 100, 87, 100, 87 }, { 21, 90, 79, 0, 0 } };
+    [SerializeField] private float currentSpeed;
+    public float normSpeed;
+    public float normDotSpeed;
+    public float FrightSpeed;
+    public float FrightDotSpeed;
 
     [Header("Collision")]
     public Tilemap wallTilemap;
 
     [Header("Tunnel Wrap")]
     public bool enableTunnelWrap = true;
-    public int wrapOutOffset = 0; 
-    public int wrapInOffset = 0;  
 
     [Header("Cornering")]
     public float cornerWindow = 0.15f;
@@ -73,6 +76,7 @@ public class PacMovement : MonoBehaviour
             wallTilemap.CompressBounds();
 
         ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+        UpdateSpeeds();
     }
 
     public void ResetToStart()
@@ -85,7 +89,19 @@ public class PacMovement : MonoBehaviour
         lastIntersection = startPosition;
         isDead = false;
         anim.Rebind();
-        
+        UpdateSpeeds();
+
+    }
+    private void UpdateSpeeds(){
+        int level = GameManager.Instance.level;
+        int count = 0; 
+        while (pacSpeeds[count,0] <= level){
+            normSpeed = (GameManager.Instance.BaseSpeed /100) * pacSpeeds[count,1];
+            normDotSpeed = (GameManager.Instance.BaseSpeed /100) * pacSpeeds[count,2];
+            FrightSpeed = (GameManager.Instance.BaseSpeed /100) * pacSpeeds[count,3];
+            FrightDotSpeed = (GameManager.Instance.BaseSpeed / 100) * pacSpeeds[count, 4];
+            count++;
+        }
     }
     public void PacStart(){
         
@@ -156,7 +172,32 @@ public class PacMovement : MonoBehaviour
         else
         {
             TryCorner();
-            transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
+            Vector2 box = new Vector2(1f, 1f);
+            bool hasDot = false;
+            Collider2D[] hit = Physics2D.OverlapBoxAll(nextTile, box, 0);
+            for (int i = 0; i < hit.Length; i++)
+            {
+                if(hit[i].TryGetComponent<Pellet>(out Pellet pellet))
+                {
+                    hasDot = true;
+                    break;
+                }
+            }
+            if(hasDot){
+                if(GhostManager.instance.globalFrightened){
+                currentSpeed = FrightDotSpeed;
+                } else {
+                    currentSpeed = normDotSpeed;
+                }
+                print("Pellet Speed: " + currentSpeed);
+            }else{
+                if(GhostManager.instance.globalFrightened){
+                currentSpeed = FrightSpeed;
+                } else {
+                    currentSpeed = normSpeed;
+                }
+            }
+            transform.position = Vector3.MoveTowards(transform.position, nextTile, currentSpeed * Time.deltaTime);
         }
     }
 
@@ -241,15 +282,15 @@ public class PacMovement : MonoBehaviour
     bool IsPastHorizontalEdge(Vector3 worldPos)
     {
         Vector3Int cell = wallTilemap.WorldToCell(worldPos);
-        return cell.x < wallTilemap.cellBounds.xMin - wrapOutOffset || cell.x >= wallTilemap.cellBounds.xMax + wrapOutOffset;
+        return cell.x < wallTilemap.cellBounds.xMin || cell.x >= wallTilemap.cellBounds.xMax;
     }
 
     Vector3 WrapToOppositeSide(Vector3 pos)
     {
         Vector3Int cell = wallTilemap.WorldToCell(pos);
         int oppositeX = direction.x > 0
-            ? wallTilemap.cellBounds.xMin + wrapInOffset
-            : wallTilemap.cellBounds.xMax - 1 - wrapInOffset;
+            ? wallTilemap.cellBounds.xMin
+            : wallTilemap.cellBounds.xMax - 1;
 
         Vector3 wrapped = wallTilemap.GetCellCenterWorld(new Vector3Int(oppositeX, cell.y, cell.z));
         return new Vector3(wrapped.x, pos.y, pos.z);
