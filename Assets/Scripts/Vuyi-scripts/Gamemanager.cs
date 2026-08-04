@@ -341,6 +341,7 @@ public class GameManager : MonoBehaviour
             fruitSpawner.ResetForNewLevel(level);
 
         OnLevelStarted?.Invoke(level);
+        StartCoroutine(GameBeginStage2());
     }
     
     private void AnyKeyPressed(InputAction.CallbackContext context)
