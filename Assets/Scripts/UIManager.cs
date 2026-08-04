@@ -42,7 +42,6 @@ public class UIManager : MonoBehaviour
         while (_displayedCredits < GameManager.Instance.credits)
         {
             SoundManager.Instance.PlayOneShot(creditSound);
-            yield return new WaitForSeconds(0.2f);
             _displayedCredits++;
             UpdateUICredits();
             yield return new WaitForSeconds(0.3f);
