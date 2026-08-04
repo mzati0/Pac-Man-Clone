@@ -178,6 +178,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         lives--;
+        FindAnyObjectByType<GhostManager>().PacManDeath();
+        FindAnyObjectByType<GhostManager>().useGlobleDotCounter = true;
         OnLivesChanged?.Invoke(lives);
 
         if (lives <= 0)

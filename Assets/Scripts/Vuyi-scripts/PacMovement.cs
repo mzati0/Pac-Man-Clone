@@ -80,7 +80,7 @@ public class PacMovement : MonoBehaviour
         nextTile = startPosition;
         lastIntersection = startPosition;
         isDead = false;
-        GameObject.FindObjectsByType<GhostPathing>().ToList().ForEach(g => g.resetPosition());
+        
     }
 
     private void HandleDied()

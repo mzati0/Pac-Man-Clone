@@ -20,6 +20,7 @@ public class GhostHouseController : MonoBehaviour
     [SerializeField] private int dotLimit = 0;
     int[,] inkyDotLimits = { { 1, 30 }, { 2, 0}};
     int[,] clydeDotLimits = { { 1, 60 }, { 2, 50}};
+    private Vector2 startPoint;
     
     void Awake(){
         ghostPathing = gameObject.GetComponent<GhostPathing>();
@@ -89,6 +90,7 @@ public class GhostHouseController : MonoBehaviour
             leftHome = true;
         } else{
             ghostPathing.house = false;
+            ghostPathing.nextTile = transform.position;
 
         }
     }
@@ -114,31 +116,40 @@ public class GhostHouseController : MonoBehaviour
     }
     public void Configure(){
         exitPath[0]= shufflePoint;
+        gollTile = startPoint;
         if(!blinky){
+            exitCounter = 0;
+            shuffling = true;
+            startPoint = shufflePoint;
             setDirection(startUp);
             gollTile = shufflePoint;
-
-            if(GhostManager.instance.level < 3){
-                int[,] dotLimits = new int[2, 2];
-                if(inky){
-                    dotLimits = inkyDotLimits;
-                }else if(clyde){
-                    dotLimits = clydeDotLimits;
+            if(!GhostManager.instance.useGlobleDotCounter){
+                if(GhostManager.instance.level < 3){
+                    int[,] dotLimits = new int[2, 2];
+                    if(inky){
+                        dotLimits = inkyDotLimits;
+                    }else if(clyde){
+                        dotLimits = clydeDotLimits;
+                    }
+                    dotLimit = dotLimits[GhostManager.instance.level-1, 1];
                 }
-                dotLimit = dotLimits[GhostManager.instance.level-1, 1];
+            }else{
+
             }
         }else{
             shuffling = false;
+            startPoint = shufflePoint + new Vector2(0,3);
             gollTile = GetFirstMove();
             ghostPathing.SetNextTile(gollTile);
             exitCounter = exitPath.Length;
             
         }
+        transform.position = startPoint;
 
     }
     void Update() {
     if(ghostPathing.house){
-            if (shuffling && personalDotCounter >= dotLimit){
+            if (shuffling && !GhostManager.instance.useGlobleDotCounter && personalDotCounter >= dotLimit){
                 shuffling = false;
             }
             if (transform.position == (Vector3)gollTile) {

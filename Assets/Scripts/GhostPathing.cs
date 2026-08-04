@@ -16,7 +16,7 @@ public class GhostPathing : MonoBehaviour
                             new Vector2(0,16), new Vector2(1,16), new Vector2(2,16), new Vector2(3,16), new Vector2(4,16), new Vector2(5,16)};
     Vector2[] TunnelWarpTiles = {new Vector2(27f,16), new Vector2(0,16)};
     public Vector2 direction = Vector2.up;
-    [SerializeField] private Vector3 nextTile;
+    public Vector3 nextTile;
     [SerializeField] private int speed = 5;
     public bool elroy = false;
     public float elroySpeed = 0;
@@ -75,7 +75,7 @@ public class GhostPathing : MonoBehaviour
                     speed = GhostManager.instance.ghostTunnelSpeed;
                 } else if (GhostManager.instance.frightened) {
                     speed = (int)GhostManager.instance.ghostFrightenedSpeed;
-                } else if (elroy) {
+                } else if (elroy && !GhostManager.instance.elroyDisabled) {
                     speed = elroySpeed;
                 } 
                 transform.position = Vector3.MoveTowards(transform.position, nextTile, speed * Time.deltaTime);
@@ -160,11 +160,13 @@ public class GhostPathing : MonoBehaviour
     public void SetNextTile(Vector3 nextTile) {
         this.nextTile = nextTile;
     }
-    public void resetPosition(){
-        GhostHouseController house = GetComponent<GhostHouseController>();
-        transform.position = house.shufflePoint;
-        house.Configure();
+    public void reset(){
         dead = false;
+        house = true;
+        elroy = false;
+        GhostHouseController houseCont = GetComponent<GhostHouseController>();
+        houseCont.Configure();
+        
     }
 
 }

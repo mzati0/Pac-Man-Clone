@@ -13,7 +13,8 @@ public class GhostManager : MonoBehaviour
     public float ghostFrightenedSpeed = 0;
     public float ghostTunnelSpeed = 0;
     public Transform deadGhostTarget;
-    int[,] ghostSpeeds = { { 1, 75, 50, 40 }, { 2, 85, 55, 45 }, { 5, 95, 60, 50 }, { 21, 95, 0, 50 } };
+    public bool elroyDisabled = false;
+    int[,] ghostSpeeds = { { 1, 75, 50, 40 }, { 2, 85, 55, 45 }, { 5, 95, 60, 50 }, { 21, 95, 100, 50 } };
     double[,] ScatterChaseList = { { 1, 7, 20, 7, 20, 5, 20, 5 }, { 2, 7, 20, 7, 20, 5, 1033, 1 / 60f }, { 5, 5, 20, 5, 20, 5, 1037, 1 / 60f } , { 21, 5, 20, 5, 20, 5, 1037, 1/60f } };
     [System.NonSerialized] public double[,] ScatterChase = { { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 }, { 0, 0 }, { 0, 1 } };
     int[] frightenedTimes = { 6, 5, 4, 3, 2, 5, 2, 2, 1, 5, 2, 1, 1, 3, 1, 1, 0, 1, 0, 0, 0 };
@@ -31,22 +32,6 @@ public class GhostManager : MonoBehaviour
 
     void Awake()
     {
-        if(level < 20) {
-            for(int i = 0; i < frightenedSpeeds.GetLength(0); i++) {
-                if(frightenedSpeeds[i,0] > level) {
-                    ghostFrightenedSpeed = (ghostSpeedBase / 100) * frightenedSpeeds[i - 1, 1];
-                } else {
-                    break;
-                }
-            }
-            friteTime = frightenedTimes[level - 1];
-            friteFlashes = flashCounts[level - 1];
-        } else {
-            friteTime = 0;
-            friteFlashes = 0;
-            ghostFrightenedSpeed = 0;
-        }
-        
         if (instance == null) {
             instance = this;
             levelUpdate();
@@ -70,9 +55,28 @@ public class GhostManager : MonoBehaviour
                 break;
             }
         }
-        scatter = true;
+
+        if(level < 20) {
+            /*for(int i = 0; i < frightenedSpeeds.GetLength(0); i++) {
+                if(frightenedSpeeds[i,0] > level) {
+                    ghostFrightenedSpeed = (ghostSpeedBase / 100) * frightenedSpeeds[i - 1, 1];
+                } else {
+                    break;
+                }
+            }*/
+            friteTime = frightenedTimes[level - 1];
+            friteFlashes = flashCounts[level - 1];
+        } else {
+            friteTime = 0;
+            friteFlashes = 0;
+            //ghostFrightenedSpeed = 0;
+        }
+        useGlobleDotCounter = false;
+        scatter = false;
         timerPosition = 0;
         time = 0;
+        frightened = false;
+        activeDotCount = null;
 
     }
     private void SetScatter(double state) {
@@ -96,29 +100,60 @@ public class GhostManager : MonoBehaviour
         AllFlip();
     }
     public void triggerDotInc(){
-        if(activeDotCount != null){
-            activeDotCount.personalDotCounter++;
-            print("triggerDotInc");
+        if(!useGlobleDotCounter){
+            if(activeDotCount != null){
+                activeDotCount.personalDotCounter++;
+                print("triggerDotInc");
+            }
+        } else {
+            globalDotCount++;
         }
     }
-    
+    public void PacManDeath(){
+        globalDotCount = 0;
+        GhostPathing [] ghosts = FindObjectsByType<GhostPathing>();
+        elroyDisabled = true;
+        foreach (GhostPathing ghost in ghosts){
+            ghost.reset();
+        }
+    }
+    public void NewLevel(){
+        useGlobleDotCounter = false;
+        GhostPathing [] ghosts = FindObjectsByType<GhostPathing>();
+        foreach (GhostPathing ghost in ghosts){
+            ghost.reset();
+        }
+        levelUpdate();
+    }
     void Update() {
         if(!useGlobleDotCounter){
             int i = 0;
             while (i < dotCountGhosts.Length) {
                 GhostHouseController ghostHouse = dotCountGhosts[i].GetComponent<GhostHouseController>();
-                if (ghostHouse.shuffling)
+                if (ghostHouse.shuffling && dotCountGhosts[i].GetComponent<GhostPathing>().house)
                 {
                     activeDotCount = ghostHouse;
                     break;
                 }
                 i++;
             }
-            if(1 == dotCountGhosts.Length){
+            if(i == dotCountGhosts.Length){
                 activeDotCount = null;
             }
         } else {
-            
+            switch(globalDotCount){
+                case 7:
+                    dotCountGhosts[0].GetComponent<GhostHouseController>().shuffling = false;
+                    break;
+                case 17:
+                    dotCountGhosts[1].GetComponent<GhostHouseController>().shuffling = false;
+                    break;
+                case 32:
+                    dotCountGhosts[2].GetComponent<GhostHouseController>().shuffling = false;
+                    elroyDisabled = false;
+                    useGlobleDotCounter = false;
+                    break;
+            }
         }
         if(!frightened){
             if (timerPosition < ScatterChase.GetLength(0)-1) {
