@@ -12987,6 +12987,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: ghostMove1
+      value: 
+      objectReference: {fileID: 8300000, guid: 537152cccd86128438fd0510940123f2, type: 3}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: ghostMove2
+      value: 
+      objectReference: {fileID: 8300000, guid: 8617e93a473e7ec4cb415d1e3a5a301f, type: 3}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: ghostMove3
+      value: 
+      objectReference: {fileID: 8300000, guid: 25109ac45ac730d4e9f98a90d7274081, type: 3}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: ghostMove4
+      value: 
+      objectReference: {fileID: 8300000, guid: 977fe2c95b0004143b2fac28977e384f, type: 3}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: ghostMove5
+      value: 
+      objectReference: {fileID: 8300000, guid: c4a388be699c9c14dad6ddc159785cef, type: 3}
+    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
+      propertyPath: pacmanDeath
+      value: 
+      objectReference: {fileID: 8300000, guid: 2e40775c53181e140b4a7614123cdfb0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

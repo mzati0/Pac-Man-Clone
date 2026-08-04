@@ -37,6 +37,8 @@ public class SoundManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        GameManager.OnScoreChanged += UpdateGhostMoveSiren;
     }
     
     public void PlayLoop1(AudioClip clip)
@@ -78,25 +80,57 @@ public class SoundManager : MonoBehaviour
         PlayLoop1(startMusic);
     }
     
-    public void PlayGhostMove(int type = 1)
+    public void PlayGhostMove()
     {
-        switch (type)
+        PlayLoop1(ghostMove1);
+        UpdateGhostMoveSiren();
+    }
+    
+    private bool IsGhostMovePlaying()
+    {
+        return loopSlot1.clip == ghostMove1 ||
+               loopSlot1.clip == ghostMove2 ||
+               loopSlot1.clip == ghostMove3 ||
+               loopSlot1.clip == ghostMove4 ||
+               loopSlot1.clip == ghostMove5;
+    }
+
+    private void UpdateGhostMoveSiren()
+    {
+        if (!IsGhostMovePlaying())
+            return;
+
+        int type;
+        int pelletsRemaining = GameManager.Instance.pelletsRemaining;
+
+        if (pelletsRemaining > 195)
+            type = 1;
+        else if (pelletsRemaining > 146)
+            type = 2;
+        else if (pelletsRemaining > 97)
+            type = 3;
+        else if (pelletsRemaining > 48)
+            type = 4;
+        else
+            type = 5;
+
+        AudioClip target = type switch
         {
-            case 1:
-                PlayLoop1(ghostMove1);
-                break;
-            case 2:
-                PlayLoop1(ghostMove2);
-                break;
-            case 3:
-                PlayLoop1(ghostMove3);
-                break;
-            case 4:
-                PlayLoop1(ghostMove4);
-                break;
-            case 5:
-                PlayLoop1(ghostMove5);
-                break;
-        }
+            1 => ghostMove1,
+            2 => ghostMove2,
+            3 => ghostMove3,
+            4 => ghostMove4,
+            _ => ghostMove5
+        };
+
+        if (loopSlot1.clip == target)
+            return;
+
+        PlayLoop1(target);
+    }
+
+    public void PlayDeathSound()
+    {
+        loopSlot1.PlayOneShot(pacmanDeath);
     }
 }

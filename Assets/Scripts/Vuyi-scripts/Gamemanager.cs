@@ -225,12 +225,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnAfterDelay()
     {
-
+        SoundManager.Instance.StopAllAudio();
         pacManMovement.StopAnm();
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
         HideGhosts();
         pacManMovement.triggerPacDeathAnm();
+        SoundManager.Instance.PlayDeathSound();
         yield return new WaitForSecondsRealtime(1f); // Wait for death animation to finish
         pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSecondsRealtime(1f);
@@ -310,6 +311,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator AdvanceToNextLevelAfterDelay()
     {
         Time.timeScale = 0f;
+        SoundManager.Instance.StopAllAudio();
         pacManMovement.StopAnm();
         yield return new WaitForSecondsRealtime(1.5f);
         HideGhosts();
