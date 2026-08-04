@@ -7,6 +7,7 @@ public class PacMovement : MonoBehaviour
 {
     [Header("Speed")]
     int[,] pacSpeeds = { { 1, 80, 71, 90, 79 }, { 2, 90, 79, 95, 83 }, { 5, 100, 87, 100, 87 }, { 21, 90, 79, 0, 0 } };
+    Vector2[] TunnelWarpTiles = {new Vector2(28f,16), new Vector2(-1,16)};
     [SerializeField] private float currentSpeed;
     public float normSpeed;
     public float normDotSpeed;
@@ -140,7 +141,15 @@ public class PacMovement : MonoBehaviour
         ReadQueuedDirection();
         CheckGhostCollision();
         if (isDead) return; // freeze the instant a collision is registered this frame
-
+        if((Vector2)transform.position == TunnelWarpTiles[0]){
+                transform.position = TunnelWarpTiles[1];
+                direction = Vector2.right;
+                nextTile = transform.position + (Vector3)direction;
+            } else if((Vector2)transform.position == TunnelWarpTiles[1]){
+                transform.position = TunnelWarpTiles[0];
+                direction = Vector2.left;
+                nextTile = transform.position + (Vector3)direction;
+            }
         if (transform.position == nextTile)
         {
             lastIntersection = transform.position;
@@ -162,7 +171,7 @@ public class PacMovement : MonoBehaviour
 
                 if (enableTunnelWrap && direction.x != 0 && IsPastHorizontalEdge(candidate))
                 {
-                    transform.position = WrapToOppositeSide(transform.position);
+                    //transform.position = WrapToOppositeSide(transform.position);
                     candidate = transform.position + (Vector3)direction;
                 }
 
@@ -285,7 +294,7 @@ public class PacMovement : MonoBehaviour
         return cell.x < wallTilemap.cellBounds.xMin || cell.x >= wallTilemap.cellBounds.xMax;
     }
 
-    Vector3 WrapToOppositeSide(Vector3 pos)
+    /*Vector3 WrapToOppositeSide(Vector3 pos)
     {
         Vector3Int cell = wallTilemap.WorldToCell(pos);
         int oppositeX = direction.x > 0
@@ -294,7 +303,7 @@ public class PacMovement : MonoBehaviour
 
         Vector3 wrapped = wallTilemap.GetCellCenterWorld(new Vector3Int(oppositeX, cell.y, cell.z));
         return new Vector3(wrapped.x, pos.y, pos.z);
-    }
+    }*/
 
     void OnDrawGizmos()
     {
