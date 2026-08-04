@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnCreditChanged += OnCreditChanged;
         GameManager.OnScoreChanged += UpdateScore;
-        UpdateUICredits();
     }
     
     private void OnDisable()
@@ -34,7 +33,14 @@ public class UIManager : MonoBehaviour
     {
         _creditCoroutine ??= StartCoroutine(UpdateDisplayedCredits());
     }
-    
+
+    private void Start()
+    {
+        _displayedCredits = GameManager.Instance.credits;
+        UpdateUICredits();
+        UpdateScore();
+    }
+
     private IEnumerator UpdateDisplayedCredits()
     {
         while (_displayedCredits < GameManager.Instance.credits)

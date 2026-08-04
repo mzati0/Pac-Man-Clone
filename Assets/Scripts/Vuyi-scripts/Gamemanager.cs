@@ -73,9 +73,6 @@ public class GameManager : MonoBehaviour
         creditAction.action.performed += AddCredit;
         onePlayerAction.action.performed += LoadIntoGame;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
-        creditAction.action.Enable();
-        onePlayerAction.action.Enable();
     }
 
     void OnDisable()
@@ -101,6 +98,9 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        creditAction.action.Enable();
+        onePlayerAction.action.Enable();
+        
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             CurrentGameState = GameState.Attract;
@@ -214,7 +214,8 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             OnGameOver?.Invoke();
-            Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
+            SceneManager.LoadScene(0);
+            //Time.timeScale = 0f; // TODO: hook up a Game Over screen and restart the game // Ok - Mzati
             yield break;
         }
 
