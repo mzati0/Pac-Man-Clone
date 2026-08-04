@@ -6,6 +6,7 @@ namespace Misc
 {
     public class TilemapFlash : MonoBehaviour
     {
+        public GameObject doars;
         public static TilemapFlash Instance;
         private Tilemap _tilemap;
         
@@ -28,6 +29,7 @@ namespace Misc
         
         private IEnumerator FlashCoroutine()
         {
+            doars.SetActive(false);
             var baseColor = Instance._tilemap.color;
             _tilemap.color = Color.white;
             yield return new WaitForSecondsRealtime(0.25f);
@@ -44,6 +46,7 @@ namespace Misc
             _tilemap.color = Color.white;
             yield return new WaitForSecondsRealtime(0.25f);
             _tilemap.color = baseColor;
+            doars.SetActive(true);
         }
 
     }
