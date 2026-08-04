@@ -21,9 +21,11 @@ public class GhostHouseController : MonoBehaviour
     int[,] inkyDotLimits = { { 1, 30 }, { 2, 0}};
     int[,] clydeDotLimits = { { 1, 60 }, { 2, 50}};
     
+    void Awake(){
+        ghostPathing = gameObject.GetComponent<GhostPathing>();
+    }
     void Start()
     {
-        ghostPathing = gameObject.GetComponent<GhostPathing>();
         Configure();
 
     }
