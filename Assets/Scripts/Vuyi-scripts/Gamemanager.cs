@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputActionReference creditAction;
     [SerializeField] private InputActionReference onePlayerAction;
     [SerializeField] private InputActionReference twoPlayerAction;
+    [SerializeField] private InputActionReference anyKeyAction;
+
     
     [HideInInspector] public bool firstOpen = true;
     [HideInInspector] public int pelletsRemaining;
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour
     {
         creditAction.action.performed += AddCredit;
         onePlayerAction.action.performed += LoadIntoGame;
+        anyKeyAction.action.performed += AnyKeyPressed;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -87,10 +90,12 @@ public class GameManager : MonoBehaviour
     {
         creditAction.action.performed -= AddCredit;
         onePlayerAction.action.performed -= LoadIntoGame;
+        anyKeyAction.action.performed -= AnyKeyPressed;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         
         creditAction.action.Disable();
         onePlayerAction.action.Disable();
+        anyKeyAction.action.Disable();
     }
     
     void Awake()
@@ -108,6 +113,7 @@ public class GameManager : MonoBehaviour
     {
         creditAction.action.Enable();
         onePlayerAction.action.Enable();
+        anyKeyAction.action.Enable();
         
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
@@ -138,14 +144,27 @@ public class GameManager : MonoBehaviour
 
     private void AddCredit(InputAction.CallbackContext context)
     {
-        if(firstOpen) return;
-        if(credits < 99) credits++;
+        if (firstOpen) return;
+
+        var attract = FindAnyObjectByType<AttractScreen>();
+        if (attract != null)
+        {
+            if (attract.ShowControls) return;
+        }
+        if (credits < 99)
+        {
+            credits++;
+        }
         OnCreditChanged?.Invoke();
     }
     private void LoadIntoGame(InputAction.CallbackContext context)
     {
         if (!FindAnyObjectByType<AttractScreen>()) return;
-        if (credits > 0) credits--; SceneManager.LoadScene(1);
+        if (credits > 0)
+        {
+            credits--;
+            SceneManager.LoadScene(1);
+        }
     }
 
     public void AddScore(int amount)
@@ -226,6 +245,7 @@ public class GameManager : MonoBehaviour
             CreditsText.Instance.ShowCredits();
             yield return new WaitForSecondsRealtime(1.5f);
             OnGameOver?.Invoke();
+            Time.timeScale = 1f;
             SceneManager.LoadScene(0);
             yield break;
         }
@@ -319,5 +339,14 @@ public class GameManager : MonoBehaviour
             fruitSpawner.ResetForNewLevel(level);
 
         OnLevelStarted?.Invoke(level);
+    }
+    
+    private void AnyKeyPressed(InputAction.CallbackContext context)
+    {
+        if(FindAnyObjectByType<AttractScreen>() && FindAnyObjectByType<AttractScreen>().ShowControls)
+        {
+            FindAnyObjectByType<AttractScreen>().ShowControls = false;
+            FindAnyObjectByType<AttractScreen>().Setup();
+        }
     }
 }

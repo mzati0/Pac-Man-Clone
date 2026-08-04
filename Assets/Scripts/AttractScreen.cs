@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Video;
@@ -6,9 +7,13 @@ public class AttractScreen : MonoBehaviour
 {
     [Header("Startup")]
     [SerializeField] private VideoPlayer videoPlayer; 
-    [FormerlySerializedAs("mainMenu")] [SerializeField] private GameObject ui;
+    [NonSerialized] public bool ShowControls;
+    [Header("UI Elements")]
+    [SerializeField] private GameObject ui;
     [SerializeField] private GameObject attractScreenUI;
     [SerializeField] private GameObject readyScreenUI;
+    [SerializeField] private GameObject controlsScreenUI;
+    [SerializeField] private GameObject scoreUI;
 
     // [Header("Input Actions")]
     // [SerializeField] private InputActionReference onePlayerAction;
@@ -33,6 +38,7 @@ public class AttractScreen : MonoBehaviour
         if (GameManager.Instance.firstOpen)
         {
             ui.SetActive(false);
+            ShowControls = true;
         }
         else
         {
@@ -46,31 +52,45 @@ public class AttractScreen : MonoBehaviour
         Setup();
     }
 
-    private void Setup()
+    public void Setup()
     {
         var canvas = FindAnyObjectByType<Canvas>();
         if (canvas != null) canvas.gameObject.SetActive(false);
         
         ui.SetActive(true);
-        if(GameManager.Instance.credits > 0)
+        if (ShowControls)
         {
-            readyScreenUI.SetActive(true);
+            HideScore();
+            readyScreenUI.SetActive(false);
             attractScreenUI.SetActive(false);
+            controlsScreenUI.SetActive(true);
         }
+
         else
         {
-            readyScreenUI.SetActive(false);
-            attractScreenUI.SetActive(true);
+            ShowScore();
+            if(GameManager.Instance.credits > 0)
+            {
+                readyScreenUI.SetActive(true);
+                attractScreenUI.SetActive(false);
+                controlsScreenUI.SetActive(false);
+            }
+            else
+            {
+                readyScreenUI.SetActive(false);
+                attractScreenUI.SetActive(true);
+                controlsScreenUI.SetActive(false);
+            }
         }
     }
-    
-    // private void StartGame(InputAction.CallbackContext context)
-    // {
-    //     if (GameManager.Instance.credits > 0)
-    //     {
-    //         print("suffer");
-    //     }
-    // }
+    private void ShowScore()
+    {
+        scoreUI.SetActive(true);
+    }
+    private void HideScore()
+    {
+        scoreUI.SetActive(false);
+    }
     public void EndAttractScreen()
     {
         // TODO: Make game play a demo run
