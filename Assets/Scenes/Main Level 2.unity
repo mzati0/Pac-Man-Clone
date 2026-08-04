@@ -228,7 +228,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fd28d8414045e4e9f07e0ac3bb82e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FruitLevelCounterUI
-  fruitSprites: []
+  fruitSprites:
+  - {fileID: 69453928, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: -1735369395, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: -676542265, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: -1346189772, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 1651299575, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 382949308, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 1696798912, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: -540548449, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   slots:
   - {fileID: 3169175117660739480}
   - {fileID: 3169175117660739479}
