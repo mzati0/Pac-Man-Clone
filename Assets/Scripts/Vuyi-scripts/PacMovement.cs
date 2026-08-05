@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,7 +28,28 @@ public class PacMovement : MonoBehaviour
     [Header("Ghost Collision")]
     public float ghostCollisionDistance = 0.5f;
     private GameObject[] ghosts;
+    private Dictionary<GameObject, SpriteRenderer> ghostRenderers;
     private bool isDead;
+
+    [Header("Ghost Eaten Score Popup")]
+    [Tooltip("Assign in order: 200, 400, 800, 1600 - matches classic Pac-Man's ghost combo scoring.")]
+    public Sprite[] ghostScoreSprites;
+    public float scorePopupDuration = 1f;
+    public string scorePopupSortingLayer = "Default";
+    public int scorePopupOrderInLayer = 10;
+
+    private int ghostsEatenThisFright = 0;
+    private bool wasFrightened = false;
+
+    [Header("Ghost Eaten Pause")]
+    [Tooltip("Real-time seconds the game freezes - the arcade holds for ~1s.")]
+    public float ghostEatenPauseDuration = 1f;
+    private SpriteRenderer pacSpriteRenderer;
+    private List<SpriteRenderer> pendingRevealRenderers = new List<SpriteRenderer>();
+
+   
+    private enum PacState { Active, GhostEatenFreeze }
+    private PacState pacState = PacState.Active;
 
     public Vector2 direction = Vector2.zero;
     private Vector2 queuedDirection = Vector2.zero;
@@ -48,6 +71,7 @@ public class PacMovement : MonoBehaviour
     {
         controls = new InputSystem_Actions();
         anim = GetComponent<Animator>();
+        pacSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     void OnEnable()
@@ -60,6 +84,14 @@ public class PacMovement : MonoBehaviour
     {
         controls.Player.Disable();
         GameManager.OnPacManDied -= HandleDied;
+
+       
+        if (pacState == PacState.GhostEatenFreeze)
+        {
+            Time.timeScale = 1f;
+            pacState = PacState.Active;
+            RevealPendingGhosts();
+        }
     }
 
     void OnDestroy() => controls.Dispose();
@@ -78,6 +110,14 @@ public class PacMovement : MonoBehaviour
             wallTilemap.CompressBounds();
 
         ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+
+        ghostRenderers = new Dictionary<GameObject, SpriteRenderer>();
+        foreach (var ghost in ghosts)
+        {
+            if (ghost == null) continue;
+            ghostRenderers[ghost] = ghost.GetComponentInChildren<SpriteRenderer>();
+        }
+
         UpdateSpeeds();
     }
 
@@ -90,6 +130,15 @@ public class PacMovement : MonoBehaviour
         direction = Vector2.left;
         lastIntersection = startPosition;
         isDead = false;
+        ghostsEatenThisFright = 0;
+        wasFrightened = false;
+
+        pacState = PacState.Active;
+        Time.timeScale = 1f;
+        if (pacSpriteRenderer != null)
+            pacSpriteRenderer.enabled = true;
+        RevealPendingGhosts();
+
         anim.Rebind();
         UpdateSpeeds();
 
@@ -140,8 +189,17 @@ public class PacMovement : MonoBehaviour
         if (isDead) return;
 
         ReadQueuedDirection();
+
+       
+        if (pacState != PacState.Active) return;
+
+        bool frightenedNow = GhostManager.instance != null && GhostManager.instance.globalFrightened;
+        if (frightenedNow && !wasFrightened)
+            ghostsEatenThisFright = 0; 
+        wasFrightened = frightenedNow;
+
         CheckGhostCollision();
-        if (isDead) return; // freeze the instant a collision is registered this frame
+        if (isDead) return; 
         if((Vector2)transform.position == TunnelWarpTiles[0]){
                 transform.position = TunnelWarpTiles[1];
                 direction = Vector2.right;
@@ -235,7 +293,20 @@ public class PacMovement : MonoBehaviour
                 else if (ghostP.frightened)
                 {
                     ghostP.TriggerDead();
+
+                   
+                    if (ghostRenderers.TryGetValue(ghost, out SpriteRenderer sr) && sr != null)
+                    {
+                        sr.enabled = false;
+                        pendingRevealRenderers.Add(sr);
+                    }
+
+                    SpawnGhostScorePopup(ghost.transform.position);
                     GameManager.Instance.GhostEaten();
+
+                    if (pacState != PacState.GhostEatenFreeze)
+                        StartCoroutine(GhostEatenPause());
+
                     continue;
                 }
 
@@ -244,6 +315,60 @@ public class PacMovement : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private IEnumerator GhostEatenPause()
+    {
+        pacState = PacState.GhostEatenFreeze;
+
+        if (pacSpriteRenderer != null)
+            pacSpriteRenderer.enabled = false;
+
+        Time.timeScale = 0f; 
+
+        yield return new WaitForSecondsRealtime(ghostEatenPauseDuration);
+
+        Time.timeScale = 1f;
+
+        if (pacSpriteRenderer != null)
+            pacSpriteRenderer.enabled = true;
+
+        RevealPendingGhosts(); 
+
+        pacState = PacState.Active;
+    }
+
+    private void RevealPendingGhosts()
+    {
+        foreach (var sr in pendingRevealRenderers)
+        {
+            if (sr != null) sr.enabled = true;
+        }
+        pendingRevealRenderers.Clear();
+    }
+
+    void SpawnGhostScorePopup(Vector3 position)
+    {
+        if (ghostScoreSprites == null || ghostScoreSprites.Length == 0) return;
+
+        int index = Mathf.Min(ghostsEatenThisFright, ghostScoreSprites.Length - 1);
+        ghostsEatenThisFright++;
+
+        GameObject popup = new GameObject("GhostScorePopup");
+        popup.transform.position = position;
+
+        SpriteRenderer sr = popup.AddComponent<SpriteRenderer>();
+        sr.sprite = ghostScoreSprites[index];
+        sr.sortingLayerName = scorePopupSortingLayer;
+        sr.sortingOrder = scorePopupOrderInLayer;
+
+        StartCoroutine(DestroyAfterRealtimeDelay(popup, scorePopupDuration));
+    }
+
+    private IEnumerator DestroyAfterRealtimeDelay(GameObject obj, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        if (obj != null) Destroy(obj);
     }
 
     void TryCorner()

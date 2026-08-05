@@ -31,7 +31,8 @@ public class Pellet : MonoBehaviour
     {
         if (type != PelletType.Power || sr == null) return;
 
-        flashTimer += Time.deltaTime;
+        
+        flashTimer += Time.unscaledDeltaTime;
         if (flashTimer >= flashInterval)
         {
             flashTimer = 0f;
