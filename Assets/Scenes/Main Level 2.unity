@@ -9147,6 +9147,15 @@ MonoBehaviour:
   enableTunnelWrap: 1
   cornerWindow: 0.15
   ghostCollisionDistance: 0.5
+  ghostScoreSprites:
+  - {fileID: -2124246036, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 1895097304, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 1502835302, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  - {fileID: 1673842202, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
+  scorePopupDuration: 1
+  scorePopupSortingLayer: Default
+  scorePopupOrderInLayer: 10
+  ghostEatenPauseDuration: 1
   direction: {x: 0, y: 0}
   nextTile: {x: 0, y: 0, z: 0}
   spawnX: 13.5
