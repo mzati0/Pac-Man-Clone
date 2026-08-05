@@ -220,6 +220,11 @@ public class GameManager : MonoBehaviour
     public void PacManDied()
     {
         OnPacManDied?.Invoke();
+
+        
+        if (fruitSpawner != null)
+            fruitSpawner.DespawnActiveFruit();
+
         StartCoroutine(RespawnAfterDelay());
     }
 
