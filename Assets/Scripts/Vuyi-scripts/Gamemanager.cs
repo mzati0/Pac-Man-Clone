@@ -192,6 +192,7 @@ public class GameManager : MonoBehaviour
         pelletsRemaining--;
         pelletsEatenThisLevel++;
         FindAnyObjectByType<GhostManager>().triggerDotInc();
+        SoundManager.Instance.PlayEatingDots();
 
         if (fruitSpawner != null)
             fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);

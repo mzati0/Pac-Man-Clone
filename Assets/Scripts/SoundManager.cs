@@ -8,7 +8,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource loopSlot1;
     [SerializeField] private AudioSource loopSlot2;
     [SerializeField] private AudioSource oneShotSource;
-    
+
     [Header("Sound Effects")]
     [SerializeField] private AudioClip startMusic;
     [SerializeField] private AudioClip eatingTheDots;
@@ -24,8 +24,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip ghostEaten;
     [SerializeField] private AudioClip ghostReturn;
     [SerializeField] private AudioClip pacmanDeath;
-    
-    //turn corner(): if eating dots is true, play turn corner sound effect, else play turn corner sound effect
+
+    // turn corner(): if eating dots is true, play turn corner sound effect, else play turn corner sound effect
+
+    private float _eatingTimer;
+    private const float EatingDuration = 0.2f;
 
     private void Awake()
     {
@@ -40,7 +43,22 @@ public class SoundManager : MonoBehaviour
 
         GameManager.OnScoreChanged += UpdateGhostMoveSiren;
     }
-    
+
+    private void Update()
+    {
+        if (_eatingTimer > 0f)
+        {
+            _eatingTimer -= Time.deltaTime;
+
+            if (_eatingTimer <= 0f &&
+                loopSlot2.clip == eatingTheDots &&
+                loopSlot2.isPlaying)
+            {
+                StopLoop2();
+            }
+        }
+    }
+
     public void PlayLoop1(AudioClip clip)
     {
         loopSlot1.clip = clip;
@@ -51,7 +69,7 @@ public class SoundManager : MonoBehaviour
     {
         loopSlot1.Stop();
     }
-    
+
     public void PlayLoop2(AudioClip clip)
     {
         loopSlot2.clip = clip;
@@ -62,30 +80,40 @@ public class SoundManager : MonoBehaviour
     {
         loopSlot2.Stop();
     }
-    
+
     public void PlayOneShot(AudioClip clip)
     {
         oneShotSource.PlayOneShot(clip);
     }
-    
+
     public void StopAllAudio()
     {
         loopSlot1.Stop();
         loopSlot2.Stop();
         oneShotSource.Stop();
     }
-    
+
     public void PlayStartMusic()
     {
         PlayLoop1(startMusic);
     }
-    
+
     public void PlayGhostMove()
     {
         PlayLoop1(ghostMove1);
         UpdateGhostMoveSiren();
     }
-    
+
+    public void PlayEatingDots()
+    {
+        if (loopSlot2.clip != eatingTheDots || !loopSlot2.isPlaying)
+        {
+            PlayLoop2(eatingTheDots);
+        }
+
+        _eatingTimer = EatingDuration;
+    }
+
     private bool IsGhostMovePlaying()
     {
         return loopSlot1.clip == ghostMove1 ||
@@ -138,7 +166,7 @@ public class SoundManager : MonoBehaviour
     {
         loopSlot2.PlayOneShot(ghostEaten);
     }
-    
+
     public void PlayRunHome()
     {
         PlayLoop1(ghostReturn);
