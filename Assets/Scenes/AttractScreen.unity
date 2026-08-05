@@ -20404,6 +20404,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7845016437907235576, guid: a80ffad4c09d2744d88f8f30c0933d35, type: 3}
+      propertyPath: BaseSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24993,9 +24997,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.28125
     y: 0
-    width: 1
+    width: 0.43750003
     height: 1
   near clip plane: 0.3
   far clip plane: 1000

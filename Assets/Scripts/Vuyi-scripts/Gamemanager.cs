@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     
     public static GameManager Instance { get; private set; }
     [Header("Speed")]
-    public float BaseSpeed = 5f;
+    public float BaseSpeed = 10f;
     [Header("Credits")]
     public int credits = 0;
 

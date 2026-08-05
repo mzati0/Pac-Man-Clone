@@ -620,6 +620,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""c8cbcf0d-e1da-4878-bf51-6ba3e6e12a86"",
+                    ""path"": ""<HID::xin-mo.com Xinmotek Controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Credit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ad1687c-d568-421e-a568-903e8c91cd56"",
+                    ""path"": ""<HID::xin-mo.com Xinmotek Controller>/button6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Credit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3e7ee9d1-49c1-4a2f-a2d1-41ed1f7df7f1"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -633,6 +655,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ada345d3-9d2b-4d6e-9ed3-164a9845e800"",
                     ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""P1 Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e05303d-0c93-4d0d-8932-e78ad62f603f"",
+                    ""path"": ""<HID::xin-mo.com Xinmotek Controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""P1 Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1955430f-bd32-4046-ac4e-3c145cd9213e"",
+                    ""path"": ""<HID::xin-mo.com Xinmotek Controller>/button5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
