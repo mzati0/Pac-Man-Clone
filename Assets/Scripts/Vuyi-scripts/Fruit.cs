@@ -29,6 +29,7 @@ public class Fruit : MonoBehaviour
 
         if (GameManager.Instance != null)
             GameManager.Instance.AddScore(points);
+        SoundManager.Instance.PlayFruitEaten();
 
         Destroy(gameObject);
     }

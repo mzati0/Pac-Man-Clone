@@ -12987,26 +12987,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
-      propertyPath: ghostRun
-      value: 
-      objectReference: {fileID: 8300000, guid: 5ca6b87d88060194bb759b564763abb6, type: 3}
-    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
-      propertyPath: extraLife
-      value: 
-      objectReference: {fileID: 8300000, guid: 4311a947b9bd2c342884f00d9b1a2a7e, type: 3}
-    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
-      propertyPath: ghostEaten
-      value: 
-      objectReference: {fileID: 8300000, guid: 96fd1ad87e66ba94e8c46b023d27752f, type: 3}
-    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
-      propertyPath: ghostReturn
-      value: 
-      objectReference: {fileID: 8300000, guid: 150a30ea08a10a84b8b1de1247049c10, type: 3}
-    - target: {fileID: 4596892345734179406, guid: 4cc82406de3a10d4abc0fb93ca972c40, type: 3}
-      propertyPath: eatingTheDots
-      value: 
-      objectReference: {fileID: 8300000, guid: aa2c625573b1a6a4d9a5fe834f1e73dd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

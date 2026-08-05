@@ -171,6 +171,16 @@ public class SoundManager : MonoBehaviour
     {
         PlayLoop1(ghostReturn);
     }
+    
+    public void PlayFruitEaten()
+    {
+        loopSlot2.PlayOneShot(fruit);
+    }
+    
+    public void PlayExtraLifeSound()
+    {
+        oneShotSource.PlayOneShot(extraLife);
+    }
 
     public void PlayDeathSound()
     {

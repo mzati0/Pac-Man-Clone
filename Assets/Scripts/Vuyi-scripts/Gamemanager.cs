@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
     {
         lives++;
         OnLivesChanged?.Invoke(lives);
+        SoundManager.Instance.PlayExtraLifeSound();
     }
 
     public void PelletEaten(int scoreValue)
