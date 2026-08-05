@@ -53,7 +53,7 @@ public class GhostPathing : MonoBehaviour
                 nextTile = transform.position + (Vector3)direction;
             }
             if (transform.position == nextTile) {
-                if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
+                if( !System.Array.Exists(doNotUpdateDirection, element => element == (Vector2)transform.position) || !dead || IsTileAtWorldPosition(transform.position + (Vector3)direction)){
                     if(dead){
                         nextTile = GetNextTile(GhostManager.instance.deadGhostTarget.position);
                     } else if (frightened){
