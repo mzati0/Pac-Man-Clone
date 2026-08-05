@@ -9,7 +9,6 @@ public class FruitSpawner : MonoBehaviour
         public int points;
         public GameObject fruitPrefab;
 
-        [Tooltip("Score popup sprite for this fruit (e.g. '100', '300', '500'...).")]
         public Sprite scorePopupSprite;
     }
 
@@ -17,7 +16,6 @@ public class FruitSpawner : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Fruit Progression")]
-    [Tooltip("Order must match FruitLevelCounterUI: 0=Cherry(100) 1=Strawberry(300) 2=Orange(500) 3=Apple(700) 4=Melon(1000) 5=Galaxian(2000) 6=Bell(3000) 7=Key(5000)")]
     public FruitDefinition[] fruitsByLevel;
 
     [Header("Spawn Triggers")]
