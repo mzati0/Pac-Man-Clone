@@ -87,6 +87,9 @@ public class GhostPathing : MonoBehaviour
     }
     public void TriggerDead(){
         dead = true;
+        SoundManager.Instance.PlayGhostEaten();
+        // TODO: Freeze the game, show the points
+        SoundManager.Instance.PlayRunHome();
         direction = Vector2.zero;
     }
     private bool isIntersection()

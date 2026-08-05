@@ -129,6 +129,21 @@ public class SoundManager : MonoBehaviour
         PlayLoop1(target);
     }
 
+    public void PlayFrightened()
+    {
+        PlayLoop1(ghostRun);
+    }
+
+    public void PlayGhostEaten()
+    {
+        loopSlot2.PlayOneShot(ghostEaten);
+    }
+    
+    public void PlayRunHome()
+    {
+        PlayLoop1(ghostReturn);
+    }
+
     public void PlayDeathSound()
     {
         loopSlot1.PlayOneShot(pacmanDeath);
