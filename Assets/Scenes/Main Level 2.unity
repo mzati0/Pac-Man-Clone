@@ -633,27 +633,35 @@ MonoBehaviour:
   - label: Cherry
     points: 100
     fruitPrefab: {fileID: 2024532908306498215, guid: b7a772adadb187b4b8e0f766c346d92d, type: 3}
+    scorePopupSprite: {fileID: 2098285071, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Strawberry
     points: 300
     fruitPrefab: {fileID: 2024532908306498215, guid: 448560a07c052824d91da2a188deb541, type: 3}
+    scorePopupSprite: {fileID: 1792935395, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Orange
     points: 500
     fruitPrefab: {fileID: 2024532908306498215, guid: 6240c8ddea233184c87ddc8b5b5ea491, type: 3}
+    scorePopupSprite: {fileID: 447773119, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Apple
     points: 700
     fruitPrefab: {fileID: 2024532908306498215, guid: 4d043bcec980d53489ea96a921beb362, type: 3}
+    scorePopupSprite: {fileID: 1251958200, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Grapes
     points: 1000
     fruitPrefab: {fileID: 2024532908306498215, guid: af2b31bd980f6db4e8f804d7bf1d086f, type: 3}
+    scorePopupSprite: {fileID: -1845119494, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Galaxian
     points: 2000
     fruitPrefab: {fileID: 2024532908306498215, guid: f3cb7b7c3a044314a891ef1e97ba1f4e, type: 3}
+    scorePopupSprite: {fileID: -1956735467, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Bell
     points: 3000
     fruitPrefab: {fileID: 2024532908306498215, guid: fef37a9a942d8a24d8578a71ada6dfb5, type: 3}
+    scorePopupSprite: {fileID: -1822130009, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   - label: Key
     points: 5000
     fruitPrefab: {fileID: 2024532908306498215, guid: 8836e567c0598e84d8af221d7f98b721, type: 3}
+    scorePopupSprite: {fileID: 817028485, guid: fd2e5c9d7a7d3224996baa804aed85a4, type: 3}
   pelletThresholds: 46000000aa000000
   minLifetimeSeconds: 9
   maxLifetimeSeconds: 10

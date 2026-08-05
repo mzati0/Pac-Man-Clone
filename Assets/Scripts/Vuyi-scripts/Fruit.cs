@@ -8,8 +8,13 @@ public class Fruit : MonoBehaviour
     [Header("Lifetime")]
     public float lifetime = 10f;
 
-   
     public string playerTag = "Player";
+
+    [Header("Score Popup")]
+    public Sprite scorePopupSprite;
+    public float scorePopupDuration = 1f;
+    public string scorePopupSortingLayer = "Default";
+    public int scorePopupOrderInLayer = 10;
 
     void Reset()
     {
@@ -30,6 +35,23 @@ public class Fruit : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.AddScore(points);
 
+        SpawnScorePopup();
+
         Destroy(gameObject);
+    }
+
+    void SpawnScorePopup()
+    {
+        if (scorePopupSprite == null) return;
+
+        GameObject popup = new GameObject("FruitScorePopup");
+        popup.transform.position = transform.position;
+
+        SpriteRenderer sr = popup.AddComponent<SpriteRenderer>();
+        sr.sprite = scorePopupSprite;
+        sr.sortingLayerName = scorePopupSortingLayer;
+        sr.sortingOrder = scorePopupOrderInLayer;
+
+        Destroy(popup, scorePopupDuration);
     }
 }

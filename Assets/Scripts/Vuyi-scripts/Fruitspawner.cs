@@ -8,13 +8,14 @@ public class FruitSpawner : MonoBehaviour
         public string label;
         public int points;
         public GameObject fruitPrefab;
+
+        public Sprite scorePopupSprite;
     }
 
     [Header("Spawn Point")]
     public Transform spawnPoint;
 
     [Header("Fruit Progression")]
-    
     public FruitDefinition[] fruitsByLevel;
 
     [Header("Spawn Triggers")]
@@ -70,9 +71,8 @@ public class FruitSpawner : MonoBehaviour
         if (activeFruit != null)
             Destroy(activeFruit);
 
-        
         int index = FruitLevelCounterUI.GetFruitIndexForLevel(currentLevel);
-        index = Mathf.Clamp(index, 0, fruitsByLevel.Length - 1); 
+        index = Mathf.Clamp(index, 0, fruitsByLevel.Length - 1);
         FruitDefinition def = fruitsByLevel[index];
 
         if (def.fruitPrefab == null)
@@ -84,6 +84,7 @@ public class FruitSpawner : MonoBehaviour
         {
             fruit.lifetime = Random.Range(minLifetimeSeconds, maxLifetimeSeconds);
             fruit.points = def.points;
+            fruit.scorePopupSprite = def.scorePopupSprite;
         }
     }
 }
