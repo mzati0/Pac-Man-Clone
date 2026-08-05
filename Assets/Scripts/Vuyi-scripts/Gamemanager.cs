@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
     {
         lives++;
         OnLivesChanged?.Invoke(lives);
+        SoundManager.Instance.PlayExtraLifeSound();
     }
 
     public void PelletEaten(int scoreValue)
@@ -192,6 +193,7 @@ public class GameManager : MonoBehaviour
         pelletsRemaining--;
         pelletsEatenThisLevel++;
         FindAnyObjectByType<GhostManager>().triggerDotInc();
+        SoundManager.Instance.PlayEatingDots();
 
         if (fruitSpawner != null)
             fruitSpawner.NotifyPelletEaten(pelletsEatenThisLevel);
@@ -230,12 +232,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnAfterDelay()
     {
-
+        SoundManager.Instance.StopAllAudio();
         pacManMovement.StopAnm();
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(deathDelay);
         HideGhosts();
         pacManMovement.triggerPacDeathAnm();
+        SoundManager.Instance.PlayDeathSound();
         yield return new WaitForSecondsRealtime(1f); // Wait for death animation to finish
         pacManMovement.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSecondsRealtime(1f);
@@ -280,6 +283,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameBeginStage1()
     {
+        SoundManager.Instance.PlayStartMusic();
         lives++;
         OnLivesChanged?.Invoke(lives);
         HideGhosts();
@@ -287,7 +291,7 @@ public class GameManager : MonoBehaviour
         var playerOneText = Instantiate(playerOneTextPrefab, new Vector3(9, 20, 0), Quaternion.identity);
         var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 0), Quaternion.identity);
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(2.5f);
         Destroy(playerOneText);
         Destroy(readyText);
         ShowGhosts();
@@ -303,16 +307,18 @@ public class GameManager : MonoBehaviour
         pacManMovement.StopAnm();
         Time.timeScale = 0f;
         var readyText = Instantiate(readyTextPrefab, new Vector3(11, 14, 1), Quaternion.identity);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(2.5f);
         pacManMovement.PlayAnm();
         Destroy(readyText);
         Time.timeScale = 1;
+        SoundManager.Instance.PlayGhostMove();
     }
 
 
     private IEnumerator AdvanceToNextLevelAfterDelay()
     {
         Time.timeScale = 0f;
+        SoundManager.Instance.StopAllAudio();
         pacManMovement.StopAnm();
         yield return new WaitForSecondsRealtime(1.5f);
         HideGhosts();
@@ -344,6 +350,7 @@ public class GameManager : MonoBehaviour
             fruitSpawner.ResetForNewLevel(level);
 
         OnLevelStarted?.Invoke(level);
+        StartCoroutine(GameBeginStage2());
     }
     
     private void AnyKeyPressed(InputAction.CallbackContext context)

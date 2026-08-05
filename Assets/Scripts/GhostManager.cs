@@ -104,6 +104,7 @@ public class GhostManager : MonoBehaviour
     }
     public void triggerFrightened()
     {
+        SoundManager.Instance.PlayFrightened();
         globalFrightened = true;
         setFrightened(true);
         StartCoroutine(FrightenedModeCoroutine());
@@ -241,6 +242,7 @@ public class GhostManager : MonoBehaviour
 
         globalFrightened = false;
         setFrightened(false);
+        SoundManager.Instance.PlayGhostMove();
         AllFlip();
     }
 }

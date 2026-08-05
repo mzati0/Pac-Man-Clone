@@ -115,6 +115,14 @@ public class GhostHouseController : MonoBehaviour
         } else {
             ghostPathing.dead = false;
             GetComponent<GhostPathing>().frightened = false;
+            if (GhostManager.instance.globalFrightened)
+            {
+                SoundManager.Instance.PlayFrightened();
+            }
+            else
+            {
+                SoundManager.Instance.PlayGhostMove();
+            }
         } 
     }
     public void Configure(){
